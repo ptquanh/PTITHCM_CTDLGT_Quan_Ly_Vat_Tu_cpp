@@ -1,10 +1,17 @@
-#include <iostream>
-#include <iomanip>
-#include <windows.h>
 #include "./khaibao.h"
 using namespace std;
 
 // ----------------------------
+
+bool NhanVienEmpty(listNV list){
+    if(list.CountNV != 0){
+        return false;
+    }else{
+        cout << "Danh sách nhân viên rỗng!" << endl;
+        return true;
+    }
+}
+
 
 int SearchNhanVien(listNV list, char manv[50]){
     int pos = -1;
@@ -17,7 +24,7 @@ int SearchNhanVien(listNV list, char manv[50]){
     }
 
     if(pos = -1){
-        cout << "Khong co nhan vien"; return -1;
+        cout << "Không tìm thấy nhân viên" << endl; return -1;
     }
     
     return pos;
@@ -43,19 +50,19 @@ void ChenNhanVien(listNV &list, Nhanvien *nhanvienmoi)
     int pos;
     for (pos = 0; pos < list.CountNV; pos++)
     {
-        compare = strcmp(nhanvienmoi->TEN, list.nodes[pos]->TEN);
+        // compare = strcmp(nhanvienmoi->TEN, list.nodes[pos]->TEN);
         // so sánh tên
-        if (compare < 0)
+        if (nhanvienmoi->TEN < list.nodes[pos]->TEN)
         {
             break;
         }
 
         // so sánh họ
-        if (compare == 0)
+        if (nhanvienmoi->TEN == list.nodes[pos]->TEN);
         {
-            compare = strcmp(nhanvienmoi->HO, list.nodes[pos]->HO);
+            // compare = strcmp(nhanvienmoi->HO, list.nodes[pos]->HO);
             // nếu họ nhỏ hơn thì không cần tăng tiếp nữa
-            if (compare < 0)
+            if (nhanvienmoi->HO < list.nodes[pos]->HO)
             {
                 break;
             }
@@ -71,6 +78,8 @@ void ChenNhanVien(listNV &list, Nhanvien *nhanvienmoi)
 
 void NhapNhanVien(listNV &list)
 {
+    if(NhanVienEmpty(list)) return;
+
     if (list.CountNV >= MaxNhanVien)
     {
         cout << "so luong nv toi da" << "\n";
@@ -81,11 +90,11 @@ void NhapNhanVien(listNV &list)
 
     do
     {
-        cout << "nhap ma nv ";
+        cout << "Nhập mã nhân viên ";
         cin >> nv->MANV;
         if (CheckMANV(list, nv->MANV))
         {
-            cout << "ma da ton tai, nhap ma khac" << "\n";
+            cout << "Mã đã tồn tại, vui lòng nhập mã khác" << endl;
         }
     } while (strlen(nv->MANV) == 0 || CheckMANV(list, nv->MANV));
 
@@ -93,14 +102,14 @@ void NhapNhanVien(listNV &list)
     {
         cout << "nhap ho nv ";
         cin >> nv->HO;
-    } while (strlen(nv->HO) == 0);
+    } while (nv->HO.empty());
 
     // nhập tên
     do
     {
         cout << "nhap ten nv ";
         cin >> nv->TEN;
-    } while (strlen(nv->TEN) == 0);
+    } while (nv->TEN.empty());
 
     // nhập giới tính
     do
@@ -112,7 +121,7 @@ void NhapNhanVien(listNV &list)
             break;
         if (strcmp(nv->PHAI, "nu") == 0)
             break;
-    } /*while (strcmp(nv->PHAI, "nam") == 0 || strcmp(nv->PHAI, "nu") == 0);*/
+    }
     while (true);
     // chèn sinh viên có thứ tự tăng dần theo tên
     if (list.CountNV == 0)
@@ -129,6 +138,9 @@ void NhapNhanVien(listNV &list)
 
 void DeleteNV(listNV& list)
 {
+    
+    if(NhanVienEmpty(list)) return;
+
 
     char manv[50];
     cout << "Mã nhân viên: "; cin >> manv;
@@ -161,43 +173,64 @@ void DeleteNV(listNV& list)
     
 }
 
-void InNhanVien(listNV list)
+
+
+
+
+void ChinhSuaNhanVien(listNV& list)
 {
-    for (int i = 0; i < list.CountNV; i++)
-    {
-        cout << "MaNV" << list.nodes[i]->MANV << "\n";
-        cout << "Họ: " << list.nodes[i]->HO << "\n";
-        cout << "Ten:" << list.nodes[i]->TEN << "\n";
-        cout << "Phai: " << list.nodes[i]->PHAI << "\n";
-    }
-};
 
+    if(NhanVienEmpty(list)) return;
 
-
-void ChinhSuaNhanVien(listNV& list){
     char manv[50];
     cout << "Mã nhân viên: "; cin >> manv;
 
     int pos = SearchNhanVien(list, manv);
     if(pos == -1 ) return;
     
-    cout << "Thong tin hien tai:" << endl;
-    cout << "Mã sinh viên " << list.nodes
-    cout << "Nhap Ten Vat Tu moi (Enter de giu nguyen): ";
-    string newName;
-    getline(cin, newName);
-    if (!newName.empty())
-        node->vt.TENVT = newName;
+    cout << "Thông tin hiện tại: " << endl;
+    cout << "Mã nhân viên " << list.nodes[pos]->MANV;
+    cout << "Nhập họ sinh viên mới(Enter để giữ nguyên): ";
+    string newHO;
+    getline(cin, newHO);
+    if (!newHO.empty())
+        list.nodes[pos]->HO = newHO;
+    
+    cout << "Nhập tên sinh viên mới(Enter để giữ nguyên): ";
+    string newTEN;
+    getline(cin, newTEN);
+    if (!newTEN.empty())
+        list.nodes[pos]->TEN = newTEN;
 
-    cout << "Nhap Don Vi Tinh moi (Enter de giu nguyen): ";
-    string newDVT;
-    getline(cin, newDVT);
-    if (!newDVT.empty())
-        node->vt.DVT = newDVT;
+    cout << "Nhập giới tính sinh viên mới(Enter để giữ nguyên): ";
+    string newPHAI;
+    getline(cin, newPHAI);
+    if (!newPHAI.empty())
+        strcpy(list.nodes[pos]->PHAI, "newPHAI");
 
     cout << "Da cap nhat thong tin vat tu." << endl;
    
 }
+
+
+void DeleteDSNV(listNV& list){
+    if(NhanVienEmpty(list)) return;
+    list.CountNV = 0;
+}
+
+void InNhanVien(listNV list)
+{
+    if(NhanVienEmpty(list)) return;
+
+    for (int i = 0; i < list.CountNV; i++)
+    {
+        cout << "Mã nhân viên:" << list.nodes[i]->MANV << endl;
+        cout << "Họ nhân viên: " << list.nodes[i]->HO << endl;
+        cout << "Tên nhân viên:" << list.nodes[i]->TEN << endl;
+        cout << "Giới tính: " << list.nodes[i]->PHAI << endl;
+    }
+};
+
 
 int main()
 {

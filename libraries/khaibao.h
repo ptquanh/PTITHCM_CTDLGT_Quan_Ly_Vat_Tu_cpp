@@ -1,6 +1,9 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <string.h>
+#include <conio.h>
+#include <windows.h>
 
 using namespace std;
 #define MaxNhanVien 500
