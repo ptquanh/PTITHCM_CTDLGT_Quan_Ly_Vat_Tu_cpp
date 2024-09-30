@@ -1,4 +1,4 @@
-#include "./khaibao.h"
+#include "../libraries/khaibao.h"
 using namespace std;
 
 // ----------------------------
