@@ -77,8 +77,8 @@ struct HOADON
 struct Nhanvien
 {
     char MANV[50]; // mã nhân viên
-    char HO[50];   // họ nhân viên
-    char TEN[50];  // tên nhân viên
+    string HO;   // họ nhân viên
+    string TEN;  // tên nhân viên
     char PHAI[10]; // Giới tính nhân viên
     HOADON *dshd = nullptr; // danh sách hóa đơn, do nhân viên ban đầu nhập vô không có hóa đơn
 };
