@@ -78,8 +78,6 @@ void ChenNhanVien(listNV &list, Nhanvien *nhanvienmoi)
 
 void NhapNhanVien(listNV &list)
 {
-    if(NhanVienEmpty(list)) return;
-
     if (list.CountNV >= MaxNhanVien)
     {
         cout << "so luong nv toi da" << "\n";
