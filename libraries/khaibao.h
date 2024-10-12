@@ -9,8 +9,6 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
-#pragma once
-
 #define MaxNhanVien 500
 #define YeuCauChinh 5
 #define YeuCauVatTu 4
@@ -18,7 +16,6 @@ using namespace std;
 #define YeuCauHoaDon 2
 #define YeuCauThongKe 3
 #define MAX_VAT_TU 500
-// bool check = false;
 // ================ MENU ========================
 char MenuChinh[YeuCauChinh][50] = {
     "1. Nhập vật tư",

@@ -539,15 +539,16 @@ void inDanhSachVatTu(treeVatTu root)
 }
 int main()
 {
+    SetConsoleOutputCP(CP_UTF8);
     treeVatTu root = NULL;
     readFile_dsVatTu(root);
     int choice;
     do
     {
         cout << "\n--- Menu ---\n";
-        for (int i = 0; i < YeuCauA; i++)
+        for (int i = 0; i < YeuCauVatTu; i++)
         {
-            cout << MenuA[i] << endl;
+            cout << MenuVatTu[i] << endl;
         }
         cout << "0. Thoat\n";
         cout << "Nhap lua chon cua ban: ";
