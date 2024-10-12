@@ -1,11 +1,12 @@
-
+#include <iostream>
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>
-#include <string.h>
+#include <string>
 #include <ctime>
 #include <windows.h>
+using namespace std;
 #define KEY_NONE -1
 #define ENTER 13
 #define UP 1072
@@ -158,7 +159,7 @@ void ShowCur(bool CursorVisibility)
     CONSOLE_CURSOR_INFO cursor = {1, CursorVisibility};
     SetConsoleCursorInfo(handle, &cursor);
 }
-//
+//========== in giữa ============
 void CoutCentered(std::string text)
 {
 

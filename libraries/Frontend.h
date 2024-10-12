@@ -39,6 +39,3 @@ void box(int x, int y, int w, int h)
     cout << char(217);
 }
 //
-    int main()
-{
-}

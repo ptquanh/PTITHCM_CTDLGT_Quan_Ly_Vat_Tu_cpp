@@ -1,9 +1,13 @@
+#pragma once
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <cstring>
 #include <conio.h>
 #include <windows.h>
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 #define MaxNhanVien 500
@@ -11,10 +15,10 @@ using namespace std;
 #define YeuCauA 4
 #define YeucauC 3
 #define MAX_VAT_TU 500
-bool check = false;
+// bool check = false;
 // ================ MENU ========================
 char MenuChinh[YeuCauChinh][50] = {
-    "1. Nhập vật tư", // sửa ở đây luôn à
+    "1. Nhập vật tư",
     "2. In danh sách vật tư tồn kho",
     "3. Nhập nhân viên",
     "4. In ra danh sách nhân viên",
@@ -36,7 +40,7 @@ char MenuNhanVien[YeucauC][50] = {
 // ======= cay nhi phan tim kiem can bang ===========
 struct nodeVatTu
 {
-    char MAVT[11];
+    string MAVT; //max C10
     string TENVT;
     string DVT;
     int soLuongTon;
@@ -45,7 +49,6 @@ struct dsVatTu
 {
     nodeVatTu data_vt;
     int height;
-    int bf;
     dsVatTu *left, *right;
 };
 typedef dsVatTu *treeVatTu;
@@ -53,7 +56,7 @@ typedef dsVatTu *treeVatTu;
 // ============= danh sach lien ket don ===============
 struct nodeChiTietHoaDon
 {
-    char MAVT[10];
+    string MAVT;
     int soLuong;
     float donGia;
     float VAT;
@@ -69,10 +72,10 @@ typedef dsChiTietHoaDon *ptr_DSCTHD;
 
 struct nodeHoaDon
 {
-    char SoHD[21];
-    char Loai; // N or X
+    string SoHD; //max C20
+    char loai; // N or X
     int day, month, year;
-    dsChiTietHoaDon *ptr_DSCTHD;
+    ptr_DSCTHD firstCTHD = nullptr;
 };
 struct dsHoaDon
 {
@@ -82,16 +85,16 @@ struct dsHoaDon
 typedef dsHoaDon *ptr_DSHD;
 // ============= danh sach nhan vien ===============
 // ================ mang con tro ===================
-struct Nhanvien
+struct nhanVien
 {
-    char MANV[50];          // mã nhân viên
-    string HO;              // họ nhân viên
-    string TEN;             // tên nhân viên
-    char PHAI[10];          // Giới tính nhân viên
-    dsHoaDon *dshd = nullptr; // danh sách hóa đơn, do nhân viên ban đầu nhập vô không có hóa đơn
+    string MANV;       
+    string HO;
+    string TEN;
+    string PHAI;
+    ptr_DSHD firstDSHD = nullptr;
 };
 struct dsNhanVien
 {
-    Nhanvien *nodes[MaxNhanVien];
+    nhanVien *nodes[MaxNhanVien];
     int CountNV = 0;
 };

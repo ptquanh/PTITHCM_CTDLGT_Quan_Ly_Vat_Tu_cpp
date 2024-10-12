@@ -1,3 +1,7 @@
+#file
 *.exe
+*.gitignore
+*tempCodeRunnerFile.cpp
+#folder
 /.vscode/
 /personal/

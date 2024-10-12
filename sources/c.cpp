@@ -1,5 +1,80 @@
 #include "../libraries/khaibao.h"
+#define filePath_Nv "../databases/ds_NhanVien.txt"
+// void readFile_dsNhanVien(dsNhanVien ds_nv)
+// {
+//     ifstream filein;
+//     filein.open(filePath_Nv, ios_base::in);
+//     if (!filein.is_open())
+//     {
+//         cout << "Khong the mo file ds_VatTu.txt" << endl;
+//         return;
+//     }
+//     else
+//     {
+//         cout << "da mo" << endl;
+//     }
 
+//     while (filein.eof() != true)
+//     {
+//         ds_nv.nodes[ds_nv.CountNV] = new nhanVien;
+//         getline(filein, ds_nv.nodes[ds_nv.CountNV]->MANV, ',');
+//         getline(filein, ds_nv.nodes[ds_nv.CountNV]->HO, ',');
+//         getline(filein, ds_nv.nodes[ds_nv.CountNV]->TEN, ',');
+//         filein >> ds_nv.nodes[ds_nv.CountNV]->PHAI;
+//         filein.ignore();
+//         // cout << ds_nv.nodes[ds_nv.CountNV]->MANV << endl;
+//         // cout << ds_nv.nodes[ds_nv.CountNV]->HO << endl;
+//         // cout << ds_nv.nodes[ds_nv.CountNV]->TEN << endl;
+//         // cout << ds_nv.nodes[ds_nv.CountNV]->PHAI << endl;
+//         ds_nv.CountNV++;
+//     }
+//     filein.close();
+// }
+// void writeNodeToFile(treeVatTu node, ofstream &fileout)
+// {
+//     // ofstream fileout;
+//     // fileout.open(filePath, ios_base::trunc);
+//     if (node == nullptr)
+//         return;
+
+//     // Ghi các node bên trái
+//     writeNodeToFile(node->left, fileout);
+
+//     // Ghi dữ liệu của node hiện tại vào file
+//     fileout << node->data_vt.MAVT << ","
+//             << node->data_vt.TENVT << ","
+//             << node->data_vt.DVT << ","
+//             << node->data_vt.soLuongTon << endl;
+
+//     // Ghi các node bên phải
+//     writeNodeToFile(node->right, fileout);
+// }
+// void writeFile_dsVatTu(treeVatTu root)
+// {
+//     ofstream fileout;
+//     fileout.open(filePath_Nv, ios_base::out); // Sử dụng filePath đã định nghĩa
+
+//     if (!fileout.is_open())
+//     {
+//         cout << "Khong the mo file de ghi ds_VatTu.txt" << endl;
+//         return;
+//     }
+
+//     // Hàm đệ quy duyệt cây theo thứ tự giữa (In-Order Traversal)
+//     if (root == nullptr)
+//     {
+//         cout << "Cay nhap lieu rong, khong co du lieu de ghi." << endl;
+//         return;
+//     }
+
+//     // Ghi toàn bộ cây bắt đầu từ gốc
+//     if (root != NULL)
+//     {
+//         cout << endl;
+//     }
+//     writeNodeToFile(root, fileout);
+//     fileout.close();
+// }
 bool NhanVienEmpty(dsNhanVien list)
 {
     if (list.CountNV != 0)
@@ -13,12 +88,12 @@ bool NhanVienEmpty(dsNhanVien list)
     }
 }
 
-int SearchNhanVien(dsNhanVien list, char manv[50])
+int SearchNhanVien(dsNhanVien list, string manv)
 {
     int pos = -1;
     for (int i = 0; i < list.CountNV; i++)
     {
-        if (strcmp(list.nodes[i]->MANV, manv) == 0)
+        if (list.nodes[i]->MANV == manv)
         {
             pos = i;
         }
@@ -33,11 +108,11 @@ int SearchNhanVien(dsNhanVien list, char manv[50])
     return pos;
 }
 
-bool CheckMANV(dsNhanVien &list, char *maso)
+bool CheckMANV(dsNhanVien &list,string maso)
 {
     for (int i = 0; i < list.CountNV; i++)
     {
-        if (strcmp(list.nodes[i]->MANV, maso) == 0)
+        if (list.nodes[i]->MANV == maso)
         {
             return true;
         }
@@ -45,7 +120,7 @@ bool CheckMANV(dsNhanVien &list, char *maso)
     return false;
 }
 
-void ChenNhanVien(dsNhanVien &list, Nhanvien *nhanvienmoi)
+void ChenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
 {
     int compare;
     int pos;
@@ -86,17 +161,17 @@ void NhapNhanVien(dsNhanVien &list)
         return;
     }
 
-    Nhanvien *nv = new Nhanvien();
+    nhanVien *nv = new nhanVien();
 
     do
     {
-        cout << "Nhập mã nhân viên ";
+        cout << "Nhập mã nhân viên (10 ký tự):";
         cin >> nv->MANV;
         if (CheckMANV(list, nv->MANV))
         {
             cout << "Mã đã tồn tại, vui lòng nhập mã khác" << endl;
         }
-    } while (strlen(nv->MANV) == 0 || CheckMANV(list, nv->MANV));
+    } while (nv->MANV.length() == 0 || CheckMANV(list, nv->MANV));
 
     do
     {
@@ -108,18 +183,18 @@ void NhapNhanVien(dsNhanVien &list)
     do
     {
         cout << "nhap ten nv ";
-        cin >> nv->TEN;
+        getline(cin, nv->TEN);
     } while (nv->TEN.empty());
 
     // nhập giới tính
     do
     {
-        cout << "nhap gioi tinh nam hoac nu ";
+        cout << "Nhập giới tính (nam hoặc nu)";
         cin >> nv->PHAI;
         // cout << nv->PHAI;
-        if (strcmp(nv->PHAI, "nam") == 0)
+        if (nv->PHAI == "nam")
             break;
-        if (strcmp(nv->PHAI, "nu") == 0)
+        if (nv->PHAI == "nu")
             break;
     } while (true);
     // chèn sinh viên có thứ tự tăng dần theo tên
@@ -150,7 +225,7 @@ void DeleteNV(dsNhanVien &list)
         return;
     for (int i = 0; i < list.CountNV; i++)
     {
-        if (strcmp(list.nodes[i]->MANV, manv) == 0)
+        if (list.nodes[i]->MANV == manv)
         {
             pos = i;
         }
@@ -158,7 +233,7 @@ void DeleteNV(dsNhanVien &list)
 
     if (pos = -1)
     {
-        cout << "Khong co nhan vien";
+        cout << "Không có nhân viên" << endl;
         return;
     }
 
@@ -201,11 +276,17 @@ void ChinhSuaNhanVien(dsNhanVien &list)
     if (!newTEN.empty())
         list.nodes[pos]->TEN = newTEN;
 
-    cout << "Nhập giới tính sinh viên mới(Enter để giữ nguyên): ";
+    cout << "Nhập giới tính sinh viên mới(nam/nữ)(Enter để giữ nguyên): ";
     string newPHAI;
-    getline(cin, newPHAI);
-    if (!newPHAI.empty())
-        strcpy(list.nodes[pos]->PHAI, "newPHAI");
+    do
+    {
+        getline(cin, newPHAI);
+        if (newPHAI == "nam" || newPHAI == "nữ")
+        {
+            list.nodes[pos]->PHAI = newPHAI;
+            break;
+        }
+    } while (!newPHAI.empty());
 
     cout << "Da cap nhat thong tin vat tu." << endl;
 }
@@ -231,14 +312,28 @@ void InNhanVien(dsNhanVien list)
     }
 };
 
-int main()
-{
-    SetConsoleOutputCP(CP_UTF8);
-    Nhanvien nv;
-    dsNhanVien danhsach;
-    do
-    {
-        NhapNhanVien(danhsach);
-        InNhanVien(danhsach);
-    } while (1);
-};
+// int main()
+// {
+//     SetConsoleOutputCP(CP_UTF8);
+//     nhanVien nv;
+//     dsNhanVien danhsach;
+//     // readFile_dsNhanVien(danhsach);
+//     int choice;
+//     do
+//     {
+//         cin >> choice;
+//         switch (choice)
+//         {
+//         case 1:
+//             NhapNhanVien(danhsach);
+//             break;
+//         case 2:
+//             InNhanVien(danhsach);
+//             break;
+//         case 3:
+//             if(CheckMANV(danhsach,"nv1")) cout << "ton tai";
+//             else cout << "ko ton tai";
+//             break;
+//         }
+//     } while (1);
+// };

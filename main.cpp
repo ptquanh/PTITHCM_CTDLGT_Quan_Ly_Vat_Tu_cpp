@@ -1,9 +1,11 @@
-#include <iostream>
-#include "../libraries/mylib.h"
-#include "../libraries/khaibao.h"
-#include "sources/a.cpp"
-using namespace std;
+#include "libraries/khaibao.h"
+#include "cctype"
+// using namespace std;
 int main()
 {
-
+    char a;
+    cin >> a;
+    a = toupper(a);
+    cout << a;
+    return 0;
 }
