@@ -6,6 +6,7 @@
 #include <string.h>
 #include <ctime>
 #include <windows.h>
+#pragma once
 #define KEY_NONE -1
 #define ENTER 13
 #define UP 1072
