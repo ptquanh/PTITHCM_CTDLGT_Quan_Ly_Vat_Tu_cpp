@@ -1,5 +1,5 @@
 #include "../libraries/khaibao.h"
-#define filePath_Nv "../databases/ds_NhanVien.txt" 
+#define filePath_Nv "../databases/ds_NhanVien.txt"
 bool NhanVienEmpty(dsNhanVien list)
 {
     if (list.CountNV != 0)
