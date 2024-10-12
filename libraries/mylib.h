@@ -6,6 +6,7 @@
 #include <string>
 #include <ctime>
 #include <windows.h>
+#pragma once
 using namespace std;
 #define KEY_NONE -1
 #define ENTER 13

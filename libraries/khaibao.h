@@ -9,33 +9,45 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
+#pragma once
 
 #define MaxNhanVien 500
-#define YeuCauChinh 7
-#define YeuCauA 4
-#define YeucauC 3
+#define YeuCauChinh 5
+#define YeuCauVatTu 4
+#define YeuCauNhanVien 4
+#define YeuCauHoaDon 2
+#define YeuCauThongKe 3
 #define MAX_VAT_TU 500
 // bool check = false;
 // ================ MENU ========================
 char MenuChinh[YeuCauChinh][50] = {
     "1. Nhập vật tư",
     "2. In danh sách vật tư tồn kho",
-    "3. Nhập nhân viên",
-    "4. In ra danh sách nhân viên",
-    "5. Lập hóa đơn",
-    "6. In hóa đơn",
-    "7. Thống kê các hóa đơn"};
+    "3. Quản lý nhân viên",
+    "4. Quản lý hóa đơn",
+    "5. Thống kê"};
 
-char MenuA[YeuCauA][50] = {
-    "1. nhap vat tu",
-    "2. in ds vt ton kho",
-    "3. sua vt",
-    "4. xoa vt"};
+char MenuVatTu[YeuCauVatTu][50] = {
+    "1. Nhập vật tư",
+    "2. In vật tư tồn kho",
+    "3. Sửa vật tư",
+    "4. Xóa vật tư"};
 
-char MenuNhanVien[YeucauC][50] = {
+char MenuNhanVien[YeuCauNhanVien][50] = {
     "1. Thêm nhân viên",
     "2. Xóa nhân viên(theo mã)",
-    "3. Chỉnh sửa nhân viên"};
+    "3. Chỉnh sửa nhân viên",
+    "4. In ra danh sách nhân viên"};
+
+char MenuHoaDon[YeuCauHoaDon][50] = {
+    "1. Lập hóa đơn",
+    "2. In hóa đơn"};
+
+char MenuThongKe[YeuCauThongKe][50] = {
+    "1. Thống kê hóa đơn theo quãng thời gian",
+    "2. Thống kê 10 vật tư doanh thu cao nhất",
+    "3. Thống kê doanh thu theo từng tháng"
+};
 // =============== danh sach vat tu =================
 // ======= cay nhi phan tim kiem can bang ===========
 struct nodeVatTu
@@ -72,6 +84,7 @@ typedef dsChiTietHoaDon *ptr_DSCTHD;
 
 struct nodeHoaDon
 {
+
     string SoHD; //max C20
     char loai; // N or X
     int day, month, year;
@@ -87,11 +100,13 @@ typedef dsHoaDon *ptr_DSHD;
 // ================ mang con tro ===================
 struct nhanVien
 {
+
     string MANV;       
     string HO;
     string TEN;
     string PHAI;
     ptr_DSHD firstDSHD = nullptr;
+
 };
 struct dsNhanVien
 {
