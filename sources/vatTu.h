@@ -1,6 +1,5 @@
-// #pragma once
+#pragma once
 #include "../libraries/khaibao.h"
-#define filePath_Vt "../databases/ds_VatTu.txt"
 
 // doc file ds_vattu
 void writeNodeToFile(treeVatTu node, ofstream &fileout)
@@ -18,7 +17,7 @@ void writeNodeToFile(treeVatTu node, ofstream &fileout)
 void writeFile_dsVatTu(treeVatTu root)
 {
     ofstream fileout;
-    fileout.open(filePath_Vt, ios_base::out);
+    fileout.open(filePath_VT, ios_base::out);
     if (!fileout.is_open())
     {
         cout << "Khong the mo file de ghi ds_VatTu.txt" << endl;
@@ -361,7 +360,7 @@ void readFile_dsVatTu(treeVatTu &root)
 {
     bool hasError;
     ifstream filein;
-    filein.open(filePath_Vt, ios_base::in);
+    filein.open(filePath_VT, ios_base::in);
     if (!filein.is_open())
     {
         cout << "Khong the mo file ds_VatTu.txt" << endl;
@@ -536,46 +535,4 @@ void inDanhSachVatTu(treeVatTu root)
     }
 
     delete[] arr;
-}
-int main()
-{
-    SetConsoleOutputCP(CP_UTF8);
-    treeVatTu root = NULL;
-    readFile_dsVatTu(root);
-    int choice;
-    do
-    {
-        cout << "\n--- Menu ---\n";
-        for (int i = 0; i < YeuCauVatTu; i++)
-        {
-            cout << MenuVatTu[i] << endl;
-        }
-        cout << "0. Thoat\n";
-        cout << "Nhap lua chon cua ban: ";
-        cin >> choice;
-        cin.ignore();
-
-        switch (choice)
-        {
-        case 1:
-            nhapVatTu(root);
-            break;
-        case 2:
-            inDanhSachVatTu(root);
-            break;
-        case 3:
-            chinhSuaVatTu(root);
-            break;
-        case 4:
-            xoaVatTu(root);
-            break;
-        case 0:
-            cout << "Thoat\n";
-            break;
-        default:
-            cout << "Lua chon khong hop le. Vui long chon lai.\n";
-        }
-    } while (choice != 0);
-    writeFile_dsVatTu(root);
-    return 0;
 }

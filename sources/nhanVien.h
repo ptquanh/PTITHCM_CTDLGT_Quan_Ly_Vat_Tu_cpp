@@ -1,5 +1,6 @@
-#include "../libraries/khaibao.h"
-#define filePath_Nv "../databases/ds_NhanVien.txt"
+#pragma once
+#include "vatTu.h"
+
 bool NhanVienEmpty(dsNhanVien list)
 {
     if (list.CountNV != 0)
@@ -45,7 +46,7 @@ bool CheckMANV(dsNhanVien &list, string maso)
     return false;
 }
 
-void ChenNhanVien(dsNhanVien &list, Nhanvien *nhanvienmoi)
+void ChenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
 {
     int compare;
     int pos;
@@ -86,7 +87,7 @@ void NhapNhanVien(dsNhanVien &list)
         return;
     }
 
-    Nhanvien *nv = new Nhanvien();
+    nhanVien *nv = new nhanVien();
 
     do
     {
@@ -252,8 +253,8 @@ void WriteHoaDon(dsHoaDon* danhsach, ofstream& fileout){
     dsHoaDon* temp = new dsHoaDon;
     temp = danhsach;
     while(temp != nullptr){
-        fileout << temp->data_hd.SoHD << "|" << temp->data_hd.Loai <<"|"<< temp->data_hd.day <<"|"<< temp->data_hd.month <<"|"<< temp->data_hd.year <<"\\\\" <<endl;
-        WriteCTHoaDon(danhsach->data_hd.ptr_DSCTHD, fileout);
+        fileout << temp->data_hd.SoHD << "|" << temp->data_hd.loai <<"|"<< temp->data_hd.day <<"|"<< temp->data_hd.month <<"|"<< temp->data_hd.year <<"\\\\" <<endl;
+        WriteCTHoaDon(danhsach->data_hd.firstCTHD, fileout);
         temp = temp->next; 
     }
 
@@ -268,7 +269,7 @@ void WriteNhanVien(dsNhanVien danhsach){
     }
     for(int i = 0;  i < danhsach.CountNV; i++){
         fileout << danhsach.nodes[i]->MANV <<"|" << danhsach.nodes[i]->HO << "|" <<danhsach.nodes[i]->TEN << "|" << danhsach.nodes[i]->PHAI <<"\\" << endl;
-        WriteHoaDon(danhsach.nodes[i]->dshd, fileout);
+        WriteHoaDon(danhsach.nodes[i]->firstDSHD, fileout);
         fileout << endl;
     }
 }
@@ -276,7 +277,7 @@ void WriteNhanVien(dsNhanVien danhsach){
 void readFile_dsNhanVien(dsNhanVien ds_nv)
 {
     ifstream filein;
-    filein.open(filePath_Nv, ios_base::in);
+    filein.open(filePath_NV, ios_base::in);
     if (!filein.is_open())
     {
         cout << "Khong the mo file ds_VatTu.txt" << endl;
@@ -289,13 +290,13 @@ void readFile_dsNhanVien(dsNhanVien ds_nv)
 
     while (filein.eof() != true)
     {
-        ds_nv.nodes[ds_nv.CountNV] = new Nhanvien;
+        ds_nv.nodes[ds_nv.CountNV] = new nhanVien;
         getline(filein, ds_nv.nodes[ds_nv.CountNV]->MANV, ',');
         getline(filein, ds_nv.nodes[ds_nv.CountNV]->HO, ',');
         getline(filein, ds_nv.nodes[ds_nv.CountNV]->TEN, ',');
         getline(filein, ds_nv.nodes[ds_nv.CountNV]->PHAI, '\\');
-        getline(filein, ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.SoHD, '|');
-        getline(filein, ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.Loai, '|');
+        // getline(filein, ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.SoHD, '|');
+        // getline(filein, ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.Loai, '|');
         // getline(filein, ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.day, '|');
 
         filein.ignore();
@@ -303,22 +304,9 @@ void readFile_dsNhanVien(dsNhanVien ds_nv)
         cout << ds_nv.nodes[ds_nv.CountNV]->HO << endl;
         cout << ds_nv.nodes[ds_nv.CountNV]->TEN << endl;
         cout << ds_nv.nodes[ds_nv.CountNV]->PHAI << endl;
-          cout << ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.SoHD << endl;
-        cout <<ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.Loai << endl;
+        //   cout << ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.SoHD << endl;
+        // cout <<ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.Loai << endl;
         ds_nv.CountNV++;
     }
     filein.close();
 }
-
-
-int main()
-{
-    SetConsoleOutputCP(CP_UTF8);
-    Nhanvien nv;
-    dsNhanVien danhsach;
-    do
-    {
-        NhapNhanVien(danhsach);
-        InNhanVien(danhsach);
-    } while (1);
-};
