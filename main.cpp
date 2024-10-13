@@ -1,6 +1,6 @@
 #pragma once
 // #include "./libraries/khaibao.h"
-#include "./sources/vatTu.cpp"
+#include "./sources/vatTu.h"
 // #include "./sources/nhanVien.h"
 
 int main()
