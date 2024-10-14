@@ -1,3 +1,2 @@
-NV1|Toan|Phuc|nam\
-HD1|N|02|10|2024\\
-VT1|1|2|3
+ass|Ssa|Sas|Nam\
+

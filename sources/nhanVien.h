@@ -16,22 +16,16 @@ bool NhanVienEmpty(dsNhanVien list)
 
 int SearchNhanVien(dsNhanVien list, string manv)
 {
-    int pos = -1;
     for (int i = 0; i < list.CountNV; i++)
     {
         if (list.nodes[i]->MANV == manv)
         {
-            pos = i;
+            return i;
         }
     }
+    cout << "Không tìm thấy nhân viên!" << endl;
 
-    if (pos = -1)
-    {
-        cout << "Không tìm thấy nhân viên" << endl;
-        return -1;
-    }
-
-    return pos;
+    return -1;
 }
 
 bool CheckMANV(dsNhanVien &list, string maso)
@@ -81,6 +75,7 @@ void ChenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
 
 void NhapNhanVien(dsNhanVien &list)
 {
+    bool hasError;
     if (list.CountNV >= MaxNhanVien)
     {
         cout << "so luong nv toi da" << "\n";
@@ -92,36 +87,54 @@ void NhapNhanVien(dsNhanVien &list)
     do
     {
         cout << "Nhập mã nhân viên (10 ký tự):" ;
-        cin >> nv->MANV; nv->MANV.resize(10);
-        if (CheckMANV(list, nv->MANV))
-        {
-            cout << "Mã đã tồn tại, vui lòng nhập mã khác" << endl;
+        cin >> nv->MANV;
+
+        if (CheckMANV(list, nv->MANV)){
+            cout << "Mã đã tồn tại, vui lòng nhập mã khác" << endl; continue;
         }
-    } while (nv->MANV.length() == 0 || CheckMANV(list, nv->MANV));
+
+        if (nv->MANV.find_first_not_of(' ') == string::npos){
+            cout << "Lỗi: Chuỗi không được rỗng hoặc chỉ chứa khoảng trắng" << endl; continue;
+        }
+        if(nv->MANV.size() > 10){
+            nv->MANV.resize(10);
+        }
+    } while (nv->MANV.size() == 0 || CheckMANV(list, nv->MANV));
 
     do
     {
-        cout << "nhap ho nv ";
+        cout << "Nhập họ nhân viên: ";
         cin >> nv->HO;
-    } while (nv->HO.empty());
+        nv->HO = normalizeString(nv->HO, hasError);
+    } while (nv->HO.size() == 0);
 
     // nhập tên
     do
     {
-        cout << "nhap ten nv ";
+        cout << "Nhập tên nhân viên: ";
+        cin.ignore();
         getline(cin, nv->TEN);
-    } while (nv->TEN.empty());
+        nv->TEN = normalizeString(nv->TEN, hasError);
+    } while (nv->TEN.size() == 0);
 
     // nhập giới tính
     do
     {
-        cout << "Nhập giới tính (nam hoặc nữ)";
-        cin >> nv->PHAI;
+        int inputPhai;
+        cout << "Nhập giới tính ( 1 là nam || 0 là nữ): ";
+        cin >> inputPhai;
         // cout << nv->PHAI;
-        if (nv->PHAI == "nam")
+        if (inputPhai == 1){
+            nv->PHAI = "Nam";
             break;
-        if (nv->PHAI == "nữ")
+        }
+        if (inputPhai == 0){
+            nv->PHAI = "Nữ";
             break;
+        }
+        if(inputPhai != 1 || inputPhai != 0){
+            cout << "Lỗi: Giới tính không hợp lệ!" << endl; continue;
+        }
     } while (true);
     // chèn sinh viên có thứ tự tăng dần theo tên
     if (list.CountNV == 0)
@@ -142,27 +155,11 @@ void DeleteNV(dsNhanVien &list)
     if (NhanVienEmpty(list))
         return;
 
-    char manv[50];
+    string manv;
     cout << "Mã nhân viên: ";
     cin >> manv;
 
     int pos = SearchNhanVien(list, manv);
-    if (pos == -1)
-        return;
-    for (int i = 0; i < list.CountNV; i++)
-    {
-        if (list.nodes[i]->MANV == manv)
-        {
-            pos = i;
-        }
-    }
-
-    if (pos = -1)
-    {
-        cout << "Không có nhân viên" << endl;
-        return;
-    }
-
     delete list.nodes[pos];
 
     for (int i = pos; i < list.CountNV - 1; i++)
@@ -231,48 +228,63 @@ void InNhanVien(dsNhanVien list)
 
     for (int i = 0; i < list.CountNV; i++)
     {
-        cout << "Mã nhân viên:" << list.nodes[i]->MANV << endl;
+        cout << "Mã nhân viên: " << list.nodes[i]->MANV << endl;
         cout << "Họ nhân viên: " << list.nodes[i]->HO << endl;
-        cout << "Tên nhân viên:" << list.nodes[i]->TEN << endl;
+        cout << "Tên nhân viên: " << list.nodes[i]->TEN << endl;
         cout << "Giới tính: " << list.nodes[i]->PHAI << endl;
     }
 };
 
 
-
-void WriteCTHoaDon(dsChiTietHoaDon* danhsach, ofstream& fileout){
-    dsChiTietHoaDon* temp = new dsChiTietHoaDon;
-    temp = danhsach;
-    while(temp != nullptr){
-        fileout << "\\\\" << temp->data_cthd.MAVT <<"|" << temp->data_cthd.soLuong <<"|" << temp->data_cthd.donGia <<"|" <<temp->data_cthd.VAT << endl;
+void WriteCTHoaDon(dsChiTietHoaDon* danhsach, ofstream& fileout) {
+    dsChiTietHoaDon* temp = danhsach;  // Không cần khởi tạo lại với new
+    while (temp != nullptr) {
+        fileout << temp->data_cthd.MAVT <<      "|" 
+                 << temp->data_cthd.soLuong <<  "|" 
+                 << temp->data_cthd.donGia <<   "|" 
+                 << temp->data_cthd.VAT << endl;
         temp = temp->next;
     }
 }
 
-void WriteHoaDon(dsHoaDon* danhsach, ofstream& fileout){
-    dsHoaDon* temp = new dsHoaDon;
-    temp = danhsach;
-    while(temp != nullptr){
-        fileout << temp->data_hd.SoHD << "|" << temp->data_hd.loai <<"|"<< temp->data_hd.day <<"|"<< temp->data_hd.month <<"|"<< temp->data_hd.year <<"\\\\" <<endl;
-        WriteCTHoaDon(danhsach->data_hd.firstCTHD, fileout);
+void WriteHoaDon(dsHoaDon* danhsach, ofstream& fileout) {
+    dsHoaDon* temp = danhsach;  // Không cần khởi tạo lại với new
+    while (temp != nullptr) {
+        fileout << temp->data_hd.SoHD <<    "|" 
+                 << temp->data_hd.loai <<   "|" 
+                 << temp->data_hd.day <<    "|" 
+                 << temp->data_hd.month <<  "|" 
+                 << temp->data_hd.year << "\\\\" << endl;
+        WriteCTHoaDon(temp->data_hd.firstCTHD, fileout); // Sửa ở đây
         temp = temp->next; 
     }
-
 }
-
-
-
-void WriteNhanVien(dsNhanVien danhsach){
-    ofstream fileout; fileout.open("ds_NhanVien.txt", ios::out);
-    if(!fileout.is_open()){
+void WriteNhanVien(dsNhanVien danhsach) {
+    ofstream fileout; 
+    fileout.open(filePath_NV, ios_base::out);
+    if (!fileout.is_open()) {
         cout << "Không thể mở file" << endl;
+        return;
     }
-    for(int i = 0;  i < danhsach.CountNV; i++){
-        fileout << danhsach.nodes[i]->MANV <<"|" << danhsach.nodes[i]->HO << "|" <<danhsach.nodes[i]->TEN << "|" << danhsach.nodes[i]->PHAI <<"\\" << endl;
+    
+    if (danhsach.CountNV == 0) {
+        cout << "Danh sách nhân viên trống!" << endl;
+        fileout.close();
+        return;
+    }
+    for (int i = 0; i < danhsach.CountNV; i++) {
+        fileout << danhsach.nodes[i]->MANV <<   "|" 
+                 << danhsach.nodes[i]->HO <<    "|" 
+                 << danhsach.nodes[i]->TEN <<   "|" 
+                 << danhsach.nodes[i]->PHAI << "\\" << endl;
+        cout << "Đã ghi nhân viên thứ " << i + 1 << endl; // Thông báo debug
         WriteHoaDon(danhsach.nodes[i]->firstDSHD, fileout);
         fileout << endl;
     }
+
+    fileout.close(); // Đảm bảo file được đóng
 }
+
 
 void readFile_dsNhanVien(dsNhanVien ds_nv)
 {
@@ -291,22 +303,28 @@ void readFile_dsNhanVien(dsNhanVien ds_nv)
     while (filein.eof() != true)
     {
         ds_nv.nodes[ds_nv.CountNV] = new nhanVien;
+
         getline(filein, ds_nv.nodes[ds_nv.CountNV]->MANV, ',');
         getline(filein, ds_nv.nodes[ds_nv.CountNV]->HO, ',');
         getline(filein, ds_nv.nodes[ds_nv.CountNV]->TEN, ',');
         getline(filein, ds_nv.nodes[ds_nv.CountNV]->PHAI, '\\');
-        // getline(filein, ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.SoHD, '|');
-        // getline(filein, ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.Loai, '|');
-        // getline(filein, ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.day, '|');
+        getline(filein, ds_nv.nodes[ds_nv.CountNV]->firstDSHD->data_hd.SoHD, '|');
+        // getline(filein, ds_nv.nodes[ds_nv.CountNV]->firstDSHD->data_hd.loai, '|');
+        // getline(filein, ds_nv.nodes[ds_nv.CountNV]->firstDSHD->data_hd.day, '|');
 
         filein.ignore();
         cout << ds_nv.nodes[ds_nv.CountNV]->MANV << endl;
         cout << ds_nv.nodes[ds_nv.CountNV]->HO << endl;
         cout << ds_nv.nodes[ds_nv.CountNV]->TEN << endl;
         cout << ds_nv.nodes[ds_nv.CountNV]->PHAI << endl;
-        //   cout << ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.SoHD << endl;
-        // cout <<ds_nv.nodes[ds_nv.CountNV]->dshd->data_hd.Loai << endl;
+        cout << ds_nv.nodes[ds_nv.CountNV]->firstDSHD->data_hd.SoHD << endl;
+        cout <<ds_nv.nodes[ds_nv.CountNV]->firstDSHD->data_hd.loai << endl;
         ds_nv.CountNV++;
     }
     filein.close();
 }
+
+
+
+
+
