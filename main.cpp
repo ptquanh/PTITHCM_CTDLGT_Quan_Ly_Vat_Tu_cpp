@@ -1,7 +1,7 @@
-#pragma once
 // #include "./libraries/khaibao.h"
 #include "./sources/vatTu.h"
 #include "./sources/nhanVien.h"
+// #pragma once
 
 int main()
 {
@@ -38,13 +38,13 @@ int main()
             inDanhSachVatTu(root);
             break;
         case 5:
-            NhapNhanVien(ds_nv);
+            
             break;
         case 6:
-            
+            ChinhSuaNhanVien(ds_nv);
             break;
         case 7:
-            
+            DeleteNV(ds_nv);
             break;
         case 8:
             InNhanVien(ds_nv);
@@ -72,6 +72,5 @@ int main()
         }
     } while (choice != 0);
     writeFile_dsVatTu(root);
-    // WriteNhanVien(ds_nv);
     return 0;
 }
