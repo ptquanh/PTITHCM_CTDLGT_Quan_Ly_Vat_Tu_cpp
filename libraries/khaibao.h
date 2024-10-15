@@ -20,40 +20,41 @@ using namespace std;
 #define MAX_VAT_TU 500
 // ================ MENU ========================
 char MenuChinh[YeuCauChinh][100] = {
-    "1. Thêm vật tư",
-    "2. Sửa vật tư",
-    "3. Xóa vật tư",
-    "4. In danh sách vật tư theo tên tăng dần",
-    "5. Thêm nhân viên",
-    "6. Sửa nhân viên",
-    "7. Xóa nhân viên",
-    "8. In danh sách nhân viên tên tăng dần nếu trùng thì họ tăng dần",
-    "9. Lập hóa đơn",
-    "10. In hóa đơn theo số hóa đơn (SoHD)",
-    "11. Thống kê các hóa đơn trong 1 khoảng thời gian",
-    "12. In 10 vật tư có doanh thu cao nhất trong 1 khoảng thời gian",
-    "13. Thống kê doanh thu của cửa hàng theo từng tháng thuộc 1 năm do user nhập vào"};
+    "1. Them vat tu",
+    "2. Sua vat tu",
+    "3. Xoa vat tu",
+    "4. In danh sach vat tu theo ten tang dan",
+    "5. Them nhan vien",
+    "6. Sua nhan vien",
+    "7. Xoa nhan vien",
+    "8. In danh sach nhan vien ten tang dan neu trung thi ho tang dan",
+    "9. Lap hoa don",
+    "10. In hoa don theo so hoa don (SoHD)",
+    "11. Thong ke cac hoa don trong 1 khoang thoi gian",
+    "12. In 10 vat tu co doanh thu cao nhat trong 1 khoang thoi gian",
+    "13. Thong ke doanh thu cua cua hang theo tung thang thuoc 1 nam do user nhap vao"};
 
 char MenuVatTu[YeuCauVatTu][50] = {
-    "1. Nhập vật tư",
-    "2. In vật tư tồn kho",
-    "3. Sửa vật tư",
-    "4. Xóa vật tư"};
+    "1. Nhap vat tu",
+    "2. In vat tu ton kho",
+    "3. Sua vat tu",
+    "4. Xoa vat tu"};
 
 char MenuNhanVien[YeuCauNhanVien][50] = {
-    "1. Thêm nhân viên",
-    "2. Xóa nhân viên(theo mã)",
-    "3. Chỉnh sửa nhân viên",
-    "4. In ra danh sách nhân viên"};
+    "1. Them nhan vien",
+    "2. Xoa nhan vien (theo ma)",
+    "3. Chinh sua nhan vien",
+    "4. In ra danh sach nhan vien"};
 
 char MenuHoaDon[YeuCauHoaDon][50] = {
-    "1. Lập hóa đơn",
-    "2. In hóa đơn"};
+    "1. Lap hoa don",
+    "2. In hoa don"};
 
 char MenuThongKe[YeuCauThongKe][50] = {
-    "1. Thống kê hóa đơn theo quãng thời gian",
-    "2. Thống kê 10 vật tư doanh thu cao nhất",
-    "3. Thống kê doanh thu theo từng tháng"};
+    "1. Thong ke hoa don theo quang thoi gian",
+    "2. Thong ke 10 vat tu doanh thu cao nhat",
+    "3. Thong ke doanh thu theo tung thang"};
+
 // =============== danh sach vat tu =================
 // ======= cay nhi phan tim kiem can bang ===========
 struct nodeVatTu

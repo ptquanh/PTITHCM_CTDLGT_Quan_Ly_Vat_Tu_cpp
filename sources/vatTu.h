@@ -271,6 +271,7 @@ string formatMAVT(string MAVT)
     }
     return MAVT;
 }
+
 bool isValidChar(char c)
 {
     // Chấp nhận chữ cái (A-Z, a-z)
@@ -318,11 +319,9 @@ string normalizeString(const string &input, bool &hasError)
     // Xử lý khoảng trắng giữa các từ và chuẩn hóa chữ hoa/thường
     bool prevSpace = false;
     bool newWord = true;
-
     for (int i = start; i <= end; i++)
     {
         char currentChar = input[i];
-
         if (currentChar == ' ')
         {
             if (!prevSpace)
@@ -353,9 +352,9 @@ string normalizeString(const string &input, bool &hasError)
             newWord = false;
         }
     }
-
     return result;
 }
+
 void readFile_dsVatTu(treeVatTu &root)
 {
     bool hasError;

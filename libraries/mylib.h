@@ -111,6 +111,10 @@ void SetBGColor(WORD color)
 
     SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
+void setConsoleColor(WORD color)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
 void clrscr1()
 {
     CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
@@ -175,4 +179,25 @@ void CoutCentered(std::string text)
     }
     std::cout << text << std::endl; // Prints the text centered :]
 }
-//
+// Hàm lấy width của console
+int getConsoleWidth()
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    int width = 0;
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
+    {
+        width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    }
+    return width;
+}
+// Hàm lấy height của console
+int getConsoleHeight()
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    int height = 0;
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
+    {
+        height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    }
+    return height;
+}
