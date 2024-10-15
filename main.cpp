@@ -8,9 +8,9 @@ int main()
     treeVatTu root = NULL;
     nhanVien nv;
     dsNhanVien ds_nv;
+    int choice;
     readFile_dsVatTu(root);
     readFile_dsNhanVien(ds_nv);
-    int choice;
     do
     {
         cout << "\n--- Menu ---\n";
@@ -38,7 +38,7 @@ int main()
             inDanhSachVatTu(root);
             break;
         case 5:
-            
+            NhapNhanVien(ds_nv);
             break;
         case 6:
             ChinhSuaNhanVien(ds_nv);
@@ -50,19 +50,19 @@ int main()
             InNhanVien(ds_nv);
             break;
         case 9:
-            
+            lap_hoa_don(ds_nv);
             break;
         case 10:
-            
+            in_hoa_don(ds_nv);
             break;
         case 11:
-            
+
             break;
         case 12:
-            
+
             break;
         case 13:
-            
+
             break;
         case 0:
             cout << "Thoat\n";
@@ -70,7 +70,9 @@ int main()
         default:
             cout << "Lua chon khong hop le. Vui long chon lai.\n";
         }
+        writeFile_dsVatTu(root);
+        writeFile_dsNhanVien(ds_nv);
     } while (choice != 0);
-    writeFile_dsVatTu(root);
+   
     return 0;
 }
