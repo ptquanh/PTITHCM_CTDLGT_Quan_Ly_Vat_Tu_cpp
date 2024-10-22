@@ -1,7 +1,6 @@
-// #include "./libraries/khaibao.h"
+#include "./libraries/khaibao.h"
 #include "./sources/vatTu.h"
 #include "./sources/nhanVien.h"
-// #pragma once
 
 int main()
 {
@@ -22,7 +21,6 @@ int main()
         cout << "Nhap lua chon cua ban: ";
         cin >> choice;
         cin.ignore();
-
         switch (choice)
         {
         case 1:
@@ -50,10 +48,10 @@ int main()
             InNhanVien(ds_nv);
             break;
         case 9:
-            lap_hoa_don(ds_nv);
+            lapHoaDon(ds_nv);
             break;
         case 10:
-            in_hoa_don(ds_nv);
+            inHoaDon(ds_nv);
             break;
         case 11:
 
@@ -70,9 +68,8 @@ int main()
         default:
             cout << "Lua chon khong hop le. Vui long chon lai.\n";
         }
+    } while (choice != 0);
         writeFile_dsVatTu(root);
         writeFile_dsNhanVien(ds_nv);
-    } while (choice != 0);
-   
     return 0;
 }

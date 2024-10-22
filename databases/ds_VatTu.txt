@@ -3,3 +3,5 @@
 2|A|B|5
 3|Com|Dia|1
 4|Dt|Cai|2
+5|Ca|Con|2
+6|Ban Phim|Cai|2

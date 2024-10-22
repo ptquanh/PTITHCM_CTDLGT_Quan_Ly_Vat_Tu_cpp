@@ -1,4 +1,5 @@
 #pragma once
+#include "../libraries/khaibao.h"
 #include "vatTu.h"
 
 bool NhanVienEmpty(dsNhanVien list)
@@ -390,7 +391,7 @@ void readFile_dsNhanVien(dsNhanVien &ds_nv)
     filein.close();
 }
 //======================HOA DON===================================
-void lap_hoa_don(dsNhanVien &ds_nv)
+void lapHoaDon(dsNhanVien &ds_nv)
 {
     string ma_nv;
     cout << "Nhap ma nhan vien lap hoa don: ";
@@ -496,7 +497,7 @@ void lap_hoa_don(dsNhanVien &ds_nv)
         }
     }
 }
-void in_hoa_don(dsNhanVien &ds_nv)
+void inHoaDon(dsNhanVien &ds_nv)
 {
     string so_hd;
     cout << "Nhap so hoa don: ";

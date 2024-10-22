@@ -9,10 +9,6 @@
 using namespace std;
 #define KEY_NONE -1
 #define ENTER 13
-#define UP 1072
-#define DOWN 1080
-#define LEFT	1075
-#define RIGHT	1077
 // const int WHITE=15;
 #define PASSWORD "abcdef"
 // const int WHITE=15;
@@ -140,13 +136,11 @@ int inputKey()
     if (_kbhit())
     {
         int key = _getch();
-
         if (key == 224)
         {
             key = _getch();
             return key + 1000;
         }
-
         return key;
     }
     else

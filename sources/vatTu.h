@@ -1,7 +1,8 @@
 #pragma once
 #include "../libraries/khaibao.h"
-
-// doc file ds_vattu
+#include "../libraries/mylib.h"
+const int searchHighlightColor = 1;
+// ghi tung node vao file ds_vattu
 void writeNodeToFile(treeVatTu node, ofstream &fileout)
 {
     if (node == nullptr)
@@ -10,7 +11,7 @@ void writeNodeToFile(treeVatTu node, ofstream &fileout)
     fileout << node->data_vt.MAVT << "|"
             << node->data_vt.TENVT << "|"
             << node->data_vt.DVT << "|"
-            << node->data_vt.soLuongTon<<endl;
+            << node->data_vt.soLuongTon << endl;
     writeNodeToFile(node->right, fileout);
 }
 // ghi file ds_vattu
@@ -174,7 +175,7 @@ treeVatTu deleteNode(treeVatTu root, const string &MAVT)
     }
     return root;
 }
-//
+// tim theo mavt
 treeVatTu search(treeVatTu root, const string &MAVT)
 {
     if (root == NULL || root->data_vt.MAVT == MAVT)
@@ -186,7 +187,7 @@ treeVatTu search(treeVatTu root, const string &MAVT)
 
     return search(root->right, MAVT);
 }
-
+// chinh sua vt theo mavt
 void chinhSuaVatTu(treeVatTu &root)
 {
     string MAVT;
@@ -217,7 +218,7 @@ void chinhSuaVatTu(treeVatTu &root)
         node->data_vt.DVT = newDVT;
     cout << "Da cap nhat thong tin vat tu." << endl;
 }
-//
+// xoa vt theo mavt
 void xoaVatTu(treeVatTu &root)
 {
     string MAVT;
@@ -354,7 +355,7 @@ string normalizeString(const string &input, bool &hasError)
     }
     return result;
 }
-
+// doc file ds_vattu
 void readFile_dsVatTu(treeVatTu &root)
 {
     bool hasError;
@@ -380,7 +381,7 @@ void readFile_dsVatTu(treeVatTu &root)
         // Đọc từng phần của dữ liệu
         getline(ss, data_vt.MAVT, '|');
         getline(ss, data_vt.TENVT, '|');
-        data_vt.TENVT=normalizeString(data_vt.TENVT,hasError);
+        data_vt.TENVT = normalizeString(data_vt.TENVT, hasError);
         getline(ss, data_vt.DVT, '|');
         data_vt.DVT = normalizeString(data_vt.DVT, hasError);
         ss >> data_vt.soLuongTon;
@@ -398,6 +399,7 @@ void readFile_dsVatTu(treeVatTu &root)
 
     filein.close();
 }
+
 void nhapVatTu(treeVatTu &root)
 {
     nodeVatTu data_vt;
@@ -475,7 +477,6 @@ int countNodes(treeVatTu root)
     return 1 + countNodes(root->left) + countNodes(root->right);
 }
 
-// Hàm để lưu các con trỏ vào mảng (duyệt trung thứ tự)
 void storeInorder(treeVatTu root, treeVatTu arr[], int *index)
 {
     if (root == NULL)
@@ -492,24 +493,37 @@ bool compareVatTu(const treeVatTu a, const treeVatTu b)
     return a->data_vt.TENVT < b->data_vt.TENVT;
 }
 
-void bubbleSort(treeVatTu arr[], int n)
+int partition(treeVatTu arr[], int low, int high)
 {
-    for (int i = 0; i < n - 1; i++)
+    treeVatTu pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++)
     {
-        for (int j = 0; j < n - i - 1; j++)
+        if (compareVatTu(arr[j], pivot))
         {
-            if (!compareVatTu(arr[j], arr[j + 1]))
-            {
-                // Hoán đổi arr[j] và arr[j+1]
-                treeVatTu temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
+            i++;
+            treeVatTu temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
         }
+    }
+    treeVatTu temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+    return (i + 1);
+}
+
+void quickSort(treeVatTu arr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
     }
 }
 
-// Hàm in danh sách vật tư theo thứ tự tên tăng dần
 void inDanhSachVatTu(treeVatTu root)
 {
     int n = countNodes(root);
@@ -517,7 +531,7 @@ void inDanhSachVatTu(treeVatTu root)
     int index = 0;
 
     storeInorder(root, arr, &index);
-    bubbleSort(arr, n);
+    quickSort(arr, 0, n - 1); // Thay bubbleSort bằng quickSort
 
     cout << left << setw(15) << "Ma VT"
          << setw(30) << "Ten vat tu"
@@ -534,4 +548,240 @@ void inDanhSachVatTu(treeVatTu root)
     }
 
     delete[] arr;
+}
+// Hàm kiểm tra xem một ký tự có tồn tại trong chuỗi (không phân biệt hoa/thường)
+bool hasCharacter(const string &searchStr, const string &targetStr)
+{
+    if (searchStr.empty() || targetStr.empty())
+        return false;
+
+    string searchLower, targetLower;
+
+    // Chuyển cả 2 chuỗi về chữ thường để so sánh
+    for (char c : searchStr)
+        searchLower += tolower(c);
+    for (char c : targetStr)
+        targetLower += tolower(c);
+
+    // Kiểm tra từng ký tự
+    if (searchStr.length() == 1)
+    {
+        for (char c : targetLower)
+        {
+            if (c == searchLower[0])
+                return true;
+        }
+    }
+    // Kiểm tra chuỗi con
+    else
+    {
+        int n = targetLower.length();
+        int m = searchLower.length();
+
+        for (int i = 0; i <= n - m; i++)
+        {
+            bool found = true;
+            for (int j = 0; j < m; j++)
+            {
+                if (targetLower[i + j] != searchLower[j])
+                {
+                    found = false;
+                    break;
+                }
+            }
+            if (found)
+                return true;
+        }
+    }
+    return false;
+}
+
+// Hàm đếm số kết quả tìm được
+int countSearchResults(treeVatTu root, const string &kyTu)
+{
+    if (root == nullptr)
+        return 0;
+
+    int count = 0;
+    if (hasCharacter(kyTu, root->data_vt.TENVT))
+    {
+        count = 1;
+    }
+
+    count += countSearchResults(root->left, kyTu);
+    count += countSearchResults(root->right, kyTu);
+
+    return count;
+}
+
+// Hàm lưu kết quả tìm kiếm vào mảng
+void storeSearchResults(treeVatTu root, const string &kyTu, treeVatTu results[], int &index)
+{
+    if (root == nullptr)
+        return;
+
+    if (hasCharacter(kyTu, root->data_vt.TENVT))
+    {
+        results[index++] = root;
+    }
+
+    storeSearchResults(root->left, kyTu, results, index);
+    storeSearchResults(root->right, kyTu, results, index);
+}
+
+// Sắp xếp kết quả theo tên vật tư
+void sortSearchResults(treeVatTu results[], int n)
+{
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (results[j]->data_vt.TENVT > results[j + 1]->data_vt.TENVT)
+            {
+                treeVatTu temp = results[j];
+                results[j] = results[j + 1];
+                results[j + 1] = temp;
+            }
+        }
+    }
+}
+
+// Hàm đánh dấu ký tự tìm thấy trong chuỗi
+void printHighlightedText(const string &text, const string &searchStr)
+{
+    if (text.empty() || searchStr.empty())
+        return;
+
+    string textLower = text;
+    string searchLower = searchStr;
+
+    // Chuyển về chữ thường để so sánh
+    for (int i = 0; i < text.length(); i++)
+        textLower[i] = tolower(textLower[i]);
+    for (int i = 0; i < searchStr.length(); i++)
+        searchLower[i] = tolower(searchLower[i]);
+
+    for (int i = 0; i < text.length(); i++)
+    {
+        bool isMatch = false;
+        if (searchStr.length() == 1)
+        {
+            // Tìm ký tự đơn
+            if (textLower[i] == searchLower[0])
+            {
+                isMatch = true;
+            }
+        }
+        else
+        {
+            // Tìm chuỗi
+            if (i <= textLower.length() - searchLower.length())
+            {
+                bool found = true;
+                for (int j = 0; j < searchLower.length(); j++)
+                {
+                    if (textLower[i + j] != searchLower[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    isMatch = true;
+                }
+            }
+        }
+
+        if (isMatch)
+        {
+            SetBGColor(searchHighlightColor); // Đặt nền màu xanh
+            if (searchStr.length() == 1)
+            {
+                cout << text[i];
+                SetBGColor(0); // Reset về nền đen
+            }
+            else
+            {
+                // In cả chuỗi tìm thấy với nền xanh
+                for (int j = 0; j < searchStr.length(); j++)
+                {
+                    cout << text[i + j];
+                }
+                i += searchStr.length() - 1;
+                SetBGColor(0); // Reset về nền đen
+            }
+        }
+        else
+        {
+            cout << text[i];
+        }
+    }
+}
+// Hàm tìm kiếm và hiển thị kết quả
+void timKiemVatTu(treeVatTu root)
+{
+    string searchStr;
+    bool hasError;
+
+    cout << "Nhap ky tu hoac chuoi can tim trong ten vat tu: ";
+    getline(cin, searchStr);
+
+    if (searchStr.empty())
+    {
+        cout << "Vui long nhap it nhat mot ky tu!" << endl;
+        return;
+    }
+
+    // Chuẩn hóa chuỗi tìm kiếm
+    searchStr = normalizeString(searchStr, hasError);
+
+    if (hasError)
+    {
+        cout << "Du lieu nhap khong hop le!" << endl;
+        return;
+    }
+
+    // Đếm số lượng kết quả
+    int count = countSearchResults(root, searchStr);
+
+    if (count == 0)
+    {
+        cout << "Khong tim thay vat tu nao co chua '" << searchStr << "' trong ten" << endl;
+        return;
+    }
+
+    // Tạo mảng để lưu kết quả
+    treeVatTu *results = new treeVatTu[count];
+    int index = 0;
+
+    // Lưu các kết quả vào mảng
+    storeSearchResults(root, searchStr, results, index);
+
+    // Sắp xếp kết quả theo tên
+    sortSearchResults(results, count);
+
+    // Hiển thị kết quả
+    cout << "\nTim thay " << count << " vat tu co chua '" << searchStr << "' trong ten:" << endl;
+    cout << left << setw(15) << "Ma VT"
+         << setw(30) << "Ten vat tu"
+         << setw(20) << "Don vi tinh"
+         << "So luong ton" << endl;
+    cout << string(75, '-') << endl;
+
+    for (int i = 0; i < count; i++)
+    {
+        cout << left << setw(15) << results[i]->data_vt.MAVT;
+
+        // In tên vật tư với highlight
+        string tenVT = results[i]->data_vt.TENVT;
+        int padding = 30 - tenVT.length();
+        printHighlightedText(tenVT, searchStr);
+        cout << string(padding > 0 ? padding : 0, ' '); // Thêm khoảng trắng để đảm bảo căn lề
+
+        cout << setw(20) << results[i]->data_vt.DVT
+             << results[i]->data_vt.soLuongTon << endl;
+    }
+
+    delete[] results;
 }
