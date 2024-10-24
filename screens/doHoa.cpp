@@ -1,5 +1,6 @@
-#include "../libraries/mylib.h"
+#pragma once
 #include "../libraries/khaibao.h"
+#include "../libraries/mylib.h"
 //==========khai bao=========
 const int BLACK = 0;
 const int BLUE = 1;
@@ -18,10 +19,10 @@ const int LIGHTMAGENTA = 13;
 const int YELLOW = 14;
 const int WHITE = 15;
 
-// const int x = 5;
-// const int y = 5;
-// const int w = 5;
-// const int h = 5;
+const int x = 5;
+const int y = 5;
+const int w = 5;
+const int h = 5;
 const int wConsole = 120;
 const int hConsole = 30;
 // ki tu ve
@@ -31,6 +32,25 @@ const char tlCorner = 201; // 218
 const char trCorner = 187; // 191
 const char blCorner = 200; // 192
 const char brCorner = 188; // 217
+
+// Box drawing characters
+const char TOP_LEFT = 201;     // ╔
+const char TOP_RIGHT = 187;    // ╗
+const char BOTTOM_LEFT = 200;  // ╚
+const char BOTTOM_RIGHT = 188; // ╝
+const char HORIZONTAL = 205;   // ═
+const char VERTICAL = 186;     // ║
+const char T_DOWN = 203;       // ╦
+const char T_UP = 202;         // ╩
+const char T_RIGHT = 204;      // ╠
+const char T_LEFT = 185;       // ╣
+const char CROSS = 206;
+// #define HeaderVT 4
+// char headerVatTuList[HeaderVT][50]{
+//     "MA VT",  // 5
+//     "TEN VT", // 6
+//     "DVT",    // 3
+//     "SL"};    // 2
 //==========tien khai bao==========
 void drawHCN(int x, int y, int w, int h);
 void fillAreaColor(int x, int y, int w, int h, int color);
@@ -95,10 +115,8 @@ void horizontalLine(int x, int y, int w)
         std::cout << hzLine;
     }
 }
-void drawTableContent(int x, int y, int w, int h, char headerVatTuList[HeaderVT][50])
-{
-}
-void drawTable(int x, int y, int w, int h, char headerVatTuList[HeaderVT][50])
+
+void drawTable(int x, int y, int w, int h, char headerVatTuList[HeaderVT][50], treeVatTu root)
 {
     drawHCN(x, y, w * 4, h);
     horizontalLine(x + 1, y + 2, (w * 4) - 1);
@@ -139,7 +157,8 @@ void drawTable(int x, int y, int w, int h, char headerVatTuList[HeaderVT][50])
     cout << headerVatTuList[2];
     // ve header 3
     gotoxy(x + ((w * 4) - 10), y + 1);
-    cout << headerVatTuList[3]; 
+    cout << headerVatTuList[3];
+    // inDanhSachVatTu(root);
 }
 
 // int main()

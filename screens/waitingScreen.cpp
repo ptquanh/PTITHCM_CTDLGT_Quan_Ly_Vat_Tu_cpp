@@ -9,9 +9,6 @@ const int CTNNV = 4;
 
 #define UP 72
 #define DOWN 80
-#define LEFT 75
-#define RIGHT 77
-#define ESC 27
 #define F1 59
 #define F2 60
 #define F3 61

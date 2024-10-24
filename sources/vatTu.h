@@ -1,6 +1,10 @@
 #pragma once
-#include "../libraries/khaibao.h"
-#include "../libraries/mylib.h"
+// #include "../libraries/khaibao.h"
+// #include "../libraries/mylib.h"
+#include "../screens/doHoa.cpp"
+#define ROWS 20              // Số dòng tối đa trên mỗi trang
+#define PAGE_NUMBER_POS_X 30 // Vị trí hiển thị số trang
+#define PAGE_NUMBER_POS_Y 26
 const int searchHighlightColor = 1;
 // ghi tung node vao file ds_vattu
 void writeNodeToFile(treeVatTu node, ofstream &fileout)
@@ -380,6 +384,7 @@ void readFile_dsVatTu(treeVatTu &root)
 
         // Đọc từng phần của dữ liệu
         getline(ss, data_vt.MAVT, '|');
+        data_vt.MAVT = formatMAVT(data_vt.MAVT);
         getline(ss, data_vt.TENVT, '|');
         data_vt.TENVT = normalizeString(data_vt.TENVT, hasError);
         getline(ss, data_vt.DVT, '|');
@@ -523,31 +528,119 @@ void quickSort(treeVatTu arr[], int low, int high)
         quickSort(arr, pi + 1, high);
     }
 }
-
-void inDanhSachVatTu(treeVatTu root)
+void clearTableContent(treeVatTu root, int pageNumber)
+{
+    for (int currentRow = 5; currentRow <= 24; currentRow++)
+    {
+        for (int i = 5; i < 15; i++)
+        {
+            gotoxy(i, currentRow);
+            cout << " ";
+        }
+        for (int i = 20; i < 38; i++)
+        {
+            gotoxy(i, currentRow);
+            cout << " ";
+        }
+        for (int i = 43; i < 49; i++)
+        {
+            gotoxy(i, currentRow);
+            cout << " ";
+        }
+        for (int i = 54; i < 60; i++)
+        {
+            gotoxy(i, currentRow);
+            cout << " ";
+        }
+    }
+}
+void inDanhSachVatTu(treeVatTu root, int pageNumber)
 {
     int n = countNodes(root);
-    treeVatTu *arr = new treeVatTu[n];
-    int index = 0;
-
-    storeInorder(root, arr, &index);
-    quickSort(arr, 0, n - 1); // Thay bubbleSort bằng quickSort
-
-    cout << left << setw(15) << "Ma VT"
-         << setw(30) << "Ten vat tu"
-         << setw(20) << "Don vi tinh"
-         << "So luong ton" << endl;
-    cout << string(75, '-') << endl;
-
-    for (int i = 0; i < n; i++)
+    if (n == 0)
     {
-        cout << left << setw(15) << arr[i]->data_vt.MAVT
-             << setw(30) << arr[i]->data_vt.TENVT
-             << setw(20) << arr[i]->data_vt.DVT
-             << arr[i]->data_vt.soLuongTon << endl;
+        gotoxy(13, 3);
+        cout << "Khong co du lieu vat tu";
+        return;
     }
 
+    treeVatTu *arr = new treeVatTu[n];
+    int index = 0;
+    storeInorder(root, arr, &index);
+    quickSort(arr, 0, n - 1);
+
+    // Tính toán vị trí bắt đầu và kết thúc cho trang hiện tại
+    int startIndex = (pageNumber - 1) * ROWS;
+    int endIndex = min(startIndex + ROWS, n);
+    gotoxy(0, 0);
+    cout << startIndex << " " << endIndex;
+    int currentRow = 5;
+    for (int i = startIndex; i < endIndex; i++)
+    {
+        // MAVT column
+        gotoxy(5, currentRow);
+        cout << arr[i]->data_vt.MAVT;
+
+        // TENVT column
+        gotoxy(20, currentRow);
+        cout << arr[i]->data_vt.TENVT;
+
+        // DVT column
+        gotoxy(43, currentRow);
+        cout << arr[i]->data_vt.DVT;
+
+        // SoLuongTon column
+        gotoxy(54, currentRow);
+        cout << arr[i]->data_vt.soLuongTon;
+
+        currentRow++;
+    }
+
+    // Hiển thị thông tin phân trang
+    int totalPages = ceil((float)n / ROWS);
+    gotoxy(PAGE_NUMBER_POS_X, PAGE_NUMBER_POS_Y);
+    cout << "Trang " << pageNumber << "/" << totalPages;
+
+    // Hiển thị hướng dẫn điều hướng
+    gotoxy(PAGE_NUMBER_POS_X - 20, PAGE_NUMBER_POS_Y + 1);
+    cout << "Su dung mui ten TRAI/PHAI de chuyen trang";
+
     delete[] arr;
+}
+
+void handleNavigation(treeVatTu root)
+{
+    int n = countNodes(root);
+    int totalPages = ceil((float)n / ROWS);
+    int currentPage = 1;
+    char key;
+    drawTable(2, 2, 15, 23, headerVatTuList, root);
+    while (true)
+    {
+        inDanhSachVatTu(root, currentPage);
+        key = getch();
+
+        if (key == 75)
+        { // Left arrow
+            if (currentPage > 1)
+            {
+                currentPage--;
+                clearTableContent(root, currentPage);
+            }
+        }
+        else if (key == 77)
+        { // Right arrow
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                clearTableContent(root, currentPage);
+            }
+        }
+        else if (key == 27)
+        { // ESC
+            break;
+        }
+    }
 }
 // Hàm kiểm tra xem một ký tự có tồn tại trong chuỗi (không phân biệt hoa/thường)
 bool hasCharacter(const string &searchStr, const string &targetStr)
