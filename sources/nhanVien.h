@@ -33,7 +33,7 @@ bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
     if (manv.size() == 0)
         return false;
     if (isMANV(list, manv))
-        cout << "Lỗi: Mã đã tồn tại" << endl;
+        cout << "Loi:Ma da ton tai" << endl;
 
     //  Kiểm tra kí tự space và xóa đi khỏi MANV;
     string result;
@@ -46,8 +46,8 @@ bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
 
     if (manv.size() > 10)
     {
-        cout << "Lỗi: Mã nhân viên không thể quá 10 kí tự - " << manv.size() << " kí tự " << manv << endl;
-        cout << "Lấy 10 ký tự hoặc nhập lại(1 hoặc 0): ";
+        cout << "Loi ma nhan vien khong duoc qua 10 ki tu - " << manv.size() << " ki tu" << manv << endl;
+        cout << "Lay 10 ki tu hoac nhap lai (1 hoac 0) ";
         int n;
         cin >> n;
         while (true)
@@ -88,7 +88,7 @@ bool CheckTEN(string ten, nhanVien *&nv, dsNhanVien list)
     {
         if (c = ' ')
         {
-            cout << "Lỗi: Không thể có khoảng trắng trong tên!" << endl;
+            cout << "Loi: Khong the co khoang trang trong ten" << endl;
             return false;
         }
     }
@@ -107,7 +107,7 @@ bool CheckPHAI(string phai, nhanVien *&nv, dsNhanVien list)
     }
     else
     {
-        cout << "Lỗi: Phái không hợp lệ!" << endl;
+        cout << "Loi: Phai khong hop le" << endl;
         return 0;
     }
 }
