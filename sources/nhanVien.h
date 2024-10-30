@@ -1,5 +1,4 @@
 #pragma once
-#include "../libraries/khaibao.h"
 #include "vatTu.h"
 
 bool NhanVienEmpty(dsNhanVien list)
@@ -26,6 +25,18 @@ bool NhanVienEmpty(dsNhanVien list, int x, int y)
         cout << "Danh sach nhan vien rong!";
         return true;
     }
+}
+
+bool isMANV(dsNhanVien &list, string maso)
+{
+    for (int i = 0; i < list.CountNV; i++)
+    {
+        if (list.nodes[i]->MANV == maso)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
@@ -124,18 +135,6 @@ int SearchNhanVien(dsNhanVien list, string manv)
     cout << "Khong tim thay nhan vien!" << endl;
 
     return -1;
-}
-
-bool isMANV(dsNhanVien &list, string maso)
-{
-    for (int i = 0; i < list.CountNV; i++)
-    {
-        if (list.nodes[i]->MANV == maso)
-        {
-            return true;
-        }
-    }
-    return false;
 }
 
 void ChenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
@@ -328,78 +327,79 @@ void Write_NhanVien(ofstream &file, nhanVien &nv)
     ptr_DSHD current = nv.firstDSHD;
     while (current != nullptr)
     {
-        Write_HoaDon(file, current->data_hd);
+        // Write_HoaDon(file, current->data_hd);
         current = current->next;
     }
     file << "End_NhanVien" << endl; // Đánh dấu kết thúc nhân viên
 }
-void Write_dsNhanVien(const string &filename, dsNhanVien &dsNV)
+void Write_dsNhanVien(dsNhanVien &dsNV)
 {
-    ofstream file(filename);
-    if (!file)
+    ofstream fileout;
+    fileout.open(filePath_NV, ios_base::out);
+    if (!fileout.is_open())
     {
-        cerr << "Không thể mở file để ghi!" << endl;
+        cerr << "Khong the mo file ghi!" << endl;
         return;
     }
-    file << dsNV.CountNV << endl;
+    fileout << dsNV.CountNV << endl;
     for (int i = 0; i < dsNV.CountNV; ++i)
     {
-        Write_NhanVien(file, *dsNV.nodes[i]);
+        Write_NhanVien(fileout, *dsNV.nodes[i]);
     }
-    file.close();
+    fileout.close();
 }
-void Read_CTHoaDon(ifstream &file, nodeChiTietHoaDon &cthd)
-{
-    string line;
+// void Read_CTHoaDon(ifstream &file, nodeChiTietHoaDon &cthd)
+// {
+//     string line;
 
-    getline(file, cthd.MAVT, '|'); // Đọc mã vật tư cho đến ký tự "|"
-    getline(file, line, '|');      // Đọc và chuyển thành số nguyên cho `soLuong`
-    cthd.soLuong = stoi(line);
+//     getline(file, cthd.MAVT, '|'); // Đọc mã vật tư cho đến ký tự "|"
+//     getline(file, line, '|');      // Đọc và chuyển thành số nguyên cho `soLuong`
+//     cthd.soLuong = stoi(line);
 
-    getline(file, line, '|'); // Đọc và chuyển thành số thực cho `donGia`
-    cthd.donGia = stof(line);
+//     getline(file, line, '|'); // Đọc và chuyển thành số thực cho `donGia`
+//     cthd.donGia = stof(line);
 
-    getline(file, line); // Đọc VAT
-    cthd.VAT = stof(line);
+//     getline(file, line); // Đọc VAT
+//     cthd.VAT = stof(line);
 
-    getline(file, line); // Đọc "End_ChiTietHoaDon"
-}
-void Read_HoaDon(ifstream &file, nodeHoaDon &hd)
-{
-    string line;
+//     getline(file, line); // Đọc "End_ChiTietHoaDon"
+// }
+// void Read_HoaDon(ifstream &file, nodeHoaDon &hd)
+// {
+//     string line;
 
-    getline(file, hd.SoHD, '|'); // Đọc số hóa đơn đến ký tự "|"
+//     getline(file, hd.SoHD, '|'); // Đọc số hóa đơn đến ký tự "|"
 
-    getline(file, line, '|'); // Đọc loại hóa đơn dưới dạng chuỗi và lấy ký tự đầu
-    hd.loai = line[0];
+//     getline(file, line, '|'); // Đọc loại hóa đơn dưới dạng chuỗi và lấy ký tự đầu
+//     hd.loai = line[0];
 
-    getline(file, line, '|'); // Đọc ngày dưới dạng chuỗi và chuyển thành số nguyên
-    hd.day = stoi(line);
+//     getline(file, line, '|'); // Đọc ngày dưới dạng chuỗi và chuyển thành số nguyên
+//     hd.day = stoi(line);
 
-    getline(file, line, '|'); // Đọc tháng dưới dạng chuỗi và chuyển thành số nguyên
-    hd.month = stoi(line);
+//     getline(file, line, '|'); // Đọc tháng dưới dạng chuỗi và chuyển thành số nguyên
+//     hd.month = stoi(line);
 
-    getline(file, line); // Đọc năm dưới dạng chuỗi và chuyển thành số nguyên
-    hd.year = stoi(line);
+//     getline(file, line); // Đọc năm dưới dạng chuỗi và chuyển thành số nguyên
+//     hd.year = stoi(line);
 
-    // Đọc danh sách chi tiết hóa đơn
-    hd.firstCTHD = nullptr;
-    ptr_DSCTHD *tail = &hd.firstCTHD;
+//     // Đọc danh sách chi tiết hóa đơn
+//     hd.firstCTHD = nullptr;
+//     ptr_DSCTHD *tail = &hd.firstCTHD;
 
-    while (getline(file, line) && line != "End_HoaDon")
-    {
-        if (line == "End_ChiTietHoaDon")
-            continue; // Bỏ qua dòng "End_ChiTietHoaDon"
+//     while (getline(file, line) && line != "End_HoaDon")
+//     {
+//         if (line == "End_ChiTietHoaDon")
+//             continue; // Bỏ qua dòng "End_ChiTietHoaDon"
 
-        nodeChiTietHoaDon cthd;
-        // Sử dụng hàm trực tiếp mà không cần `istringstream`
-        cthd.MAVT = line;
-        Read_CTHoaDon(file, cthd);
+//         nodeChiTietHoaDon cthd;
+//         // Sử dụng hàm trực tiếp mà không cần `istringstream`
+//         cthd.MAVT = line;
+//         Read_CTHoaDon(file, cthd);
 
-        *tail = new dsChiTietHoaDon{cthd, nullptr};
-        tail = &(*tail)->next;
-    }
-}
+//         *tail = new dsChiTietHoaDon{cthd, nullptr};
+//         tail = &(*tail)->next;
+//     }
+// }
 void Read_NhanVien(ifstream &file, nhanVien &nv)
 {
     string line;
@@ -420,34 +420,35 @@ void Read_NhanVien(ifstream &file, nhanVien &nv)
 
         nodeHoaDon hd;
         hd.SoHD = line;
-        Read_HoaDon(file, hd);
+        // Read_HoaDon(file, hd);
 
         *tail = new dsHoaDon{hd, nullptr};
         tail = &(*tail)->next;
     }
 }
-void Read_dsNhanVien(const string &filename, dsNhanVien &dsNV)
+void readFile_dsNhanVien(dsNhanVien &dsNV)
 {
-    ifstream file(filename);
-    if (!file)
+    ifstream filein;
+    filein.open(filePath_NV, ios_base::in);
+    if (!filein.is_open())
     {
-        cerr << "Không thể mở file để đọc!" << endl;
+        cerr << "Khong the mo file doc!" << endl;
         return;
     }
 
     // Đọc số lượng nhân viên
     string line;
-    getline(file, line);
+    getline(filein, line);
     dsNV.CountNV = stoi(line);
 
     // Đọc thông tin từng nhân viên
     for (int i = 0; i < dsNV.CountNV; ++i)
     {
         dsNV.nodes[i] = new nhanVien;
-        Read_NhanVien(file, *dsNV.nodes[i]);
+        Read_NhanVien(filein, *dsNV.nodes[i]);
     }
 
-    file.close();
+    filein.close();
 }
 
 //======================HOA DON===================================

@@ -1,6 +1,4 @@
-#include "..\sources\nhanVien.h"
-#include "..\libraries\mylib.h"
-#include "..\libraries\khaibao.h"
+#include "nhanVien.h"
 // #pragma once;
 using namespace std;
 
