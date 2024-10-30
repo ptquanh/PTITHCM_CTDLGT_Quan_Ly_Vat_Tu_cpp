@@ -1,5 +1,6 @@
-#include "../screens/graphic.h"
-
+#include "../screens/doHoa.cpp"
+#include "../screens/doHoaCoBan.cpp"
+#include "../libraries/khaibao.h"
 
 
 const int Collums = 20;
@@ -287,36 +288,8 @@ int MenuThongKeDong(char menuthongke[YeuCauThongKe][50])
 }
 
 
-const int CTNNV = 4;
-void HeaderPrint(char header[CTNNV][50]){
-    system("cls");
-    Normal();
-    box(1,1,53,2);
-    SetCP437();
-    gotoxy(5,2);    cout << char(179);
-    gotoxy(22,2);   cout << char(179);
-    gotoxy(48,2);   cout << char(179);
-    SetUTF8();
-    gotoxy(2,2);    cout << header[0];
-    gotoxy(8,2);    cout << header[1];
-    gotoxy(31,2);   cout << header[2];
-    gotoxy(49,2);   cout << header[3];
 
 
-
-
-}
-void PrintNhanien(dsNhanVien list){
-    char Header[CTNNV][50] =
-    {
-        "STT",
-        "MÃ NHÂN VIÊN",
-        "HỌ VÀ TÊN",
-        "PHÁI",
-    };
-    HeaderPrint(Header);
-
-}
 
 
 
@@ -327,17 +300,6 @@ int main()
 
     // int choice = 0;
     // system("cls"); cout << choice;
-
-    char Header[CTNNV][50] =
-    {
-        "STT",
-        "Mã nhân viên",
-        "Họ và Tên",
-        "Phái",
-    };
-
-    
-    HeaderPrint(Header);
 
     cout << endl << endl;
     system("pause");

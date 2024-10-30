@@ -34,7 +34,20 @@ void drawHCN(int x, int y, int w, int h);
 void fillAreaColor(int x, int y, int w, int h, int color);
 void verticalLine(int x, int y, int h);
 void horizontalLine(int x, int y, int w);
+void SetCP437();
+void SetUTF8();
 //==================================
+
+void SetCP437()
+{
+    SetConsoleOutputCP(437);
+}
+
+void SetUTF8(){
+    SetConsoleOutputCP(CP_UTF8);
+}
+
+
 void fillAreaColor(int x, int y, int w, int h, int color)
 {
     SetBGColor(color);
