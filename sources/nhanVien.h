@@ -27,11 +27,21 @@ bool NhanVienEmpty(dsNhanVien list, int x, int y)
         return true;
     }
 }
-
+bool isMANV(dsNhanVien &list, string maso)
+{
+    for (int i = 0; i < list.CountNV; i++)
+    {
+        if (list.nodes[i]->MANV == maso)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
 {
     if (manv.size() == 0)
-        return false;
+        return true;
     if (isMANV(list, manv))
         cout << "Loi:Ma da ton tai" << endl;
 
@@ -55,60 +65,61 @@ bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
             if (n == 1)
             {
                 manv.resize(10);
-                return true;
+                nv->MANV = manv;
+                return false;
             }
             if (n == 0)
-                return false;
+                return true;
         }
     }
 
     nv->MANV = manv;
-    return true;
+    return false;
 }
 bool CheckHO(string ho, nhanVien *&nv, dsNhanVien list)
 {
     if (ho.size() == 0)
-        return false;
+        return true;
     bool hasError;
     ho = normalizeString(ho, hasError);
     if (hasError)
-        return false;
+        return true;
     nv->HO = ho;
-    return true;
+    return false;
 }
 bool CheckTEN(string ten, nhanVien *&nv, dsNhanVien list)
 {
     if (ten.size() == 0)
-        return false;
+        return true;
     bool hasError;
     ten = normalizeString(ten, hasError);
     if (hasError)
-        return false;
+        return true;
     for (char c : ten)
     {
         if (c = ' ')
         {
             cout << "Loi: Khong the co khoang trang trong ten" << endl;
-            return false;
+            return true;
         }
     }
 
     nv->TEN = ten;
-    return true;
+    return false;
 }
 bool CheckPHAI(string phai, nhanVien *&nv, dsNhanVien list)
 {
     if (phai.size() == 0 || phai.size() != 1)
-        return false;
+        return true;
     if (phai == "0" || phai == "1")
     {
         nv->PHAI = phai;
-        return true;
+        return false;
     }
     else
     {
         cout << "Loi: Phai khong hop le" << endl;
-        return 0;
+        return true;
     }
 }
 
@@ -124,18 +135,6 @@ int SearchNhanVien(dsNhanVien list, string manv)
     cout << "Khong tim thay nhan vien!" << endl;
 
     return -1;
-}
-
-bool isMANV(dsNhanVien &list, string maso)
-{
-    for (int i = 0; i < list.CountNV; i++)
-    {
-        if (list.nodes[i]->MANV == maso)
-        {
-            return true;
-        }
-    }
-    return false;
 }
 
 void ChenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)

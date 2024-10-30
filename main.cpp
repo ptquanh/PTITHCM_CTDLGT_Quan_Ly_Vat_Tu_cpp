@@ -8,8 +8,6 @@ int main()
     nhanVien nv;
     dsNhanVien ds_nv;
     int choice;
-    readFile_dsVatTu(root);
-    readFile_dsNhanVien(ds_nv);
     do
     {
         cout << "\n--- Menu ---\n";
@@ -24,7 +22,7 @@ int main()
         switch (choice)
         {
         case 1:
-            nhapVatTu(root);
+            // nhapVatTu(root);
             break;
         case 2:
             chinhSuaVatTu(root);
@@ -69,7 +67,5 @@ int main()
             cout << "Lua chon khong hop le. Vui long chon lai.\n";
         }
     } while (choice != 0);
-        writeFile_dsVatTu(root);
-        writeFile_dsNhanVien(ds_nv);
     return 0;
 }
