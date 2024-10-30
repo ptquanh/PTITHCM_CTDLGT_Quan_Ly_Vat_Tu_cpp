@@ -1,10 +1,19 @@
-NV2|Phan Tuan Quoc|Anh|Nam\
-nv3|Ly|Bien|Nam\
-NV1|Nguyen Toan|Phuc|Nam\
-NV4|Nguyen|Toan|Nam\
-    -HD1|01|01|2024|N
-        +VT1|banh xe|cai|20
-        +VT2|banh mi|cai|20
-    -HD2|01|01|2024|N
-        +VT1|banh xe|cai|10
-        +VT2|banh mi|cai|50
+NV2|Phan Tuan Quoc|Anh|Nam
+End_NhanVien
+nv3|Ly|Bien|Nam
+End_NhanVien
+NV1|Nguyen Toan|Phuc|Nam
+End_NhanVien
+NV4|Nguyen|Toan|Nam
+HD1|01|01|2024|N
+VT1|banh xe|cai|20
+End_ChiTietHoaDon
+VT2|banh mi|cai|20
+End_ChiTietHoaDon
+HD2|01|01|2024|N
+VT1|banh xe|cai|10
+End_ChiTietHoaDon
+VT2|banh mi|cai|50
+End_ChiTietHoaDon
+End_HoaDon
+End_NhanVien

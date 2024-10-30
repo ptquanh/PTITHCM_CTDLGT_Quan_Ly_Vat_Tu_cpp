@@ -39,12 +39,23 @@ bool isMANV(dsNhanVien &list, string maso)
     return false;
 }
 
+bool isMANV(dsNhanVien &list, string maso)
+{
+    for (int i = 0; i < list.CountNV; i++)
+    {
+        if (list.nodes[i]->MANV == maso)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
 {
     if (manv.size() == 0)
-        return false;
+        return true;
     if (isMANV(list, manv))
-        cout << "Lỗi: Mã đã tồn tại" << endl;
+        cout << "Loi:Ma da ton tai" << endl;
 
     //  Kiểm tra kí tự space và xóa đi khỏi MANV;
     string result;
@@ -57,8 +68,8 @@ bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
 
     if (manv.size() > 10)
     {
-        cout << "Lỗi: Mã nhân viên không thể quá 10 kí tự - " << manv.size() << " kí tự " << manv << endl;
-        cout << "Lấy 10 ký tự hoặc nhập lại(1 hoặc 0): ";
+        cout << "Loi ma nhan vien khong duoc qua 10 ki tu - " << manv.size() << " ki tu" << manv << endl;
+        cout << "Lay 10 ki tu hoac nhap lai (1 hoac 0) ";
         int n;
         cin >> n;
         while (true)
@@ -66,60 +77,61 @@ bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
             if (n == 1)
             {
                 manv.resize(10);
-                return true;
+                nv->MANV = manv;
+                return false;
             }
             if (n == 0)
-                return false;
+                return true;
         }
     }
 
     nv->MANV = manv;
-    return true;
+    return false;
 }
 bool CheckHO(string ho, nhanVien *&nv, dsNhanVien list)
 {
     if (ho.size() == 0)
-        return false;
+        return true;
     bool hasError;
     ho = normalizeString(ho, hasError);
     if (hasError)
-        return false;
+        return true;
     nv->HO = ho;
-    return true;
+    return false;
 }
 bool CheckTEN(string ten, nhanVien *&nv, dsNhanVien list)
 {
     if (ten.size() == 0)
-        return false;
+        return true;
     bool hasError;
     ten = normalizeString(ten, hasError);
     if (hasError)
-        return false;
+        return true;
     for (char c : ten)
     {
         if (c = ' ')
         {
-            cout << "Lỗi: Không thể có khoảng trắng trong tên!" << endl;
-            return false;
+            cout << "Loi: Khong the co khoang trang trong ten" << endl;
+            return true;
         }
     }
 
     nv->TEN = ten;
-    return true;
+    return false;
 }
 bool CheckPHAI(string phai, nhanVien *&nv, dsNhanVien list)
 {
     if (phai.size() == 0 || phai.size() != 1)
-        return false;
+        return true;
     if (phai == "0" || phai == "1")
     {
         nv->PHAI = phai;
-        return true;
+        return false;
     }
     else
     {
-        cout << "Lỗi: Phái không hợp lệ!" << endl;
-        return 0;
+        cout << "Loi: Phai khong hop le" << endl;
+        return true;
     }
 }
 
