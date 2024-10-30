@@ -14,6 +14,103 @@ bool NhanVienEmpty(dsNhanVien list)
         return true;
     }
 }
+bool NhanVienEmpty(dsNhanVien list, int x, int y)
+{
+    if (list.CountNV != 0)
+    {
+        return false;
+    }
+    else
+    {
+        gotoxy(x, y);
+        cout << "Danh sach nhan vien rong!";
+        return true;
+    }
+}
+
+bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
+{
+    if (manv.size() == 0)
+        return false;
+    if (isMANV(list, manv))
+        cout << "Lỗi: Mã đã tồn tại" << endl;
+
+    //  Kiểm tra kí tự space và xóa đi khỏi MANV;
+    string result;
+    for (const char c : manv)
+    {
+        if (c != ' ')
+            result += c;
+    }
+    manv = result;
+
+    if (manv.size() > 10)
+    {
+        cout << "Lỗi: Mã nhân viên không thể quá 10 kí tự - " << manv.size() << " kí tự " << manv << endl;
+        cout << "Lấy 10 ký tự hoặc nhập lại(1 hoặc 0): ";
+        int n;
+        cin >> n;
+        while (true)
+        {
+            if (n == 1)
+            {
+                manv.resize(10);
+                return true;
+            }
+            if (n == 0)
+                return false;
+        }
+    }
+
+    nv->MANV = manv;
+    return true;
+}
+bool CheckHO(string ho, nhanVien *&nv, dsNhanVien list)
+{
+    if (ho.size() == 0)
+        return false;
+    bool hasError;
+    ho = normalizeString(ho, hasError);
+    if (hasError)
+        return false;
+    nv->HO = ho;
+    return true;
+}
+bool CheckTEN(string ten, nhanVien *&nv, dsNhanVien list)
+{
+    if (ten.size() == 0)
+        return false;
+    bool hasError;
+    ten = normalizeString(ten, hasError);
+    if (hasError)
+        return false;
+    for (char c : ten)
+    {
+        if (c = ' ')
+        {
+            cout << "Lỗi: Không thể có khoảng trắng trong tên!" << endl;
+            return false;
+        }
+    }
+
+    nv->TEN = ten;
+    return true;
+}
+bool CheckPHAI(string phai, nhanVien *&nv, dsNhanVien list)
+{
+    if (phai.size() == 0 || phai.size() != 1)
+        return false;
+    if (phai == "0" || phai == "1")
+    {
+        nv->PHAI = phai;
+        return true;
+    }
+    else
+    {
+        cout << "Lỗi: Phái không hợp lệ!" << endl;
+        return 0;
+    }
+}
 
 int SearchNhanVien(dsNhanVien list, string manv)
 {
@@ -29,7 +126,7 @@ int SearchNhanVien(dsNhanVien list, string manv)
     return -1;
 }
 
-bool CheckMANV(dsNhanVien &list, string maso)
+bool isMANV(dsNhanVien &list, string maso)
 {
     for (int i = 0; i < list.CountNV; i++)
     {
@@ -78,65 +175,39 @@ void NhapNhanVien(dsNhanVien &list)
     }
 
     nhanVien *nv = new nhanVien();
-
+    bool check = false;
     do
     {
+        string manv;
         cout << "Nhap ma nhan vien (10 ky tu):";
-        cin >> nv->MANV;
-
-        if (CheckMANV(list, nv->MANV))
-        {
-            cout << "Ma da ton tai, vui long nhap ma khac" << endl;
-            continue;
-        }
-
-        if (nv->MANV.find_first_not_of(' ') == string::npos)
-        {
-            cout << "Loi: Chuoi khong duoc rong hoac chi chua khoang trang" << endl;
-            continue;
-        }
-        if (nv->MANV.size() > 10)
-        {
-            nv->MANV.resize(10);
-        }
-    } while (nv->MANV.size() == 0 || CheckMANV(list, nv->MANV));
+        getline(cin, manv);
+        check = CheckMANV(manv, nv, list);
+    } while (check == true);
 
     do
     {
+        string ho;
         cout << "Nhap ho nhan vien: ";
-        cin >> nv->HO;
-        nv->HO = normalizeString(nv->HO, hasError);
-    } while (nv->HO.size() == 0);
-
-    do
-    {
-        cout << "Nhap ten nhan vien: ";
         cin.ignore();
-        getline(cin, nv->TEN);
-        nv->TEN = normalizeString(nv->TEN, hasError);
-    } while (nv->TEN.size() == 0);
+        getline(cin, ho);
+        check = CheckHO(ho, nv, list);
+    } while (check == true);
 
     do
     {
-        int inputPhai;
+        string ten;
+        cout << "Nhap ten nhan vien: ";
+        getline(cin, ten);
+        check = CheckTEN(ten, nv, list);
+    } while (check == true);
+
+    do
+    {
+        string phai;
         cout << "Nhap gioi tinh (1 la nam || 0 la nu): ";
-        cin >> inputPhai;
-        if (inputPhai == 1)
-        {
-            nv->PHAI = "Nam";
-            break;
-        }
-        if (inputPhai == 0)
-        {
-            nv->PHAI = "Nu";
-            break;
-        }
-        if (inputPhai != 1 || inputPhai != 0)
-        {
-            cout << "Loi: Gioi tinh khong hop le!" << endl;
-            continue;
-        }
-    } while (true);
+        getline(cin, phai);
+        check = CheckPHAI(phai, nv, list);
+    } while (check == true);
 
     if (list.CountNV == 0)
     {
@@ -231,165 +302,154 @@ void InNhanVien(dsNhanVien list)
     }
 }
 
-// void WriteCTHoaDon(dsChiTietHoaDon *danhsach, ofstream &fileout)
-// {
-//     dsChiTietHoaDon *temp = danhsach;
-//     while (temp != nullptr)
-//     {
-//         fileout << temp->data_cthd.MAVT << "|"
-//                 << temp->data_cthd.soLuong << "|"
-//                 << temp->data_cthd.donGia << "|"
-//                 << temp->data_cthd.VAT << endl;
-//         temp = temp->next;
-//     }
-// }
-
-// void WriteHoaDon(dsHoaDon *danhsach, ofstream &fileout)
-// {
-//     dsHoaDon *temp = danhsach;
-//     while (temp != nullptr)
-//     {
-//         fileout << temp->data_hd.SoHD << "|"
-//                 << temp->data_hd.loai << "|"
-//                 << temp->data_hd.day << "|"
-//                 << temp->data_hd.month << "|"
-//                 << temp->data_hd.year << "\\\\" << endl;
-//         WriteCTHoaDon(temp->data_hd.firstCTHD, fileout);
-//         temp = temp->next;
-//     }
-// }
-
-void writeFile_dsNhanVien(dsNhanVien danhsach)
+void Write_CTHoaDon(ofstream &file, nodeChiTietHoaDon &cthd)
 {
-    ofstream fileout;
-    fileout.open(filePath_NV, ios_base::out);
-    if (!fileout.is_open())
-    {
-        cout << "Khong the mo file" << endl;
-        return;
-    }
-
-    if (danhsach.CountNV == 0)
-    {
-        cout << "Danh sach nhan vien trong!" << endl;
-        fileout.close();
-        return;
-    }
-    for (int i = 0; i < danhsach.CountNV; i++)
-    {
-        fileout << danhsach.nodes[i]->MANV << "|"
-                << danhsach.nodes[i]->HO << "|"
-                << danhsach.nodes[i]->TEN << "|"
-                << danhsach.nodes[i]->PHAI << "\\";
-        cout << "Da ghi nhan vien thu " << i + 1 << endl;
-        // WriteHoaDon(danhsach.nodes[i]->firstDSHD, fileout);
-        fileout << endl;
-    }
-    fileout.close();
+    file << cthd.MAVT << "|" << cthd.soLuong << "|" << cthd.donGia << "|" << cthd.VAT << endl;
+    file << "End_ChiTietHoaDon" << endl;
 }
-void readFile_dsNhanVien(dsNhanVien &ds_nv)
+void Write_HoaDon(ofstream &file, nodeHoaDon &hd)
 {
-    bool hasError;
-    ifstream filein;
-    filein.open(filePath_NV, ios_base::in);
-    if (!filein.is_open())
+    file << hd.SoHD << "|" << hd.loai << "|" << hd.day << "|" << hd.month << "|" << hd.year << endl;
+
+    // Ghi danh sách chi tiết hóa đơn
+    ptr_DSCTHD current = hd.firstCTHD;
+    while (current != nullptr)
     {
-        cout << "Khong the mo file " << filePath_NV << endl;
+        Write_CTHoaDon(file, current->data_cthd);
+        current = current->next;
+    }
+    file << "End_HoaDon" << endl; // Đánh dấu kết thúc hóa đơn
+}
+void Write_NhanVien(ofstream &file, nhanVien &nv)
+{
+    file << nv.MANV << "|" << nv.HO << "|" << nv.TEN << "|" << nv.PHAI << endl;
+
+    // Ghi danh sách hóa đơn của nhân viên
+    ptr_DSHD current = nv.firstDSHD;
+    while (current != nullptr)
+    {
+        Write_HoaDon(file, current->data_hd);
+        current = current->next;
+    }
+    file << "End_NhanVien" << endl; // Đánh dấu kết thúc nhân viên
+}
+void Write_dsNhanVien(const string &filename, dsNhanVien &dsNV)
+{
+    ofstream file(filename);
+    if (!file)
+    {
+        cerr << "Không thể mở file để ghi!" << endl;
         return;
     }
-
+    file << dsNV.CountNV << endl;
+    for (int i = 0; i < dsNV.CountNV; ++i)
+    {
+        Write_NhanVien(file, *dsNV.nodes[i]);
+    }
+    file.close();
+}
+void Read_CTHoaDon(ifstream &file, nodeChiTietHoaDon &cthd)
+{
     string line;
-    while (getline(filein, line))
+
+    getline(file, cthd.MAVT, '|'); // Đọc mã vật tư cho đến ký tự "|"
+    getline(file, line, '|');      // Đọc và chuyển thành số nguyên cho `soLuong`
+    cthd.soLuong = stoi(line);
+
+    getline(file, line, '|'); // Đọc và chuyển thành số thực cho `donGia`
+    cthd.donGia = stof(line);
+
+    getline(file, line); // Đọc VAT
+    cthd.VAT = stof(line);
+
+    getline(file, line); // Đọc "End_ChiTietHoaDon"
+}
+void Read_HoaDon(ifstream &file, nodeHoaDon &hd)
+{
+    string line;
+
+    getline(file, hd.SoHD, '|'); // Đọc số hóa đơn đến ký tự "|"
+
+    getline(file, line, '|'); // Đọc loại hóa đơn dưới dạng chuỗi và lấy ký tự đầu
+    hd.loai = line[0];
+
+    getline(file, line, '|'); // Đọc ngày dưới dạng chuỗi và chuyển thành số nguyên
+    hd.day = stoi(line);
+
+    getline(file, line, '|'); // Đọc tháng dưới dạng chuỗi và chuyển thành số nguyên
+    hd.month = stoi(line);
+
+    getline(file, line); // Đọc năm dưới dạng chuỗi và chuyển thành số nguyên
+    hd.year = stoi(line);
+
+    // Đọc danh sách chi tiết hóa đơn
+    hd.firstCTHD = nullptr;
+    ptr_DSCTHD *tail = &hd.firstCTHD;
+
+    while (getline(file, line) && line != "End_HoaDon")
     {
-        // Bỏ qua dòng trống
-        if (line.empty() || line.find_first_not_of(" \t\n\v\f\r") == string::npos)
-            continue;
+        if (line == "End_ChiTietHoaDon")
+            continue; // Bỏ qua dòng "End_ChiTietHoaDon"
 
-        // Tạo stringstream để xử lý dòng dữ liệu
-        stringstream ss(line);
-        nhanVien *nv = new nhanVien();
+        nodeChiTietHoaDon cthd;
+        // Sử dụng hàm trực tiếp mà không cần `istringstream`
+        cthd.MAVT = line;
+        Read_CTHoaDon(file, cthd);
 
-        // Đọc thông tin nhân viên
-        getline(ss, nv->MANV, '|');
-        getline(ss, nv->HO, '|');
-        nv->HO = normalizeString(nv->HO, hasError);
-        getline(ss, nv->TEN, '|');
-        nv->TEN = normalizeString(nv->TEN, hasError);
-        getline(ss, nv->PHAI, '\\');
-        nv->PHAI = normalizeString(nv->PHAI, hasError);
+        *tail = new dsChiTietHoaDon{cthd, nullptr};
+        tail = &(*tail)->next;
+    }
+}
+void Read_NhanVien(ifstream &file, nhanVien &nv)
+{
+    string line;
 
-        // Kiểm tra xem còn dữ liệu hóa đơn không
-        if (ss.peek() != EOF)
-        {
-            nv->firstDSHD = new dsHoaDon();
-            ss.ignore(); // Bỏ qua ký tự '\'
+    getline(file, nv.MANV, '|'); // Đọc mã nhân viên
+    getline(file, nv.HO, '|');   // Đọc họ
+    getline(file, nv.TEN, '|');  // Đọc tên
+    getline(file, nv.PHAI);      // Đọc phái (không có ký tự phân cách cuối)
 
-            // Đọc thông tin hóa đơn
-            getline(ss, nv->firstDSHD->data_hd.SoHD, '|');
-            ss >> nv->firstDSHD->data_hd.loai;
-            ss.ignore();
-            ss >> nv->firstDSHD->data_hd.day;
-            ss.ignore();
-            ss >> nv->firstDSHD->data_hd.month;
-            ss.ignore();
-            ss >> nv->firstDSHD->data_hd.year;
-            ss.ignore(2); // Bỏ qua '\\'
+    // Đọc danh sách hóa đơn của nhân viên
+    nv.firstDSHD = nullptr;
+    ptr_DSHD *tail = &nv.firstDSHD;
 
-            // Đọc thông tin chi tiết hóa đơn
-            nv->firstDSHD->data_hd.firstCTHD = new dsChiTietHoaDon();
-            getline(ss, nv->firstDSHD->data_hd.firstCTHD->data_cthd.MAVT, '|');
-            ss >> nv->firstDSHD->data_hd.firstCTHD->data_cthd.soLuong;
-            ss.ignore();
-            ss >> nv->firstDSHD->data_hd.firstCTHD->data_cthd.donGia;
-            ss.ignore();
-            ss >> nv->firstDSHD->data_hd.firstCTHD->data_cthd.VAT;
-        }
-        else
-        {
-            nv->firstDSHD = nullptr;
-        }
+    while (getline(file, line) && line != "End_NhanVien")
+    {
+        if (line == "End_HoaDon")
+            continue; // Bỏ qua dòng "End_HoaDon"
 
-        // Kiểm tra xem đọc dữ liệu có thành công không
-        if (!ss.fail())
-        {
-            if (ds_nv.CountNV < MaxNhanVien)
-            {
-                if (ds_nv.CountNV == 0)
-                {
-                    ds_nv.nodes[ds_nv.CountNV] = nv;
-                }
-                else
-                {
-                    ChenNhanVien(ds_nv, nv);
-                }
-                ds_nv.CountNV++;
-                cout << "Da doc thanh cong nhan vien: " << nv->MANV << endl;
-            }
-            else
-            {
-                cout << "Danh sach nhan vien da day. Khong the them nhan vien: " << nv->MANV << endl;
-                if (nv->firstDSHD)
-                {
-                    delete nv->firstDSHD->data_hd.firstCTHD;
-                    delete nv->firstDSHD;
-                }
-                delete nv;
-            }
-        }
-        else
-        {
-            cout << "Loi: Khong the doc du lieu tu dong: " << line << endl;
-            if (nv->firstDSHD)
-            {
-                delete nv->firstDSHD->data_hd.firstCTHD;
-                delete nv->firstDSHD;
-            }
-            delete nv;
-        }
+        nodeHoaDon hd;
+        hd.SoHD = line;
+        Read_HoaDon(file, hd);
+
+        *tail = new dsHoaDon{hd, nullptr};
+        tail = &(*tail)->next;
+    }
+}
+void Read_dsNhanVien(const string &filename, dsNhanVien &dsNV)
+{
+    ifstream file(filename);
+    if (!file)
+    {
+        cerr << "Không thể mở file để đọc!" << endl;
+        return;
     }
 
-    filein.close();
+    // Đọc số lượng nhân viên
+    string line;
+    getline(file, line);
+    dsNV.CountNV = stoi(line);
+
+    // Đọc thông tin từng nhân viên
+    for (int i = 0; i < dsNV.CountNV; ++i)
+    {
+        dsNV.nodes[i] = new nhanVien;
+        Read_NhanVien(file, *dsNV.nodes[i]);
+    }
+
+    file.close();
 }
+
 //======================HOA DON===================================
 void lapHoaDon(dsNhanVien &ds_nv)
 {
