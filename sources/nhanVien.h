@@ -39,17 +39,6 @@ bool isMANV(dsNhanVien &list, string maso)
     return false;
 }
 
-bool isMANV(dsNhanVien &list, string maso)
-{
-    for (int i = 0; i < list.CountNV; i++)
-    {
-        if (list.nodes[i]->MANV == maso)
-        {
-            return true;
-        }
-    }
-    return false;
-}
 bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
 {
     if (manv.size() == 0)
