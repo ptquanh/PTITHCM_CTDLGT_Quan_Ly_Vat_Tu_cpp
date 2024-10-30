@@ -19,10 +19,10 @@ const int LIGHTMAGENTA = 13;
 const int YELLOW = 14;
 const int WHITE = 15;
 
-const int x = 5;
-const int y = 5;
-const int w = 5;
-const int h = 5;
+// const int x = 5;
+// const int y = 5;
+// const int w = 5;
+// const int h = 5;
 const int wConsole = 120;
 const int hConsole = 30;
 // ki tu ve
@@ -45,24 +45,63 @@ const char T_UP = 202;         // ╩
 const char T_RIGHT = 204;      // ╠
 const char T_LEFT = 185;       // ╣
 const char CROSS = 206;
-// #define HeaderVT 4
-// char headerVatTuList[HeaderVT][50]{
-//     "MA VT",  // 5
-//     "TEN VT", // 6
-//     "DVT",    // 3
-//     "SL"};    // 2
+#define UP 72
+#define DOWN 80
+#define LEFT 75
+#define RIGHT 77
+#define ESC 27
+#define F1 59
+#define F2 60
+#define F3 61
+#define F4 62
+#define TAB 9
+#define BACKSPACE 8
 //==========tien khai bao==========
+void Normal();
+void Highlight(int Color);
 void drawHCN(int x, int y, int w, int h);
 void fillAreaColor(int x, int y, int w, int h, int color);
 void verticalLine(int x, int y, int h);
 void horizontalLine(int x, int y, int w);
+void deleteOneRow(int y);
+void deleteOneCollumn(int x);
 //==================================
+void Normal()
+{
+    SetBGColor(BLACK);
+    SetColor(WHITE);
+}
+void Highlight(int Color)
+{
+    SetBGColor(Color);
+    SetColor(WHITE);
+}
+void setColorByRequest(int bgColor, int wordColor){
+    SetBGColor(bgColor);
+    SetColor(wordColor);
+}
+void deleteOneRow(int y)
+{
+    for (int i = 0; i < 120; i++)
+    {
+        gotoxy(i, y);
+        cout << " ";
+    }
+}
+void deleteOneCollumn(int x)
+{
+    for (int i = 0; i < 30; i++)
+    {
+        gotoxy(x, i);
+        cout << " ";
+    }
+}
 void fillAreaColor(int x, int y, int w, int h, int color)
 {
     SetBGColor(color);
-    for (int i = 0; i < h; i++)
+    for (int i = 0; i <= h; i++)
     {
-        for (int j = 0; j < w; j++)
+        for (int j = 0; j <= w; j++)
         {
             gotoxy(x + j, y + i);
             cout << " ";
@@ -115,60 +154,34 @@ void horizontalLine(int x, int y, int w)
         std::cout << hzLine;
     }
 }
-
-void drawTable(int x, int y, int w, int h, char headerVatTuList[HeaderVT][50], treeVatTu root)
+void drawTableErrors(int x, int y, string errorMessage)
 {
-    drawHCN(x, y, w * 4, h);
-    horizontalLine(x + 1, y + 2, (w * 4) - 1);
-    // ve vien
-    gotoxy(x, y + 2);
-    cout << (char)204;
-    gotoxy(x + w * 4, y + 2);
-    cout << (char)185;
-    gotoxy(x + ((w * 4) - 45), y);
-    cout << (char)203;
-    gotoxy(x + ((w * 4) - 45), y + h);
-    cout << (char)202;
-    gotoxy(x + ((w * 4) - 22), y);
-    cout << (char)203;
-    gotoxy(x + ((w * 4) - 22), y + h);
-    cout << (char)202;
-    gotoxy(x + ((w * 4) - 11), y);
-    cout << (char)203;
-    gotoxy(x + ((w * 4) - 11), y + h);
-    cout << (char)202;
-    verticalLine(x + ((w * 4) - 45), y + 1, h - 1);
-    verticalLine(x + ((w * 4) - 22), y + 1, h - 1);
-    verticalLine(x + ((w * 4) - 11), y + 1, h - 1);
-    gotoxy(x + ((w * 4) - 45), y + 2);
-    cout << (char)206;
-    gotoxy(x + ((w * 4) - 22), y + 2);
-    cout << (char)206;
-    gotoxy(x + ((w * 4) - 11), y + 2);
-    cout << (char)206;
-    // ve header 0
-    gotoxy(x + 1, y + 1);
-    cout << headerVatTuList[0];
-    // ve header 1
-    gotoxy(x + ((w * 4) - 44), y + 1);
-    cout << headerVatTuList[1];
-    // ve header 2
-    gotoxy(x + ((w * 4) - 21), y + 1);
-    cout << headerVatTuList[2];
-    // ve header 3
-    gotoxy(x + ((w * 4) - 10), y + 1);
-    cout << headerVatTuList[3];
-    // inDanhSachVatTu(root);
+    setColorByRequest(LIGHTGRAY,BLACK);
+    drawHCN(x + 69, y + 17, 41, 6);
+    gotoxy(x + 85, y + 19);
+    setColorByRequest(LIGHTGRAY, RED);
+    cout << "THONG BAO";
+    for (int i = x + 71; i < x + 109; i++)
+    {
+        SetBGColor(RED);
+        gotoxy(i, y + 21);
+        cout << " ";
+        SetBGColor(BLACK);
+    }
+    SetColor(WHITE);
+    SetBGColor(BLUE);
+    gotoxy(x + 72, y + 21);
+    cout << errorMessage;
+    SetColor(WHITE);
+    SetBGColor(BLACK);
 }
-
 // int main()
 // {
 //     ShowCur(false);
-//     fillAreaColor(0, 0, wConsole, hConsole, LIGHTGRAY);
-//     fillAreaColor(x, y, w, h, BLACK);
-//     // drawHCN(x,y,w,h);
+//     int button = 0;
 //     while (1)
 //     {
+
 //         getch();
 //     }
 // }

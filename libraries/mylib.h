@@ -110,10 +110,6 @@ void SetBGColor(WORD color)
 
     SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
-void setConsoleColor(WORD color)
-{
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
 void clrscr1()
 {
     CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
@@ -142,7 +138,7 @@ int inputKey()
         if (key == 224)
         {
             key = _getch();
-            return key + 1000;
+            return key;
         }
         return key;
     }
@@ -159,6 +155,19 @@ void ShowCur(bool CursorVisibility)
     HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursor = {1, CursorVisibility};
     SetConsoleCursorInfo(handle, &cursor);
+}
+
+void ShowCurAtXY(int x, int y, bool show)
+{
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cursorInfo;
+    GetConsoleCursorInfo(console, &cursorInfo);
+    cursorInfo.bVisible = show;
+    SetConsoleCursorInfo(console, &cursorInfo);
+    if (show)
+    {
+        gotoxy(x, y);
+    }
 }
 //========== in giữa ============
 void CoutCentered(std::string text)
@@ -197,4 +206,26 @@ int getConsoleHeight()
         height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
     }
     return height;
+}
+/*===============các hằng số định nghĩa sẵn dùng tô màu===============
+// Màu chữ
+FOREGROUND_BLUE: Màu xanh dương
+FOREGROUND_GREEN : Màu xanh lá
+FOREGROUND_RED : Màu đỏ
+FOREGROUND_INTENSITY: Tăng cường độ sáng cho màu
+// Màu nền
+BACKGROUND_BLUE: Màu nền xanh dương
+BACKGROUND_GREEN: Màu nền xanh lá
+BACKGROUND_RED: Màu nền đỏ
+BACKGROUND_INTENSITY: Tăng cường độ sáng cho màu nền
+*/
+void fillConsoleWithColor(WORD color)
+{
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    int width = getConsoleWidth();
+    int height = getConsoleHeight();
+    int consoleSize = width * height;
+    DWORD charsWritten;
+    FillConsoleOutputAttribute(hConsole, color, consoleSize, {0, 0}, &charsWritten);
+    SetConsoleCursorPosition(hConsole, {0, 0});
 }

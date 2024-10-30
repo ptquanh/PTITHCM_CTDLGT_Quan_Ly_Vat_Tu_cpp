@@ -7,114 +7,53 @@ const int Header_x = 20;
 const int Header_y = 6;
 const int CTNNV = 4;
 
-#define UP 72
-#define DOWN 80
-#define F1 59
-#define F2 60
-#define F3 61
-#define F4 62
 
-void Normal()
-{
-    SetBGColor(BLACK);
-    SetColor(WHITE);
-}
-void Highlight(int Color)
-{
-    SetBGColor(Color);
-    SetColor(WHITE);
-}
-// int menuChinhDong(char menuchinh[YeuCauChinh][100])
-// {
-//     Normal();
-//     int choice = 0;
-//     system("cls");
-//     gotoxy(Header_x, Header_y);
-
-//     const int menuSpacing = 2; // Khoảng cách giữa các mục menu
-
-//     // Hiển thị menu theo chiều ngang
-//     int positions[YeuCauChinh]; // Lưu vị trí x của mỗi mục menu
-//     for (int i = 0; i < YeuCauChinh; i++)
-//     {
-//         int menuWidth = strlen(menuchinh[i]) - 1 + 2; // Chiều rộng của mỗi mục menu
-//         int x = Collums + (i > 0 ? menuSpacing : 0);
-//         for (int j = 0; j < i; j++)
-//         {
-//             x += strlen(menuchinh[j]) + 2 + menuSpacing; // Cộng dồn chiều rộng các menu trước đó
-//         }
-
-//         positions[i] = x; // Lưu vị trí x
-//         drawHCN(x, Rows, menuWidth, 2);
-//         gotoxy(x + 1, Rows + 1);
-//         cout << menuchinh[i];
-//     }
-
-//     // Hàm để highlight hoặc unhighlight một mục menu
-//     auto highlightMenuItem = [&](int index, bool isHighlight)
-//     {
-//         int x = positions[index];
-//         int menuWidth = strlen(menuchinh[index]) - 1 + 2;
-//         if (isHighlight)
-//         {
-//             Highlight(LIGHTBLUE);
-//         }
-//         else
-//         {
-//             Normal();
-//         }
-//         drawHCN(x, Rows, menuWidth, 2);
-//         gotoxy(x + 1, Rows + 1);
-//         cout << menuchinh[index];
-//     };
-
-//     // Highlight mục đầu tiên
-//     highlightMenuItem(choice, true);
-
-//     char direction;
-//     do
-//     {
-//         direction = getch();
-
-//         switch (direction)
-//         {
-//         case LEFT:
-//             if (choice > 0)
-//             {
-//                 highlightMenuItem(choice, false); // Unhighlight mục hiện tại
-//                 choice--;
-//                 highlightMenuItem(choice, true); // Highlight mục mới
-//             }
-//             break;
-//         case RIGHT:
-//             if (choice < YeuCauChinh - 1)
-//             {
-//                 highlightMenuItem(choice, false); // Unhighlight mục hiện tại
-//                 choice++;
-//                 highlightMenuItem(choice, true); // Highlight mục mới
-//             }
-//             break;
-//         case ENTER:
-//             Normal();
-//             return choice;
-//         }
-//     } while (true);
-// }
 int menuChinhDong(char menuchinh[YeuCauChinh][100])
 {
     Normal();
     int choice = 0;
     system("cls");
     gotoxy(Header_x, Header_y);
+
+    const int menuSpacing = 2; // Khoảng cách giữa các mục menu
+
+    // Hiển thị menu theo chiều ngang
+    int positions[YeuCauChinh]; // Lưu vị trí x của mỗi mục menu
     for (int i = 0; i < YeuCauChinh; i++)
     {
-        gotoxy(Collums, Rows + i);
+        int menuWidth = strlen(menuchinh[i]) - 1 + 2; // Chiều rộng của mỗi mục menu
+        int x = Collums + (i > 0 ? menuSpacing : 0);
+        for (int j = 0; j < i; j++)
+        {
+            x += strlen(menuchinh[j]) + 2 + menuSpacing; // Cộng dồn chiều rộng các menu trước đó
+        }
+
+        positions[i] = x; // Lưu vị trí x
+        drawHCN(x, Rows, menuWidth, 2);
+        gotoxy(x + 1, Rows + 1);
         cout << menuchinh[i];
     }
 
-    Highlight(LIGHTBLUE);
-    gotoxy(Collums, Rows + choice);
-    cout << menuchinh[choice];
+    // Hàm để highlight hoặc unhighlight một mục menu
+    auto highlightMenuItem = [&](int index, bool isHighlight)
+    {
+        int x = positions[index];
+        int menuWidth = strlen(menuchinh[index]) - 1 + 2;
+        if (isHighlight)
+        {
+            Highlight(LIGHTBLUE);
+        }
+        else
+        {
+            Normal();
+        }
+        drawHCN(x, Rows, menuWidth, 2);
+        gotoxy(x + 1, Rows + 1);
+        cout << menuchinh[index];
+    };
+
+    // Highlight mục đầu tiên
+    highlightMenuItem(choice, true);
 
     char direction;
     do
@@ -123,48 +62,20 @@ int menuChinhDong(char menuchinh[YeuCauChinh][100])
 
         switch (direction)
         {
-        case UP:
-            if (choice + 1 > 1)
+        case LEFT:
+            if (choice > 0)
             {
-                Normal();
-                gotoxy(Collums, Rows + choice);
-                cout << menuchinh[choice];
+                highlightMenuItem(choice, false); // Unhighlight mục hiện tại
                 choice--;
-                Highlight(LIGHTBLUE);
-                gotoxy(Collums, Rows + choice);
-                cout << menuchinh[choice];
-            }
-            else
-            {
-                choice = YeuCauChinh - 1;
-                Normal();
-                gotoxy(Collums, Rows + 0);
-                cout << menuchinh[0];
-                Highlight(LIGHTBLUE);
-                gotoxy(Collums, Rows + choice);
-                cout << menuchinh[choice];
+                highlightMenuItem(choice, true); // Highlight mục mới
             }
             break;
-        case DOWN:
-            if (choice + 1 < YeuCauChinh)
+        case RIGHT:
+            if (choice < YeuCauChinh - 1)
             {
-                Normal();
-                gotoxy(Collums, Rows + choice);
-                cout << menuchinh[choice];
+                highlightMenuItem(choice, false); // Unhighlight mục hiện tại
                 choice++;
-                Highlight(LIGHTBLUE);
-                gotoxy(Collums, Rows + choice);
-                cout << menuchinh[choice];
-            }
-            else
-            {
-                choice = 0;
-                Normal();
-                gotoxy(Collums, Rows + YeuCauChinh - 1);
-                cout << menuchinh[YeuCauChinh - 1];
-                Highlight(LIGHTBLUE);
-                gotoxy(Collums, Rows + choice);
-                cout << menuchinh[choice];
+                highlightMenuItem(choice, true); // Highlight mục mới
             }
             break;
         case ENTER:
@@ -173,6 +84,79 @@ int menuChinhDong(char menuchinh[YeuCauChinh][100])
         }
     } while (true);
 }
+// int menuChinhDong(char menuchinh[YeuCauChinh][100])
+// {
+//     Normal();
+//     int choice = 0;
+//     system("cls");
+//     gotoxy(Header_x, Header_y);
+//     for (int i = 0; i < YeuCauChinh; i++)
+//     {
+//         gotoxy(Collums, Rows + i);
+//         cout << menuchinh[i];
+//     }
+
+//     Highlight(LIGHTBLUE);
+//     gotoxy(Collums, Rows + choice);
+//     cout << menuchinh[choice];
+
+//     char direction;
+//     do
+//     {
+//         direction = getch();
+
+//         switch (direction)
+//         {
+//         case UP:
+//             if (choice + 1 > 1)
+//             {
+//                 Normal();
+//                 gotoxy(Collums, Rows + choice);
+//                 cout << menuchinh[choice];
+//                 choice--;
+//                 Highlight(LIGHTBLUE);
+//                 gotoxy(Collums, Rows + choice);
+//                 cout << menuchinh[choice];
+//             }
+//             else
+//             {
+//                 choice = YeuCauChinh - 1;
+//                 Normal();
+//                 gotoxy(Collums, Rows + 0);
+//                 cout << menuchinh[0];
+//                 Highlight(LIGHTBLUE);
+//                 gotoxy(Collums, Rows + choice);
+//                 cout << menuchinh[choice];
+//             }
+//             break;
+//         case DOWN:
+//             if (choice + 1 < YeuCauChinh)
+//             {
+//                 Normal();
+//                 gotoxy(Collums, Rows + choice);
+//                 cout << menuchinh[choice];
+//                 choice++;
+//                 Highlight(LIGHTBLUE);
+//                 gotoxy(Collums, Rows + choice);
+//                 cout << menuchinh[choice];
+//             }
+//             else
+//             {
+//                 choice = 0;
+//                 Normal();
+//                 gotoxy(Collums, Rows + YeuCauChinh - 1);
+//                 cout << menuchinh[YeuCauChinh - 1];
+//                 Highlight(LIGHTBLUE);
+//                 gotoxy(Collums, Rows + choice);
+//                 cout << menuchinh[choice];
+//             }
+//             break;
+//         case ENTER:
+//             Normal();
+//             return choice;
+//         }
+//     } while (true);
+// }
 
 int MenuVatTuDong(char menuvattu[YeuCauVatTu][100])
 {

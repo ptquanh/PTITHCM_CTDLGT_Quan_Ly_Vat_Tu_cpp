@@ -19,25 +19,13 @@ using namespace std;
 #define YeuCauHoaDon 2
 #define YeuCauThongKe 3
 #define SoNut 5
-#define HeaderVT 4
-#define HeaderNV 4
 // ================ others ======================
 char keyGuides[SoNut][50] = {
-    "ESC",
-    "F1: Them",
-    "F2: Sua",
-    "F3: Xoa",
-    "F4: Luu va thoat"};
-char headerVatTuList[HeaderVT][50]{
-    "MA VT",  // 5
-    "TEN VT", // 6
-    "DVT",    // 3
-    "SL"};    // 2
-char headerNhanVienList[HeaderNV][50]{
-    "MA NV",
-    "HO NV",
-    "TEN NV",
-    "PHAI"};
+    "F1: Them VT",
+    "F2: Sua VT",
+    "F3: Xoa VT",
+    "F4: Luu",
+    "ESC: Thoat"};
 // ================ MENU ========================
 char MenuChinh[YeuCauChinh][100] = {
     "MENU CHINH",

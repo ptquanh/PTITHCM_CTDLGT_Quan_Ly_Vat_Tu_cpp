@@ -33,7 +33,7 @@ int main()
             xoaVatTu(root);
             break;
         case 4:
-            inDanhSachVatTu(root);
+            timKiemVatTu(root);
             break;
         case 5:
             NhapNhanVien(ds_nv);

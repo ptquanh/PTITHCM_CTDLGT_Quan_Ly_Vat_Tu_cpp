@@ -1,4 +1,10 @@
-nv2|A|A|Nu\
+NV2|Phan Tuan Quoc|Anh|Nam\
 nv3|Ly|Bien|Nam\
-5|Nguyen|Toan|Nam\
-NV1|Nguyen|Toan Phuc|Nam\
+NV1|Nguyen Toan|Phuc|Nam\
+NV4|Nguyen|Toan|Nam\
+    -HD1|01|01|2024|N
+        +VT1|banh xe|cai|20
+        +VT2|banh mi|cai|20
+    -HD2|01|01|2024|N
+        +VT1|banh xe|cai|10
+        +VT2|banh mi|cai|50
