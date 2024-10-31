@@ -37,16 +37,16 @@ int main()
             timKiemVatTu(root);
             break;
         case 5:
-            NhapNhanVien(ds_nv);
+            nhapNhanVien(ds_nv);
             break;
         case 6:
-            ChinhSuaNhanVien(ds_nv);
+            suaNhanVien(ds_nv);
             break;
         case 7:
-            DeleteNV(ds_nv);
+            xoaNhanVien(ds_nv);
             break;
         case 8:
-            InNhanVien(ds_nv);
+            inNhanVien(ds_nv);
             break;
         case 9:
             lapHoaDon(ds_nv);
@@ -71,6 +71,6 @@ int main()
         }
     } while (choice != 0);
         // writeFile_dsVatTu(root);
-        Write_dsNhanVien(ds_nv);
+        // Write_dsNhanVien(ds_nv);
     return 0;
 }

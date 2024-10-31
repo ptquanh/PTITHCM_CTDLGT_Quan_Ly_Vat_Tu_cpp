@@ -251,7 +251,7 @@ void xoaVatTu(treeVatTu &root)
     }
 }
 
-void formatMAVT(string &MAVT, string &TENVT, string &DVT, int &SLT)
+void formatInputVT(string &MAVT, string &TENVT, string &DVT, int &SLT)
 {
     if (MAVT.length() > 10)
     {
@@ -389,7 +389,7 @@ void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
         getline(ss, data_vt.DVT, '|');
         data_vt.DVT = normalizeString(data_vt.DVT, hasError);
         ss >> data_vt.soLuongTon;
-        formatMAVT(data_vt.MAVT, data_vt.TENVT, data_vt.DVT, data_vt.soLuongTon);
+        formatInputVT(data_vt.MAVT, data_vt.TENVT, data_vt.DVT, data_vt.soLuongTon);
         // Kiểm tra xem đọc dữ liệu có thành công không
         if (!ss.fail())
         {
@@ -453,8 +453,8 @@ void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 //             gotoxy(x + 88, y + 4);
 //             getline(cin, MAVT);
 //             treeVatTu result = search(root, MAVT);
-//             formatMAVT(MAVT, tenVT, dvt, slt);
-//             // MAVT = formatMAVT(MAVT, tenVT);
+//             formatInputVT(MAVT, tenVT, dvt, slt);
+//             // MAVT = formatInputVT(MAVT, tenVT);
 //             if (result != NULL)
 //             {
 //                 cout << "Loi: Ma vat tu '" << MAVT << "' da ton tai trong he thong!\n";
@@ -474,7 +474,7 @@ void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 //             setColorByRequest(WHITE, BLACK);
 //             gotoxy(x + 88, y + 6);
 //             getline(cin, tenVT);
-//             formatMAVT(MAVT, tenVT, dvt, slt);
+//             formatInputVT(MAVT, tenVT, dvt, slt);
 //             tenVT = normalizeString(tenVT, hasError);
 //             if (!hasError && tenVT.empty())
 //             {
@@ -490,7 +490,7 @@ void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 //             setColorByRequest(WHITE, BLACK);
 //             gotoxy(x + 88, y + 8);
 //             getline(cin, dvt);
-//             formatMAVT(MAVT, tenVT, dvt, slt);
+//             formatInputVT(MAVT, tenVT, dvt, slt);
 //             dvt = normalizeString(dvt, hasError);
 //             if (!hasError && dvt.empty())
 //             {
@@ -504,7 +504,7 @@ void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 //         setColorByRequest(WHITE, BLACK);
 //         gotoxy(x + 88, y + 10);
 //         cin >> data_vt.soLuongTon;
-//         formatMAVT(MAVT, tenVT, dvt, slt);
+//         formatInputVT(MAVT, tenVT, dvt, slt);
 //         cin.ignore();
 //         break;
 //     }*/
@@ -696,7 +696,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
                 continue;
             }
             input.MAVT = tempInput;
-            formatMAVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
         case 1:
@@ -715,7 +715,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
                 continue;
             }
             input.TENVT = tempInput;
-            formatMAVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
         case 2:
@@ -734,7 +734,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
                 continue;
             }
             input.DVT = tempInput;
-            formatMAVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
         case 3:
@@ -743,7 +743,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             if (numResult == -1)
                 return;
             input.soLuongTon = numResult;
-            formatMAVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
 
             break;
         }

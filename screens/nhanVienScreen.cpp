@@ -1,4 +1,4 @@
-#include "nhanVien.h"
+#include "../sources/nhanVien.h"
 // #pragma once;
 using namespace std;
 
@@ -14,7 +14,7 @@ char Header[CT_Header][50] = {
 };
 
 void ListPrint(dsNhanVien list, int x, int y){
-    NhanVienEmpty(list);
+    nhanVienEmpty(list);
     int locate = x;;
     const int border_0 = locate;
     locate += strlen(Header[0]) + 1;

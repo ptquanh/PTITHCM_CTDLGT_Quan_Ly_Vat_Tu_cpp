@@ -1,32 +1,9 @@
 #pragma once
 #include "vatTu.h"
-
-bool NhanVienEmpty(dsNhanVien list)
+bool nhanVienEmpty(dsNhanVien &list)
 {
-    if (list.CountNV != 0)
-    {
-        return false;
-    }
-    else
-    {
-        cout << "Danh sach nhan vien rong!" << endl;
-        return true;
-    }
+    return list.CountNV == 0;
 }
-bool NhanVienEmpty(dsNhanVien list, int x, int y)
-{
-    if (list.CountNV != 0)
-    {
-        return false;
-    }
-    else
-    {
-        gotoxy(x, y);
-        cout << "Danh sach nhan vien rong!";
-        return true;
-    }
-}
-
 bool isMANV(dsNhanVien &list, string maso)
 {
     for (int i = 0; i < list.CountNV; i++)
@@ -38,94 +15,118 @@ bool isMANV(dsNhanVien &list, string maso)
     }
     return false;
 }
-
-bool CheckMANV(string manv, nhanVien *&nv, dsNhanVien list)
+void formatInputNV(string &MANV, string &HO, string &TEN, string &PHAI)
 {
-    if (manv.size() == 0)
-        return true;
-    if (isMANV(list, manv))
-        cout << "Loi:Ma da ton tai" << endl;
-
-    //  Kiểm tra kí tự space và xóa đi khỏi MANV;
-    string result;
-    for (const char c : manv)
+    if (MANV.length() > 10)
     {
-        if (c != ' ')
-            result += c;
+        MANV = MANV.substr(0, 10);
     }
-    manv = result;
-
-    if (manv.size() > 10)
+    if (HO.length() > 20)
     {
-        cout << "Loi ma nhan vien khong duoc qua 10 ki tu - " << manv.size() << " ki tu" << manv << endl;
-        cout << "Lay 10 ki tu hoac nhap lai (1 hoac 0) ";
-        int n;
-        cin >> n;
-        while (true)
+        HO = HO.substr(0, 20);
+    }
+    if (TEN.length() > 6)
+    {
+        TEN = TEN.substr(0, 6);
+    }
+    if (PHAI.length() > 6)
+    {
+        PHAI = PHAI.substr(0, 6);
+    }
+}
+bool checkThongTin(string type, string value, nhanVien *&nv, dsNhanVien &list)
+{
+    if (type == "MANV")
+    {
+        if (value.empty())
         {
-            if (n == 1)
+            cout << "Loi: Ma nhan vien khong duoc rong!" << endl;
+            return true;
+        }
+
+        // Xóa khoảng trắng
+        string result;
+        for (const char c : value)
+        {
+            if (c != ' ')
             {
-                manv.resize(10);
-                nv->MANV = manv;
-                return false;
+                result += c;
             }
-            if (n == 0)
-                return true;
         }
-    }
+        value = result;
 
-    nv->MANV = manv;
-    return false;
-}
-bool CheckHO(string ho, nhanVien *&nv, dsNhanVien list)
-{
-    if (ho.size() == 0)
-        return true;
-    bool hasError;
-    ho = normalizeString(ho, hasError);
-    if (hasError)
-        return true;
-    nv->HO = ho;
-    return false;
-}
-bool CheckTEN(string ten, nhanVien *&nv, dsNhanVien list)
-{
-    if (ten.size() == 0)
-        return true;
-    bool hasError;
-    ten = normalizeString(ten, hasError);
-    if (hasError)
-        return true;
-    for (char c : ten)
-    {
-        if (c == ' ')
+        if (value.length() > 10)
         {
-            cout << "Loi: Khong the co khoang trang trong ten" << endl;
-            return false;
+            cout << "Loi: Ma nhan vien khong duoc qua 10 ky tu!" << endl;
+            return true;
         }
+
+        if (isMANV(list, value))
+        {
+            cout << "Loi: Ma nhan vien da ton tai!" << endl;
+            return true;
+        }
+
+        nv->MANV = value;
+    }
+    else if (type == "HO")
+    {
+        if (value.empty())
+        {
+            cout << "Loi: Ho nhan vien khong duoc rong!" << endl;
+            return true;
+        }
+
+        bool hasError;
+        value = normalizeString(value, hasError);
+        if (hasError)
+        {
+            return true;
+        }
+
+        nv->HO = value;
+    }
+    else if (type == "TEN")
+    {
+        if (value.empty())
+        {
+            cout << "Loi: Ten nhan vien khong duoc rong!" << endl;
+            return true;
+        }
+
+        bool hasError;
+        value = normalizeString(value, hasError);
+        if (hasError)
+        {
+            return true;
+        }
+
+        for (char c : value)
+        {
+            if (c == ' ')
+            {
+                cout << "Loi: Ten nhan vien khong duoc chua khoang trang!" << endl;
+                return true;
+            }
+        }
+
+        nv->TEN = value;
+    }
+    else if (type == "PHAI")
+    {
+        if (value.empty() || (value != "nam" && value != "nu"))
+        {
+            cout << "Loi: Gioi tinh khong hop le!" << endl;
+            return true;
+        }
+
+        nv->PHAI = value;
     }
 
-    nv->TEN = ten;
-    return true;
-}
-bool CheckPHAI(string phai, nhanVien *&nv, dsNhanVien list)
-{
-    if (phai == "0" || phai == "1")
-    {
-        if (phai == "0")
-            nv->PHAI = "Nu";
-        if (phai == "1")
-            nv->PHAI = "Nam";
-        return false;
-    }
-    else
-    {
-        cout << "Loi: Phai khong hop le" << endl;
-        return true;
-    }
+    return false;
 }
 
-int SearchNhanVien(dsNhanVien list, string manv)
+int searchNhanVien(dsNhanVien &list, string manv)
 {
     for (int i = 0; i < list.CountNV; i++)
     {
@@ -135,78 +136,97 @@ int SearchNhanVien(dsNhanVien list, string manv)
         }
     }
     cout << "Khong tim thay nhan vien!" << endl;
-
     return -1;
 }
 
-void ChenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
+void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
 {
-    int compare;
-    int pos;
-    for (pos = 0; pos < list.CountNV; pos++)
+    if (list.CountNV >= MaxNhanVien)
     {
-        if (nhanvienmoi->TEN < list.nodes[pos]->TEN)
-        {
-            break;
-        }
+        cout << "Loi: So luong nhan vien da dat toi da. Khong the them nhan vien moi!" << endl;
+        return;
+    }
 
-        if (nhanvienmoi->TEN == list.nodes[pos]->TEN)
-        {
-            if (nhanvienmoi->HO < list.nodes[pos]->HO)
-            {
-                break;
-            }
-        }
+    int pos = 0;
+    while (pos < list.CountNV && (nhanvienmoi->TEN > list.nodes[pos]->TEN ||
+                                  (nhanvienmoi->TEN == list.nodes[pos]->TEN && nhanvienmoi->HO >= list.nodes[pos]->HO)))
+    {
+        pos++;
     }
 
     for (int i = list.CountNV; i > pos; i--)
     {
         list.nodes[i] = list.nodes[i - 1];
     }
+
     list.nodes[pos] = nhanvienmoi;
 }
 
-void NhapNhanVien(dsNhanVien &list)
+void xoaNhanVien(dsNhanVien &list)
 {
-    bool hasError;
-    if (list.CountNV >= MaxNhanVien)
+    if (nhanVienEmpty(list))
     {
-        cout << "so luong nv toi da" << "\n";
+        cout << "Danh sach nhan vien trong!" << endl;
         return;
     }
-    nhanVien *nv = new nhanVien();
-    bool check = false;
-    cout << "Nhap ma nhan vien (10 ky tu):";
-    do
-    {
-        string manv;
-        getline(cin, manv);
-        check = CheckMANV(manv, nv, list);
-    } while (check == true);
 
-    cout << "Nhap ho nhan vien: ";
-    do
-    {
-        string ho;
-        getline(cin, ho);
-        check = CheckHO(ho, nv, list);
-    } while (check == true);
+    string manv;
+    cout << "Nhap ma nhan vien can xoa: ";
+    getline(cin, manv);
 
-    cout << "Nhap ten nhan vien: ";
-    do
+    int pos = searchNhanVien(list, manv);
+    if (pos == -1)
     {
-        string ten;
-        getline(cin, ten);
-        check = CheckTEN(ten, nv, list);
-    } while (check == true);
+        return;
+    }
 
-    cout << "Nhap gioi tinh (1 la nam || 0 la nu): ";
+    delete list.nodes[pos];
+    for (int i = pos; i < list.CountNV - 1; i++)
+    {
+        list.nodes[i] = list.nodes[i + 1];
+    }
+    list.CountNV--;
+    cout << "Da xoa nhan vien thanh cong!" << endl;
+}
+void nhapNhanVien(dsNhanVien &list)
+{
+    if (list.CountNV >= MaxNhanVien)
+    {
+        cout << "So luong nhan vien da dat toi da!" << endl;
+        return;
+    }
+
+    nhanVien *nv = new nhanVien;
+    string value;
+    bool check;
+
     do
     {
-        string phai;
-        getline(cin, phai);
-        check = CheckPHAI(phai, nv, list);
-    } while (check == true);
+        cout << "Nhap ma nhan vien (toi da 10 ky tu): ";
+        getline(cin, value);
+        check = checkThongTin("MANV", value, nv, list);
+    } while (check);
+
+    do
+    {
+        cout << "Nhap ho nhan vien: ";
+        getline(cin, value);
+        check = checkThongTin("HO", value, nv, list);
+    } while (check);
+
+    do
+    {
+        cout << "Nhap ten nhan vien: ";
+        getline(cin, value);
+        check = checkThongTin("TEN", value, nv, list);
+    } while (check);
+
+    do
+    {
+        cout << "Nhap gioi tinh (nam/nu): ";
+        getline(cin, value);
+        check = checkThongTin("PHAI", value, nv, list);
+    } while (check);
 
     if (list.CountNV == 0)
     {
@@ -214,102 +234,132 @@ void NhapNhanVien(dsNhanVien &list)
     }
     else
     {
-        ChenNhanVien(list, nv);
+        chenNhanVien(list, nv);
     }
     list.CountNV++;
 }
 
-void DeleteNV(dsNhanVien &list)
+// Hàm sửa nhân viên
+void suaNhanVien(dsNhanVien &list)
 {
-    if (NhanVienEmpty(list))
+    if (nhanVienEmpty(list))
+    {
+        cout << "Danh sach nhan vien trong!" << endl;
         return;
+    }
 
     string manv;
-    cout << "Ma nhan vien: ";
-    cin >> manv;
+    cout << "Nhap ma nhan vien can sua: ";
+    getline(cin, manv);
 
-    int pos = SearchNhanVien(list, manv);
-    delete list.nodes[pos];
-
-    for (int i = pos; i < list.CountNV - 1; i++)
-    {
-        list.nodes[i] = list.nodes[i + 1];
-    }
-    list.CountNV--;
-}
-
-void ChinhSuaNhanVien(dsNhanVien &list)
-{
-    if (NhanVienEmpty(list))
-        return;
-
-    char manv[50];
-    cout << "Ma nhan vien: ";
-    cin >> manv;
-
-    int pos = SearchNhanVien(list, manv);
+    int pos = searchNhanVien(list, manv);
     if (pos == -1)
+    {
         return;
+    }
 
+    nhanVien *nv = list.nodes[pos];
     bool check;
-    cout << "Thong tin hien tai: " << endl;
-    cout << "Ma nhan vien " << list.nodes[pos]->MANV;
-    cout << "\nNhap ho sinh vien moi (Enter de giu nguyen): ";
-    string newHO;
-    cin.ignore();
-    do
-    {
-        getline(cin, newHO);
-        if (newHO.empty())
-            check = false;
-        else
-            check = CheckHO(newHO, list.nodes[pos], list);
-    } while (check);
+    int choice;
+    string value;
 
-    cout << "Nhap ten sinh vien moi (Enter de giu nguyen): ";
-    string newTEN;
     do
     {
-        getline(cin, newTEN);
-        if (newTEN.empty())
-            check = false;
-        else
-            check = CheckTEN(newTEN, list.nodes[pos], list);
-    } while (check);
-    cout << "Nhap gioi tinh moi (1 la nam || 0 la nu): ";
-    string newPHAI;
-    do
-    {
-        getline(cin, newPHAI);
-        if (newPHAI.empty())
-            check = false;
-        else
-            check = CheckPHAI(newPHAI, list.nodes[pos], list);
-    } while (check);
+        cout << "\nChon thong tin can sua:" << endl;
+        cout << "1. Ho nhan vien" << endl;
+        cout << "2. Ten nhan vien" << endl;
+        cout << "3. Gioi tinh" << endl;
+        cout << "0. Thoat" << endl;
+        cout << "Lua chon cua ban: ";
+        cin >> choice;
+        cin.ignore();
 
-    cout << "\nDa cap nhat thong tin nhan vien." << endl;
+        switch (choice)
+        {
+        case 1:
+            do
+            {
+                cout << "Nhap ho nhan vien moi: ";
+                getline(cin, value);
+                check = checkThongTin("HO", value, nv, list);
+            } while (check);
+            break;
+
+        case 2:
+        {
+            do
+            {
+                cout << "Nhap ten nhan vien moi: ";
+                getline(cin, value);
+                check = checkThongTin("TEN", value, nv, list);
+            } while (check);
+
+            // Sắp xếp lại sau khi sửa tên
+            nhanVien *temp = list.nodes[pos];
+            for (int i = pos; i < list.CountNV - 1; i++)
+            {
+                list.nodes[i] = list.nodes[i + 1];
+            }
+            list.CountNV--;
+            chenNhanVien(list, temp);
+            list.CountNV++;
+            break;
+        }
+
+        case 3:
+            do
+            {
+                cout << "Nhap gioi tinh moi (nam/nu): ";
+                getline(cin, value);
+                check = checkThongTin("PHAI", value, nv, list);
+            } while (check);
+            break;
+
+        case 0:
+            cout << "Da hoan tat chinh sua!" << endl;
+            break;
+
+        default:
+            cout << "Lua chon khong hop le!" << endl;
+        }
+    } while (choice != 0);
 }
-
-void DeleteDSNV(dsNhanVien &list)
+void inNhanVien(dsNhanVien &list)
 {
-    if (NhanVienEmpty(list))
+    if (nhanVienEmpty(list))
+    {
+        cout << "Danh sach nhan vien rong" << endl;
         return;
-    list.CountNV = 0;
-}
+    }
 
-void InNhanVien(dsNhanVien list)
-{
-    if (NhanVienEmpty(list))
-        return;
-
+    cout << "\n=== DANH SACH NHAN VIEN ===\n";
     for (int i = 0; i < list.CountNV; i++)
     {
+        cout << "\nNhan vien " << i + 1 << ":\n";
+        cout << "-------------------------\n";
         cout << "Ma nhan vien: " << list.nodes[i]->MANV << endl;
         cout << "Ho nhan vien: " << list.nodes[i]->HO << endl;
         cout << "Ten nhan vien: " << list.nodes[i]->TEN << endl;
         cout << "Gioi tinh: " << list.nodes[i]->PHAI << endl;
+        cout << "-------------------------\n";
     }
+    cout << "\nTong so nhan vien: " << list.CountNV << endl;
 }
+
+void xoaDSNV(dsNhanVien &list) //goi khi ket thuc
+{
+    if (nhanVienEmpty(list))
+        return;
+
+    for (int i = 0; i < list.CountNV; i++)
+    {
+        delete list.nodes[i];
+        list.nodes[i] = NULL;
+    }
+    list.CountNV = 0;
+}
+
+/*
 
 void Write_CTHoaDon(ofstream &file, nodeChiTietHoaDon &cthd)
 {
@@ -358,6 +408,8 @@ void Write_dsNhanVien(dsNhanVien &dsNV)
     }
     fileout.close();
 }
+*/
+
 // void Read_CTHoaDon(ifstream &file, nodeChiTietHoaDon &cthd)
 // {
 //     string line;
