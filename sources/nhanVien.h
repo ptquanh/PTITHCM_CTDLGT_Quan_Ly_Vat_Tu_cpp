@@ -346,7 +346,7 @@ void inNhanVien(dsNhanVien &list)
     cout << "\nTong so nhan vien: " << list.CountNV << endl;
 }
 
-void xoaDSNV(dsNhanVien &list) //goi khi ket thuc
+void xoaDSNV(dsNhanVien &list) // goi khi ket thuc
 {
     if (nhanVienEmpty(list))
         return;
@@ -359,26 +359,27 @@ void xoaDSNV(dsNhanVien &list) //goi khi ket thuc
     list.CountNV = 0;
 }
 
-/*
-
 void Write_CTHoaDon(ofstream &file, nodeChiTietHoaDon &cthd)
 {
-    file << cthd.MAVT << "|" << cthd.soLuong << "|" << cthd.donGia << "|" << cthd.VAT << endl;
-    file << "End_ChiTietHoaDon" << endl;
+    file << "+" << cthd.MAVT << "|" << cthd.soLuong << "|" << cthd.donGia << "|" << cthd.VAT;
 }
+
 void Write_HoaDon(ofstream &file, nodeHoaDon &hd)
 {
-    file << hd.SoHD << "|" << hd.loai << "|" << hd.day << "|" << hd.month << "|" << hd.year << endl;
+    file << "-" << hd.SoHD << "|" << hd.day << "|" << hd.month << "|" << hd.year << "|" << hd.loai << endl;
 
     // Ghi danh sách chi tiết hóa đơn
     ptr_DSCTHD current = hd.firstCTHD;
     while (current != nullptr)
     {
         Write_CTHoaDon(file, current->data_cthd);
+        if (current->next != nullptr)
+            file << " ";
         current = current->next;
     }
-    file << "End_HoaDon" << endl; // Đánh dấu kết thúc hóa đơn
+    file << endl;
 }
+
 void Write_NhanVien(ofstream &file, nhanVien &nv)
 {
     file << nv.MANV << "|" << nv.HO << "|" << nv.TEN << "|" << nv.PHAI << endl;
@@ -387,12 +388,13 @@ void Write_NhanVien(ofstream &file, nhanVien &nv)
     ptr_DSHD current = nv.firstDSHD;
     while (current != nullptr)
     {
-        // Write_HoaDon(file, current->data_hd);
+        Write_HoaDon(file, current->data_hd);
         current = current->next;
     }
-    file << "End_NhanVien" << endl; // Đánh dấu kết thúc nhân viên
+    file << "\\" << endl;
 }
-void Write_dsNhanVien(dsNhanVien &dsNV)
+
+void writeFile_dsNhanVien(dsNhanVien &dsNV)
 {
     ofstream fileout;
     fileout.open(filePath_NV, ios_base::out);
@@ -401,93 +403,110 @@ void Write_dsNhanVien(dsNhanVien &dsNV)
         cerr << "Khong the mo file ghi!" << endl;
         return;
     }
-    fileout << dsNV.CountNV << endl;
+
     for (int i = 0; i < dsNV.CountNV; ++i)
     {
         Write_NhanVien(fileout, *dsNV.nodes[i]);
     }
     fileout.close();
 }
-*/
 
-// void Read_CTHoaDon(ifstream &file, nodeChiTietHoaDon &cthd)
-// {
-//     string line;
+void Read_CTHoaDon(string cthdStr, nodeChiTietHoaDon &cthd)
+{
+    stringstream ss(cthdStr);
 
-//     getline(file, cthd.MAVT, '|'); // Đọc mã vật tư cho đến ký tự "|"
-//     getline(file, line, '|');      // Đọc và chuyển thành số nguyên cho `soLuong`
-//     cthd.soLuong = stoi(line);
+    getline(ss, cthd.MAVT, '|');
+    string line;
 
-//     getline(file, line, '|'); // Đọc và chuyển thành số thực cho `donGia`
-//     cthd.donGia = stof(line);
+    getline(ss, line, '|');
+    cthd.soLuong = stoi(line);
 
-//     getline(file, line); // Đọc VAT
-//     cthd.VAT = stof(line);
+    getline(ss, line, '|');
+    cthd.donGia = stof(line);
 
-//     getline(file, line); // Đọc "End_ChiTietHoaDon"
-// }
-// void Read_HoaDon(ifstream &file, nodeHoaDon &hd)
-// {
-//     string line;
+    getline(ss, line);
+    cthd.VAT = stof(line);
+}
 
-//     getline(file, hd.SoHD, '|'); // Đọc số hóa đơn đến ký tự "|"
+void Read_HoaDon(ifstream &file, nodeHoaDon &hd)
+{
+    string line;
+    getline(file, line);
 
-//     getline(file, line, '|'); // Đọc loại hóa đơn dưới dạng chuỗi và lấy ký tự đầu
-//     hd.loai = line[0];
+    if (line[0] != '-')
+        return; // Kiểm tra dòng hóa đơn
 
-//     getline(file, line, '|'); // Đọc ngày dưới dạng chuỗi và chuyển thành số nguyên
-//     hd.day = stoi(line);
+    stringstream ss(line.substr(1)); // Bỏ qua dấu '-'
 
-//     getline(file, line, '|'); // Đọc tháng dưới dạng chuỗi và chuyển thành số nguyên
-//     hd.month = stoi(line);
+    getline(ss, hd.SoHD, '|');
 
-//     getline(file, line); // Đọc năm dưới dạng chuỗi và chuyển thành số nguyên
-//     hd.year = stoi(line);
+    string temp;
+    getline(ss, temp, '|');
+    hd.day = stoi(temp);
 
-//     // Đọc danh sách chi tiết hóa đơn
-//     hd.firstCTHD = nullptr;
-//     ptr_DSCTHD *tail = &hd.firstCTHD;
+    getline(ss, temp, '|');
+    hd.month = stoi(temp);
 
-//     while (getline(file, line) && line != "End_HoaDon")
-//     {
-//         if (line == "End_ChiTietHoaDon")
-//             continue; // Bỏ qua dòng "End_ChiTietHoaDon"
+    getline(ss, temp, '|');
+    hd.year = stoi(temp);
 
-//         nodeChiTietHoaDon cthd;
-//         // Sử dụng hàm trực tiếp mà không cần `istringstream`
-//         cthd.MAVT = line;
-//         Read_CTHoaDon(file, cthd);
+    getline(ss, temp);
+    hd.loai = temp[0];
 
-//         *tail = new dsChiTietHoaDon{cthd, nullptr};
-//         tail = &(*tail)->next;
-//     }
-// }
+    // Đọc chi tiết hóa đơn
+    hd.firstCTHD = nullptr;
+    ptr_DSCTHD *tail = &hd.firstCTHD;
+
+    string chiTietLine;
+    getline(file, chiTietLine);
+
+    stringstream ctss(chiTietLine);
+    string cthdStr;
+    while (getline(ctss, cthdStr, ' '))
+    {
+        nodeChiTietHoaDon cthd;
+        cthdStr = cthdStr.substr(1); // Bỏ qua dấu '+'
+        Read_CTHoaDon(cthdStr, cthd);
+
+        *tail = new dsChiTietHoaDon{cthd, nullptr};
+        tail = &(*tail)->next;
+    }
+}
+
 void Read_NhanVien(ifstream &file, nhanVien &nv)
 {
     string line;
+    getline(file, line);
 
-    getline(file, nv.MANV, '|'); // Đọc mã nhân viên
-    getline(file, nv.HO, '|');   // Đọc họ
-    getline(file, nv.TEN, '|');  // Đọc tên
-    getline(file, nv.PHAI);      // Đọc phái (không có ký tự phân cách cuối)
+    stringstream ss(line);
 
-    // Đọc danh sách hóa đơn của nhân viên
+    getline(ss, nv.MANV, '|');
+    getline(ss, nv.HO, '|');
+    getline(ss, nv.TEN, '|');
+    getline(ss, nv.PHAI);
+
+    // Đọc danh sách hóa đơn
     nv.firstDSHD = nullptr;
     ptr_DSHD *tail = &nv.firstDSHD;
 
-    while (getline(file, line) && line != "End_NhanVien")
+    while (true)
     {
-        if (line == "End_HoaDon")
-            continue; // Bỏ qua dòng "End_HoaDon"
+        char peek = file.peek();
+        if (peek == '\\' || peek == EOF)
+            break;
 
         nodeHoaDon hd;
-        hd.SoHD = line;
-        // Read_HoaDon(file, hd);
+        Read_HoaDon(file, hd);
 
         *tail = new dsHoaDon{hd, nullptr};
         tail = &(*tail)->next;
     }
+
+    // Đọc dấu '\' và xuống dòng
+    string endLine;
+    getline(file, endLine);
 }
+
 void readFile_dsNhanVien(dsNhanVien &dsNV)
 {
     ifstream filein;
@@ -498,21 +517,113 @@ void readFile_dsNhanVien(dsNhanVien &dsNV)
         return;
     }
 
-    // Đọc số lượng nhân viên
+    dsNV.CountNV = 0;
     string line;
-    getline(filein, line);
-    dsNV.CountNV = stoi(line);
 
-    // Đọc thông tin từng nhân viên
-    for (int i = 0; i < dsNV.CountNV; ++i)
+    while (getline(filein, line))
     {
-        dsNV.nodes[i] = new nhanVien;
-        Read_NhanVien(filein, *dsNV.nodes[i]);
+        // Nếu là dòng thông tin nhân viên
+        if (line[0] != '-' && line[0] != '+' && line[0] != '\\')
+        {
+            // Tạo nhân viên mới
+            dsNV.nodes[dsNV.CountNV] = new nhanVien;
+
+            // Parse thông tin nhân viên
+            stringstream ss(line);
+            getline(ss, dsNV.nodes[dsNV.CountNV]->MANV, '|');
+            getline(ss, dsNV.nodes[dsNV.CountNV]->HO, '|');
+            getline(ss, dsNV.nodes[dsNV.CountNV]->TEN, '|');
+            getline(ss, dsNV.nodes[dsNV.CountNV]->PHAI);
+
+            // Khởi tạo con trỏ danh sách hóa đơn
+            dsNV.nodes[dsNV.CountNV]->firstDSHD = nullptr;
+
+            // Tăng số lượng nhân viên
+            dsNV.CountNV++;
+        }
+        // Nếu là dòng hóa đơn
+        else if (line[0] == '-')
+        {
+            // Tạo hóa đơn mới cho nhân viên cuối cùng
+            nodeHoaDon hd;
+            stringstream ss(line.substr(1)); // Bỏ qua dấu '-'
+
+            getline(ss, hd.SoHD, '|');
+            string temp;
+            getline(ss, temp, '|');
+            hd.day = stoi(temp);
+            getline(ss, temp, '|');
+            hd.month = stoi(temp);
+            getline(ss, temp, '|');
+            hd.year = stoi(temp);
+            getline(ss, temp);
+            hd.loai = temp[0];
+
+            // Khởi tạo con trỏ chi tiết hóa đơn
+            hd.firstCTHD = nullptr;
+
+            // Thêm hóa đơn vào danh sách hóa đơn của nhân viên cuối cùng
+            ptr_DSHD newNode = new dsHoaDon{hd, nullptr};
+
+            // Nếu danh sách rỗng
+            if (dsNV.nodes[dsNV.CountNV - 1]->firstDSHD == nullptr)
+            {
+                dsNV.nodes[dsNV.CountNV - 1]->firstDSHD = newNode;
+            }
+            else
+            {
+                // Tìm nút cuối cùng
+                ptr_DSHD current = dsNV.nodes[dsNV.CountNV - 1]->firstDSHD;
+                while (current->next != nullptr)
+                {
+                    current = current->next;
+                }
+                current->next = newNode;
+            }
+        }
+        // Nếu là dòng chi tiết hóa đơn
+        else if (line[0] == '+')
+        {
+            // Thêm chi tiết hóa đơn vào hóa đơn cuối cùng của nhân viên cuối cùng
+            nodeChiTietHoaDon cthd;
+            Read_CTHoaDon(line.substr(1), cthd);
+
+            // Tìm hóa đơn cuối cùng của nhân viên cuối cùng
+            ptr_DSHD current_hd = dsNV.nodes[dsNV.CountNV - 1]->firstDSHD;
+            while (current_hd->next != nullptr)
+            {
+                current_hd = current_hd->next;
+            }
+
+            // Thêm chi tiết hóa đơn vào hóa đơn
+            ptr_DSCTHD newCTHD = new dsChiTietHoaDon{cthd, nullptr};
+
+            // Nếu danh sách chi tiết hóa đơn rỗng
+            if (current_hd->data_hd.firstCTHD == nullptr)
+            {
+                current_hd->data_hd.firstCTHD = newCTHD;
+            }
+            else
+            {
+                // Tìm nút cuối cùng
+                ptr_DSCTHD current_cthd = current_hd->data_hd.firstCTHD;
+                while (current_cthd->next != nullptr)
+                {
+                    current_cthd = current_cthd->next;
+                }
+                current_cthd->next = newCTHD;
+            }
+        }
+        // Nếu là dòng kết thúc nhân viên
+        else if (line[0] == '\\')
+        {
+            // Tiếp tục đọc nhân viên tiếp theo
+            continue;
+        }
     }
 
     filein.close();
 }
-
 //======================HOA DON===================================
 void lapHoaDon(dsNhanVien &ds_nv)
 {

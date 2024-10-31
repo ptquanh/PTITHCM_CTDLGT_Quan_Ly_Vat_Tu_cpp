@@ -10,7 +10,7 @@ int main()
     int choice;
     bool isOpened;
     // readFile_dsVatTu(root, isOpened);
-    // readFile_dsNhanVien(ds_nv);
+    readFile_dsNhanVien(ds_nv);
     do
     {
         cout << "\n--- Menu ---\n";
@@ -70,7 +70,7 @@ int main()
             cout << "Lua chon khong hop le. Vui long chon lai.\n";
         }
     } while (choice != 0);
-        // writeFile_dsVatTu(root);
-        // Write_dsNhanVien(ds_nv);
+    // writeFile_dsVatTu(root);
+    writeFile_dsNhanVien(ds_nv);
     return 0;
 }
