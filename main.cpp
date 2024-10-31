@@ -26,7 +26,6 @@ int main()
         {
         case 1:
             // nhapVatTu(root);
-            // nhapVatTu(root);
             break;
         case 2:
             chinhSuaVatTu(root);
