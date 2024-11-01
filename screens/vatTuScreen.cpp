@@ -1,7 +1,7 @@
 #include "../sources/vatTu.h"
-void handleNavigationListVT(treeVatTu root, int x, int y, int w, int h);
-int handleNavigationUpdateVT(treeVatTu root, int x, int y, int w, int h);
-void handleNavigationAddVT(treeVatTu root, int x, int y, int w, int h);
+void handleNavigationListVatTu(treeVatTu root, int x, int y, int w, int h);
+int handleNavigationUpdateVatTu(treeVatTu root, int x, int y, int w, int h);
+void handleNavigationAddVatTu(treeVatTu root, int x, int y, int w, int h);
 
 void drawTableUpdateVatTu(int x, int y)
 {
@@ -15,7 +15,7 @@ void drawTableUpdateVatTu(int x, int y)
     cout << "Toi da 6 ki tu";
     gotoxy(x + 71, y + 11);
     cout << "Toi da 6 chu so";
-    SetColor(WHITE);
+    SetColor(BLACK);
     gotoxy(x + 82, y + 2);
     cout << "CAP NHAT VAT TU";
     gotoxy(x + 71, y + 4);
@@ -29,7 +29,8 @@ void drawTableUpdateVatTu(int x, int y)
     // to mau trang
     for (int i = x + 87; i < x + 109; i++)
     {
-        SetBGColor(BLUE);
+        // SetBGColor(DARKGRAY);
+        SetBGColor(BLACK);
         gotoxy(i, y + 4);
         cout << " ";
         gotoxy(i, y + 6);
@@ -38,41 +39,40 @@ void drawTableUpdateVatTu(int x, int y)
         cout << " ";
         gotoxy(i, y + 10);
         cout << " ";
-        SetBGColor(BLACK);
     }
 }
 
-void drawTablePrintVatTu(int x, int y, int w, int h, treeVatTu root)
+void drawTablePrintVatTu(int x, int y, int w, int h)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x, y, (w * 4) + 2, h);
     horizontalLine(x + 1, y + 2, ((w * 4) + 2) - 1);
     // ve vien
     gotoxy(x, y + 2);
-    cout << (char)204;
+    cout << tRight;
     gotoxy(x + (w * 4) + 2, y + 2);
-    cout << (char)185;
+    cout << tLeft;
     gotoxy(x + (((w * 4)) - 45), y);
-    cout << (char)203;
+    cout << tDown;
     gotoxy(x + (((w * 4)) - 45), y + h);
-    cout << (char)202;
+    cout << tUp;
     gotoxy(x + (((w * 4) + 2) - 22), y);
-    cout << (char)203;
+    cout << tDown;
     gotoxy(x + (((w * 4) + 2) - 22), y + h);
-    cout << (char)202;
+    cout << tUp;
     gotoxy(x + (((w * 4) + 2) - 11), y);
-    cout << (char)203;
+    cout << tDown;
     gotoxy(x + (((w * 4) + 2) - 11), y + h);
-    cout << (char)202;
+    cout << tUp;
     verticalLine(x + (((w * 4)) - 45), y + 1, h - 1);
     verticalLine(x + (((w * 4) + 2) - 22), y + 1, h - 1);
     verticalLine(x + (((w * 4) + 2) - 11), y + 1, h - 1);
     gotoxy(x + (((w * 4)) - 45), y + 2);
-    cout << (char)206;
+    cout << cross;
     gotoxy(x + (((w * 4) + 2) - 22), y + 2);
-    cout << (char)206;
+    cout << cross;
     gotoxy(x + (((w * 4) + 2) - 11), y + 2);
-    cout << (char)206;
+    cout << cross;
     // ve header 0
     setColorByRequest(LIGHTGRAY, RED);
     gotoxy(x + 20, y - 1);
@@ -89,33 +89,8 @@ void drawTablePrintVatTu(int x, int y, int w, int h, treeVatTu root)
     gotoxy(x + 54, y + 1);
     cout << "SL";
 }
-void clearTableContent(int x)
-{
-    for (int currentRow = 5; currentRow <= ROWS + 4; currentRow++)
-    {
-        for (int i = x + 3; i < x + 15; i++)
-        {
-            gotoxy(i, currentRow);
-            cout << " ";
-        }
-        for (int i = x + 18; i < x + 38; i++)
-        {
-            gotoxy(i, currentRow);
-            cout << " ";
-        }
-        for (int i = x + 41; i < x + 49; i++)
-        {
-            gotoxy(i, currentRow);
-            cout << " ";
-        }
-        for (int i = x + 52; i < x + 60; i++)
-        {
-            gotoxy(i, currentRow);
-            cout << " ";
-        }
-    }
-}
-void handleNavigationAddVT(treeVatTu root, int x, int y, int w, int h)
+
+void handleNavigationAddVatTu(treeVatTu root, int x, int y, int w, int h)
 {
     string errorMessage;
     int currentPage = 1;
@@ -139,13 +114,13 @@ void handleNavigationAddVT(treeVatTu root, int x, int y, int w, int h)
                 gotoxy(0, 0);
                 cout << "ESC";
                 fillAreaColor(x + 69, y, 41, 23, BLACK);
-                handleNavigationListVT(root, x, y, w, h);
+                handleNavigationListVatTu(root, x, y, w, h);
                 break;
             }
         }
     }
 }
-int handleNavigationUpdateVT(treeVatTu root, int x, int y, int w, int h)
+int handleNavigationUpdateVatTu(treeVatTu root, int x, int y, int w, int h)
 {
     // ShowCur(false);
     string errorMessage;
@@ -160,7 +135,7 @@ int handleNavigationUpdateVT(treeVatTu root, int x, int y, int w, int h)
     int selectedRow = 0; // Track selected row
     char key;
     int currentChoice = -1;
-    drawTablePrintVatTu(x, y, w, h, root);
+    drawTablePrintVatTu(x, y, w, h);
     while (true)
     {
         // Display list with highlighted MAVT
@@ -270,7 +245,7 @@ int handleNavigationUpdateVT(treeVatTu root, int x, int y, int w, int h)
             drawTableErrors(5, 2, errorMessage);
             break;
         case F1:
-            handleNavigationUpdateVT(root, x, y, w, h);
+            handleNavigationUpdateVatTu(root, x, y, w, h);
             break;
         case ESC:
             system("cls");
@@ -281,7 +256,7 @@ int handleNavigationUpdateVT(treeVatTu root, int x, int y, int w, int h)
     delete[] arr;
     // return currentChoice;
 }
-void handleNavigationListVT(treeVatTu root, int x, int y, int w, int h)
+void handleNavigationListVatTu(treeVatTu root, int x, int y, int w, int h)
 {
     string errorMessage;
     int n = countNodes(root);
@@ -295,7 +270,7 @@ void handleNavigationListVT(treeVatTu root, int x, int y, int w, int h)
     int selectedRow = -1;
     char key;
     int currentChoice = -1;
-    drawTablePrintVatTu(x, y, w, h, root);
+    drawTablePrintVatTu(x, y, w, h);
     while (true)
     {
         setColorByRequest(LIGHTGRAY, BLACK);
@@ -318,50 +293,10 @@ void handleNavigationListVT(treeVatTu root, int x, int y, int w, int h)
             }
             break;
         case TAB:
-            for (int i = x + 26; i < x + 33; i++)
-            {
-                gotoxy(i, 26);
-                SetBGColor(LIGHTGRAY);
-                cout << " ";
-            }
-            for (int i = x + 26; i < x + 31; i++)
-            {
-                gotoxy(i, 26);
-                SetBGColor(BLACK);
-                cout << " ";
-                SetBGColor(LIGHTGRAY);
-            }
-            SetColor(WHITE);
-            SetBGColor(BLACK);
-            int goToPage;
-            ShowCurAtXY(x + 27, 26, true);
-            cin >> goToPage;
-            SetColor(WHITE);
-            SetBGColor(BLACK);
-            while (goToPage > totalPages)
-            {
-                errorMessage = "Loi trang. Vui long nhap lai";
-                drawTableErrors(5, 2, errorMessage);
-                for (int i = x + 26; i < x + 31; i++)
-                {
-                    gotoxy(i, 26);
-                    SetBGColor(WHITE);
-                    cout << " ";
-                    SetBGColor(BLACK);
-                }
-                SetColor(BLACK);
-                SetBGColor(WHITE);
-                gotoxy(x + 27, 26);
-                cin >> goToPage;
-                SetColor(WHITE);
-                SetBGColor(BLACK);
-            }
-            errorMessage = " ";
-            currentPage = goToPage;
-            drawTableErrors(5, 2, errorMessage);
+            currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case F1:
-            handleNavigationAddVT(root, x, y, w, h);
+            handleNavigationAddVatTu(root, x, y, w, h);
             break;
         case F2:
             gotoxy(0, 0);
@@ -382,11 +317,11 @@ void handleNavigationListVT(treeVatTu root, int x, int y, int w, int h)
     }
     delete[] arr;
 }
-void drawKeyGuides(int x, int y, char nutDieuHuong[SoNut][50])
+void drawKeysGuideVatTu(int x, int y, char nutDieuHuong[SoNut][50])
 {
     int space = 7;
     int w;
-    setColorByRequest(LIGHTGRAY,BLACK);
+    setColorByRequest(LIGHTGRAY, BLACK);
     for (int i = 1; i <= SoNut; i++)
     {
         w = strlen(nutDieuHuong[i - 1]) + 1;
@@ -410,8 +345,8 @@ int main()
     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
     readFile_dsVatTu(root, isOpened);
     drawTableErrors(x, y, errorMessage);
-    drawKeyGuides(x, y, keyGuides);
-    handleNavigationListVT(root, x, y, 15, 23);
+    drawKeysGuideVatTu(x, y, keyGuides);
+    handleNavigationListVatTu(root, x, y, 15, 23);
     // while (1)
     // {
     //     getch();

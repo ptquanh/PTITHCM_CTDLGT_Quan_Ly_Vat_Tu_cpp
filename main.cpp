@@ -5,7 +5,6 @@
 int main()
 {
     treeVatTu root = NULL;
-    nhanVien nv;
     dsNhanVien ds_nv;
     int choice;
     bool isOpened;
@@ -46,7 +45,7 @@ int main()
             xoaNhanVien(ds_nv);
             break;
         case 8:
-            inNhanVien(ds_nv);
+            // inDanhSachNhanVien(ds_nv);
             break;
         case 9:
             lapHoaDon(ds_nv);

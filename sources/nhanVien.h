@@ -324,27 +324,6 @@ void suaNhanVien(dsNhanVien &list)
         }
     } while (choice != 0);
 }
-void inNhanVien(dsNhanVien &list)
-{
-    if (nhanVienEmpty(list))
-    {
-        cout << "Danh sach nhan vien rong" << endl;
-        return;
-    }
-
-    cout << "\n=== DANH SACH NHAN VIEN ===\n";
-    for (int i = 0; i < list.CountNV; i++)
-    {
-        cout << "\nNhan vien " << i + 1 << ":\n";
-        cout << "-------------------------\n";
-        cout << "Ma nhan vien: " << list.nodes[i]->MANV << endl;
-        cout << "Ho nhan vien: " << list.nodes[i]->HO << endl;
-        cout << "Ten nhan vien: " << list.nodes[i]->TEN << endl;
-        cout << "Gioi tinh: " << list.nodes[i]->PHAI << endl;
-        cout << "-------------------------\n";
-    }
-    cout << "\nTong so nhan vien: " << list.CountNV << endl;
-}
 
 void xoaDSNV(dsNhanVien &list) // goi khi ket thuc
 {
@@ -517,7 +496,9 @@ void readFile_dsNhanVien(dsNhanVien &dsNV)
         return;
     }
 
-    dsNV.CountNV = 0;
+    // Tạo một mảng tạm để lưu trữ các nhân viên
+    nhanVien *tempNodes[MaxNhanVien];
+    int tempCount = 0;
     string line;
 
     while (getline(filein, line))
@@ -526,20 +507,20 @@ void readFile_dsNhanVien(dsNhanVien &dsNV)
         if (line[0] != '-' && line[0] != '+' && line[0] != '\\')
         {
             // Tạo nhân viên mới
-            dsNV.nodes[dsNV.CountNV] = new nhanVien;
+            tempNodes[tempCount] = new nhanVien;
 
             // Parse thông tin nhân viên
             stringstream ss(line);
-            getline(ss, dsNV.nodes[dsNV.CountNV]->MANV, '|');
-            getline(ss, dsNV.nodes[dsNV.CountNV]->HO, '|');
-            getline(ss, dsNV.nodes[dsNV.CountNV]->TEN, '|');
-            getline(ss, dsNV.nodes[dsNV.CountNV]->PHAI);
+            getline(ss, tempNodes[tempCount]->MANV, '|');
+            getline(ss, tempNodes[tempCount]->HO, '|');
+            getline(ss, tempNodes[tempCount]->TEN, '|');
+            getline(ss, tempNodes[tempCount]->PHAI);
 
             // Khởi tạo con trỏ danh sách hóa đơn
-            dsNV.nodes[dsNV.CountNV]->firstDSHD = nullptr;
+            tempNodes[tempCount]->firstDSHD = nullptr;
 
-            // Tăng số lượng nhân viên
-            dsNV.CountNV++;
+            // Tăng số lượng nhân viên trong mảng tạm
+            tempCount++;
         }
         // Nếu là dòng hóa đơn
         else if (line[0] == '-')
@@ -566,14 +547,14 @@ void readFile_dsNhanVien(dsNhanVien &dsNV)
             ptr_DSHD newNode = new dsHoaDon{hd, nullptr};
 
             // Nếu danh sách rỗng
-            if (dsNV.nodes[dsNV.CountNV - 1]->firstDSHD == nullptr)
+            if (tempNodes[tempCount - 1]->firstDSHD == nullptr)
             {
-                dsNV.nodes[dsNV.CountNV - 1]->firstDSHD = newNode;
+                tempNodes[tempCount - 1]->firstDSHD = newNode;
             }
             else
             {
                 // Tìm nút cuối cùng
-                ptr_DSHD current = dsNV.nodes[dsNV.CountNV - 1]->firstDSHD;
+                ptr_DSHD current = tempNodes[tempCount - 1]->firstDSHD;
                 while (current->next != nullptr)
                 {
                     current = current->next;
@@ -589,7 +570,7 @@ void readFile_dsNhanVien(dsNhanVien &dsNV)
             Read_CTHoaDon(line.substr(1), cthd);
 
             // Tìm hóa đơn cuối cùng của nhân viên cuối cùng
-            ptr_DSHD current_hd = dsNV.nodes[dsNV.CountNV - 1]->firstDSHD;
+            ptr_DSHD current_hd = tempNodes[tempCount - 1]->firstDSHD;
             while (current_hd->next != nullptr)
             {
                 current_hd = current_hd->next;
@@ -614,15 +595,82 @@ void readFile_dsNhanVien(dsNhanVien &dsNV)
                 current_cthd->next = newCTHD;
             }
         }
-        // Nếu là dòng kết thúc nhân viên
-        else if (line[0] == '\\')
-        {
-            // Tiếp tục đọc nhân viên tiếp theo
-            continue;
-        }
     }
-
     filein.close();
+
+    // Reset danh sách nhân viên hiện tại
+    dsNV.CountNV = 0;
+
+    // Chèn từng nhân viên vào danh sách chính theo thứ tự
+    for (int i = 0; i < tempCount; i++)
+    {
+        if (dsNV.CountNV >= MaxNhanVien)
+        {
+            cout << "Danh sach nhan vien da day!" << endl;
+            break;
+        }
+        chenNhanVien(dsNV, tempNodes[i]);
+        dsNV.CountNV++;
+    }
+}
+// ==============================================
+void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x, string &errorMessage)
+{
+    int n = list.CountNV;
+    bool isOpened;
+    readFile_dsNhanVien(list);
+    if (n == 0 && isOpened == true)
+    {
+        errorMessage = "Khong co du lieu vat tu";
+        drawTableErrors(5, 2, errorMessage);
+        return;
+    }
+    else if (n == 0 && isOpened == false)
+    {
+        errorMessage = "Khong the mo file ds_VatTu.txt";
+        drawTableErrors(5, 2, errorMessage);
+        return;
+    }
+    int index = 0;
+    int startIndex = (pageNumber - 1) * ROWS;
+    int endIndex = min(startIndex + ROWS, n);
+    int currentRow = 5;
+    for (int i = startIndex; i < endIndex; i++)
+    {
+        // MAVT column - với highlight nếu được chọn
+        gotoxy(x + 3, currentRow);
+        if (selectedRow == -1)
+            cout << list.nodes[i]->MANV;
+        else if (i - startIndex == selectedRow)
+        {
+            Highlight(LIGHTBLUE);
+            cout << list.nodes[i]->MANV;
+            setColorByRequest(LIGHTGRAY, BLACK); // Reset về màu bình thường ngay sau khi in MAVT
+        }
+        else
+        {
+            cout << list.nodes[i]->MANV;
+        }
+
+        // TENVT column - không highlight
+        gotoxy(x + 18, currentRow);
+        cout << list.nodes[i]->HO;
+
+        // DVT column - không highlight
+        gotoxy(x + 43, currentRow);
+        cout << list.nodes[i]->TEN;
+
+        // SoLuongTon column - không highlight
+        gotoxy(x + 54, currentRow);
+        cout << list.nodes[i]->PHAI;
+        currentRow++;
+    }
+    // in so trang
+    int totalPages = ceil((float)n / ROWS);
+    gotoxy(6, 26);
+    cout << "TAB: Di chuyen den trang can tim";
+    gotoxy(52, 26);
+    cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
 }
 //======================HOA DON===================================
 void lapHoaDon(dsNhanVien &ds_nv)

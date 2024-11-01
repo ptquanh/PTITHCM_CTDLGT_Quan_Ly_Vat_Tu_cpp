@@ -1,6 +1,24 @@
 NV2|Phan Tuan Quoc|Anh|Nam
 \
+NV7|Phan Tuan Quoc|Anh|Nam
+\
+NV12|Phan Tuan Quoc|Anh|Nam
+\
+NV17|Phan Tuan Quoc|Anh|Nam
+\
 NV1|Du Hoang|Phi|Nam
+-HD3|1|12|2024|N
++VT1|20|100000|10
+\
+NV8|Du Hoang|Phi|Nam
+-HD3|1|12|2024|N
++VT1|20|100000|10
+\
+NV13|Du Hoang|Phi|Nam
+-HD3|1|12|2024|N
++VT1|20|100000|10
+\
+NV18|Du Hoang|Phi|Nam
 -HD3|1|12|2024|N
 +VT1|20|100000|10
 \
@@ -14,7 +32,83 @@ NV4|Nguyen|Toan|Nam
 -2|2|4|2005|X
 +vt23|2|1|1
 \
+NV9|Nguyen|Toan|Nam
+-HD1|1|12|2024|N
++VT1|20|100000|10
+-HD2|30|12|2024|X
++VT1|10|100000|1
+-HD1|20|4|2005|N
++VT1|2|1|2
+-2|2|4|2005|X
++vt23|2|1|1
+\
+NV14|Nguyen|Toan|Nam
+-HD1|1|12|2024|N
++VT1|20|100000|10
+-HD2|30|12|2024|X
++VT1|10|100000|1
+-HD1|20|4|2005|N
++VT1|2|1|2
+-2|2|4|2005|X
++vt23|2|1|1
+\
+NV19|Nguyen|Toan|Nam
+-HD1|1|12|2024|N
++VT1|20|100000|10
+-HD2|30|12|2024|X
++VT1|10|100000|1
+-HD1|20|4|2005|N
++VT1|2|1|2
+-2|2|4|2005|X
++vt23|2|1|1
+\
+NV22|Nguyen|Toan|Nam
+-HD1|1|12|2024|N
++VT1|20|100000|10
+-HD2|30|12|2024|X
++VT1|10|100000|1
+-HD1|20|4|2005|N
++VT1|2|1|2
+-2|2|4|2005|X
++vt23|2|1|1
+\
 nv5|Le Van|Vinh|nam
+-hd4|1|1|2004|X
++vt2|2|1|1
+\
+nv6|Le Van|Vinh|nam
+-hd4|1|1|2004|X
++vt2|2|1|1
+\
+nv10|Le Van|Vinh|nam
+-hd4|1|1|2004|X
++vt2|2|1|1
+\
+nv11|Le Van|Vinh|nam
+-hd4|1|1|2004|X
++vt2|2|1|1
+\
+nv15|Le Van|Vinh|nam
+-hd4|1|1|2004|X
++vt2|2|1|1
+\
+nv16|Le Van|Vinh|nam
+-hd4|1|1|2004|X
++vt2|2|1|1
+\
+nv20|Le Van|Vinh|nam
+-hd4|1|1|2004|X
++vt2|2|1|1
+\
+nv21|Le Van|Vinh|nam
+-hd4|1|1|2004|X
++vt2|2|1|1
+\
+nv23|Le Van|Vinh|nam
+-hd4|1|1|2004|X
++vt2|2|1|1
+\
+nv24|Le Van|Vinh|nam
 -hd4|1|1|2004|X
 +vt2|2|1|1
 \

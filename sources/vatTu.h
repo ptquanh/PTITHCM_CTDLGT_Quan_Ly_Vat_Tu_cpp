@@ -2,7 +2,6 @@
 // #include "../libraries/khaibao.h"
 // #include "../libraries/mylib.h"
 #include "../screens/doHoa.cpp"
-#define ROWS 20
 const int searchHighlightColor = 1;
 // ghi tung node vao file ds_vattu
 void writeNodeToFile(treeVatTu node, ofstream &fileout)
@@ -403,138 +402,23 @@ void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 
     filein.close();
 }
-// int currentRowFill()
-// {
-//     char key;
-//     int currentRow = 0;
-//     while (true)
-//     {
-//         key = getch();
-//         switch (key)
-//         {
-//         case UP:
-//             if (currentRow > 0)
-//                 currentRow--;
-//             else
-//                 currentRow = 3;
-
-//             break;
-//         case DOWN:
-//             if (currentRow < 3)
-//                 currentRow++;
-//             else
-//                 currentRow = 0;
-//             break;
-//         }
-//         return currentRow;
-//     }
-// }
-// // nhap vat tu
-// void nhapVatTu(treeVatTu &root, int x, int y)
-// {
-//     nodeVatTu data_vt;
-//     string MAVT, tenVT, dvt;
-//     int slt;
-//     bool isValidMAVT = false;
-//     bool hasError;
-//     int currentRow;
-//     // Nhập và kiểm tra MAVT
-
-//     gotoxy(0, 0);
-//     currentRow = currentRowFill();
-//     cout << currentRow;
-
-//     /*switch (currentRow)
-//     {
-//     case 0:
-//         do
-//         {
-//             setColorByRequest(WHITE, BLACK);
-//             gotoxy(x + 88, y + 4);
-//             getline(cin, MAVT);
-//             treeVatTu result = search(root, MAVT);
-//             formatInputVT(MAVT, tenVT, dvt, slt);
-//             // MAVT = formatInputVT(MAVT, tenVT);
-//             if (result != NULL)
-//             {
-//                 cout << "Loi: Ma vat tu '" << MAVT << "' da ton tai trong he thong!\n";
-//                 cout << "Vui long nhap ma vat tu khac.\n";
-//                 isValidMAVT = false;
-//             }
-//             else
-//             {
-//                 data_vt.MAVT = MAVT;
-//                 isValidMAVT = true;
-//             }
-//         } while (!isValidMAVT);
-//         break;
-//     case 1:
-//         do
-//         {
-//             setColorByRequest(WHITE, BLACK);
-//             gotoxy(x + 88, y + 6);
-//             getline(cin, tenVT);
-//             formatInputVT(MAVT, tenVT, dvt, slt);
-//             tenVT = normalizeString(tenVT, hasError);
-//             if (!hasError && tenVT.empty())
-//             {
-//                 cout << "Loi: Ten vat tu khong duoc de trong!\n";
-//                 hasError = true;
-//             }
-//         } while (hasError);
-//         data_vt.TENVT = tenVT;
-//         break;
-//     case 2:
-//         do
-//         {
-//             setColorByRequest(WHITE, BLACK);
-//             gotoxy(x + 88, y + 8);
-//             getline(cin, dvt);
-//             formatInputVT(MAVT, tenVT, dvt, slt);
-//             dvt = normalizeString(dvt, hasError);
-//             if (!hasError && dvt.empty())
-//             {
-//                 cout << "Loi: Don vi tinh khong duoc de trong!\n";
-//                 hasError = true;
-//             }
-//         } while (hasError);
-//         data_vt.DVT = dvt;
-//         break;
-//     case 3:
-//         setColorByRequest(WHITE, BLACK);
-//         gotoxy(x + 88, y + 10);
-//         cin >> data_vt.soLuongTon;
-//         formatInputVT(MAVT, tenVT, dvt, slt);
-//         cin.ignore();
-//         break;
-//     }*/
-//     // root = insert(root, data_vt);
-// }
 
 void displayField(int x, int y, const string &value, bool isActive, int maxLength)
 {
-    // Luôn có nền màu, chỉ thay đổi màu nền khi active
-    if (isActive)
-    {
-        SetBGColor(BLUE);
-    }
-    else
-    {
-        SetBGColor(DARKGRAY); // Màu nền cho trường không active
-    }
+    SetBGColor(BLACK);
     SetColor(WHITE);
 
-    gotoxy(x, y);
+    gotoxy(x + 1, y);
     cout << string(maxLength, ' '); // Xóa vùng hiển thị
-    gotoxy(x, y);
+    gotoxy(x + 1, y);
     cout << value;
 
     if (isActive)
     {
-        ShowCurAtXY(x + value.length(), y, true);
+        ShowCurAtXY(x + 1 + value.length(), y, true);
     }
-    SetBGColor(BLACK); // Reset màu nền
-    SetColor(WHITE);   // Reset màu chữ
+    SetBGColor(BLACK);
+    SetColor(WHITE);
 }
 
 string inputString(int x, int y, string current, int maxLength, string fieldName, bool &moveNext)
@@ -562,12 +446,9 @@ string inputString(int x, int y, string current, int maxLength, string fieldName
         {
             if (result.empty())
             {
-                // gotoxy(x + 30, y);
                 errorMessage = fieldName + " khong duoc de trong!";
                 drawTableErrors(5, 2, errorMessage);
                 // Sleep(1000);
-                // gotoxy(x + 30, y);
-                // cout << string(50, ' ');
                 continue;
             }
             moveNext = true;
@@ -587,8 +468,9 @@ string inputString(int x, int y, string current, int maxLength, string fieldName
             result += key;
         }
     }
-
     ShowCurAtXY(0, 0, false);
+    errorMessage = "";
+    drawTableErrors(5, 2, errorMessage);
     return result;
 }
 
@@ -612,18 +494,15 @@ int inputNumber(int x, int y, int current, bool &moveNext)
         if (key == F4)
         {
             moveNext = false;
-            return 4;
+            return -4;
         }
         if (key == ENTER)
         {
             if (result.empty())
             {
-                // gotoxy(x + 30, y);
                 errorMessage = "So luong ton khong duoc de trong!";
                 drawTableErrors(5, 2, errorMessage);
                 // Sleep(1000);
-                // gotoxy(x + 30, y);
-                // cout << string(50, ' ');
                 continue;
             }
             moveNext = true;
@@ -643,8 +522,9 @@ int inputNumber(int x, int y, int current, bool &moveNext)
             result += key;
         }
     }
-
     ShowCurAtXY(0, 0, false);
+    errorMessage = "";
+    drawTableErrors(5, 2, errorMessage);
     return result.empty() ? 0 : stoi(result);
 }
 
@@ -679,7 +559,8 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             result = inputString(x + 87, y + 4, input.MAVT, 10, "Ma vat tu", moveNext);
             if (result == "ESC")
                 return;
-
+            if (result == "F4")
+                goto save;
             // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -695,6 +576,8 @@ void nhapVatTu(treeVatTu &root, int x, int y)
                 drawTableErrors(5, 2, errorMessage);
                 continue;
             }
+            errorMessage = "";
+            drawTableErrors(5, 2, errorMessage);
             input.MAVT = tempInput;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
@@ -705,7 +588,8 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext);
             if (result == "ESC")
                 return;
-
+            if (result == "F4")
+                goto save;
             // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -724,7 +608,8 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext);
             if (result == "ESC")
                 return;
-
+            if (result == "F4")
+                goto save;
             // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -742,23 +627,36 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             numResult = inputNumber(x + 87, y + 10, input.soLuongTon, moveNext);
             if (numResult == -1)
                 return;
+            if (numResult == -4)
+                goto save;
             input.soLuongTon = numResult;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
 
             break;
         }
-        }
-        if (numResult == 4 && result == "F4")
+        save:
         {
+            ShowCur(false);
             if (!moveNext && !input.MAVT.empty() && !input.TENVT.empty() &&
-                !input.DVT.empty() && input.soLuongTon >= 0)
+                !input.DVT.empty() && input.soLuongTon > 0)
             {
                 root = insert(root, input);
-                errorMessage = "Them vat tu thanh cong!";
+                errorMessage = "Them vat tu thanh cong";
                 drawTableErrors(5, 2, errorMessage);
-                Sleep(1000);
+                Sleep(1500);
+                errorMessage = "";
+                drawTableErrors(5, 2, errorMessage);
                 return;
             }
+            else
+            {
+                errorMessage = "Thieu thong tin. Chua them vat tu";
+                drawTableErrors(5, 2, errorMessage);
+                Sleep(1500);
+                errorMessage = "";
+                drawTableErrors(5, 2, errorMessage);
+            }
+        }
         }
         if (moveNext)
         {
@@ -863,7 +761,7 @@ void inDanhSachVatTu(treeVatTu root, int pageNumber, int selectedRow, int x, str
         {
             Highlight(LIGHTBLUE);
             cout << arr[i]->data_vt.MAVT;
-            setColorByRequest(LIGHTGRAY,BLACK); // Reset về màu bình thường ngay sau khi in MAVT
+            setColorByRequest(LIGHTGRAY, BLACK); // Reset về màu bình thường ngay sau khi in MAVT
         }
         else
         {

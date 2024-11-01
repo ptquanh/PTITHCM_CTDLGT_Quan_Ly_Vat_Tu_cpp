@@ -1,6 +1,7 @@
 #pragma once
 #include "../libraries/khaibao.h"
 #include "../libraries/mylib.h"
+#define ROWS 20
 //==========khai bao=========
 const int BLACK = 0;
 const int BLUE = 1;
@@ -18,33 +19,22 @@ const int LIGHTRED = 12;
 const int LIGHTMAGENTA = 13;
 const int YELLOW = 14;
 const int WHITE = 15;
-
-// const int x = 5;
-// const int y = 5;
-// const int w = 5;
-// const int h = 5;
+// console size
 const int wConsole = 120;
 const int hConsole = 30;
 // ki tu ve
-const char vtLine = 186;   // 179
-const char hzLine = 205;   // 196
-const char tlCorner = 201; // 218
-const char trCorner = 187; // 191
-const char blCorner = 200; // 192
-const char brCorner = 188; // 217
-
-// Box drawing characters
-const char TOP_LEFT = 201;     // ╔
-const char TOP_RIGHT = 187;    // ╗
-const char BOTTOM_LEFT = 200;  // ╚
-const char BOTTOM_RIGHT = 188; // ╝
-const char HORIZONTAL = 205;   // ═
-const char VERTICAL = 186;     // ║
-const char T_DOWN = 203;       // ╦
-const char T_UP = 202;         // ╩
-const char T_RIGHT = 204;      // ╠
-const char T_LEFT = 185;       // ╣
-const char CROSS = 206;
+const char vtLine = 186;
+const char hzLine = 205;
+const char tlCorner = 201;
+const char trCorner = 187;
+const char blCorner = 200;
+const char brCorner = 188;
+const char tDown = 203;
+const char tUp = 202;
+const char tRight = 204;
+const char tLeft = 185;
+const char cross = 206;
+// dinh nghia nut
 #define UP 72
 #define DOWN 80
 #define LEFT 75
@@ -59,12 +49,16 @@ const char CROSS = 206;
 //==========tien khai bao==========
 void Normal();
 void Highlight(int Color);
+void setColorByRequest(int bgColor, int wordColor);
 void drawHCN(int x, int y, int w, int h);
 void fillAreaColor(int x, int y, int w, int h, int color);
 void verticalLine(int x, int y, int h);
 void horizontalLine(int x, int y, int w);
 void deleteOneRow(int y);
 void deleteOneCollumn(int x);
+void drawTableErrors(int x, int y, string errorMessage);
+int pageSearchByTab(int x, int currentPage, int totalPages, string &errorMessage);
+void clearTableContent(int x);
 //==================================
 void Normal()
 {
@@ -76,7 +70,8 @@ void Highlight(int Color)
     SetBGColor(Color);
     SetColor(WHITE);
 }
-void setColorByRequest(int bgColor, int wordColor){
+void setColorByRequest(int bgColor, int wordColor)
+{
     SetBGColor(bgColor);
     SetColor(wordColor);
 }
@@ -156,7 +151,7 @@ void horizontalLine(int x, int y, int w)
 }
 void drawTableErrors(int x, int y, string errorMessage)
 {
-    setColorByRequest(LIGHTGRAY,BLACK);
+    setColorByRequest(LIGHTGRAY, BLACK);
     drawHCN(x + 69, y + 17, 41, 6);
     gotoxy(x + 85, y + 19);
     setColorByRequest(LIGHTGRAY, RED);
@@ -166,14 +161,85 @@ void drawTableErrors(int x, int y, string errorMessage)
         SetBGColor(RED);
         gotoxy(i, y + 21);
         cout << " ";
-        SetBGColor(BLACK);
+        SetBGColor(LIGHTGRAY);
     }
-    SetColor(WHITE);
-    SetBGColor(BLUE);
+    setColorByRequest(RED, WHITE);
     gotoxy(x + 72, y + 21);
     cout << errorMessage;
-    SetColor(WHITE);
-    SetBGColor(BLACK);
+    setColorByRequest(LIGHTGRAY, BLACK);
+}
+void clearTableContent(int x)
+{
+    SetBGColor(LIGHTGRAY);
+    for (int currentRow = 5; currentRow <= ROWS + 4; currentRow++)
+    {
+        for (int i = x + 3; i < x + 15; i++)
+        {
+            gotoxy(i, currentRow);
+            cout << " ";
+        }
+        for (int i = x + 18; i < x + 38; i++)
+        {
+            gotoxy(i, currentRow);
+            cout << " ";
+        }
+        for (int i = x + 41; i < x + 49; i++)
+        {
+            gotoxy(i, currentRow);
+            cout << " ";
+        }
+        for (int i = x + 52; i < x + 60; i++)
+        {
+            gotoxy(i, currentRow);
+            cout << " ";
+        }
+    }
+}
+
+int pageSearchByTab(int x, int currentPage, int totalPages, string &errorMessage)
+{
+    int goToPage;
+    string numberStr = to_string(totalPages);
+    int length = numberStr.length();
+    for (int i = 0; i < 7; i++)
+    {
+        gotoxy(x + 26 + i, 26);
+        SetBGColor(LIGHTGRAY);
+        cout << " ";
+    }
+    for (int i = 0; i <= length + 1; i++)
+    {
+        gotoxy(x + 26 + i, 26);
+        SetBGColor(BLACK);
+        cout << " ";
+        SetBGColor(LIGHTGRAY);
+    }
+    setColorByRequest(BLACK, WHITE);
+    ShowCurAtXY(x + 27, 26, true);
+    cin >> goToPage;
+    ShowCur(false);
+    while (goToPage > totalPages)
+    {
+        errorMessage = "Loi trang. Vui long nhap lai";
+        drawTableErrors(5, 2, errorMessage);
+        for (int i = 0; i <= length + 1; i++)
+        {
+            gotoxy(x + 26 + i, 26);
+            SetBGColor(BLACK);
+            cout << " ";
+            SetBGColor(LIGHTGRAY);
+        }
+        setColorByRequest(BLACK, WHITE);
+        ShowCurAtXY(x + 27, 26, true);
+        cin >> goToPage;
+        ShowCur(false);
+    }
+    errorMessage = " ";
+    currentPage = goToPage;
+    setColorByRequest(LIGHTGRAY, BLACK);
+    clearTableContent(x);
+    drawTableErrors(5, 2, errorMessage);
+    return currentPage;
 }
 // int main()
 // {
