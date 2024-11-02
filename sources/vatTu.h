@@ -188,94 +188,7 @@ treeVatTu search(treeVatTu root, const string &MAVT)
 
     return search(root->right, MAVT);
 }
-// chinh sua vt theo mavt
-void chinhSuaVatTu(treeVatTu &root)
-{
-    string MAVT;
-    cout << "Nhap Ma Vat Tu can chinh sua: ";
-    cin >> MAVT;
-    cin.ignore();
-    treeVatTu node = search(root, MAVT);
-    if (node == NULL)
-    {
-        cout << "Khong tim thay vat tu voi ma " << MAVT << endl;
-        return;
-    }
-
-    cout << "Thong tin hien tai:" << endl;
-    cout << "Ma vat tu: " << node->data_vt.MAVT << ", Ten: " << node->data_vt.TENVT
-         << ", DVT: " << node->data_vt.DVT << ", So luong ton: " << node->data_vt.soLuongTon << endl;
-
-    cout << "Nhap Ten Vat Tu moi (Enter de giu nguyen): ";
-    string newName;
-    getline(cin, newName);
-    if (!newName.empty())
-        node->data_vt.TENVT = newName;
-
-    cout << "Nhap Don Vi Tinh moi (Enter de giu nguyen): ";
-    string newDVT;
-    getline(cin, newDVT);
-    if (!newDVT.empty())
-        node->data_vt.DVT = newDVT;
-    cout << "Da cap nhat thong tin vat tu." << endl;
-}
-// xoa vt theo mavt
-void xoaVatTu(treeVatTu &root)
-{
-    string MAVT;
-    cout << "Nhap Ma Vat Tu can xoa: ";
-    cin >> MAVT;
-    cin.ignore();
-
-    treeVatTu node = search(root, MAVT);
-    if (node == NULL)
-    {
-        cout << "Khong tim thay vat tu voi ma " << MAVT << endl;
-        return;
-    }
-
-    char confirm;
-    cout << "Ban co chac chan muon xoa vat tu nay? (y/n): ";
-    cin >> confirm;
-    cin.ignore();
-
-    if (confirm == 'y' || confirm == 'Y')
-    {
-        root = deleteNode(root, MAVT);
-        cout << "Da xoa vat tu voi ma " << MAVT << endl;
-    }
-    else
-    {
-        cout << "Huy bo xoa vat tu." << endl;
-    }
-}
-
-void formatInputVT(string &MAVT, string &TENVT, string &DVT, int &SLT)
-{
-    if (MAVT.length() > 10)
-    {
-        MAVT = MAVT.substr(0, 10);
-    }
-    if (TENVT.length() > 20)
-    {
-        TENVT = TENVT.substr(0, 20);
-    }
-    if (DVT.length() > 6)
-    {
-        DVT = DVT.substr(0, 6);
-    }
-    string sltStr = to_string(SLT);
-    if (sltStr.length() > 6)
-    {
-        sltStr = sltStr.substr(0, 6);
-        SLT = stoi(sltStr);
-    }
-    if (SLT < 0) // Đảm bảo số lượng không âm
-    {
-        SLT = 0;
-    }
-}
-// kiem tra ki tu hop le
+//
 bool isValidChar(char c)
 {
     // Chấp nhận chữ cái (A-Z, a-z)
@@ -357,52 +270,7 @@ string normalizeString(const string &input, bool &hasError)
     }
     return result;
 }
-// doc file ds_vattu
-void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
-{
-    bool hasError;
-    isOpened = true;
-    ifstream filein;
-    filein.open(filePath_VT, ios_base::in);
-    if (!filein.is_open())
-    {
-        isOpened = false;
-        return;
-    }
-
-    string line;
-    while (getline(filein, line))
-    {
-        // Bỏ qua dòng trống
-        if (line.empty() || line.find_first_not_of(" \t\n\v\f\r") == string::npos)
-            continue;
-
-        // Tạo stringstream để xử lý dòng dữ liệu
-        stringstream ss(line);
-        nodeVatTu data_vt;
-
-        // Đọc từng phần của dữ liệu
-        getline(ss, data_vt.MAVT, '|');
-        getline(ss, data_vt.TENVT, '|');
-        data_vt.TENVT = normalizeString(data_vt.TENVT, hasError);
-        getline(ss, data_vt.DVT, '|');
-        data_vt.DVT = normalizeString(data_vt.DVT, hasError);
-        ss >> data_vt.soLuongTon;
-        formatInputVT(data_vt.MAVT, data_vt.TENVT, data_vt.DVT, data_vt.soLuongTon);
-        // Kiểm tra xem đọc dữ liệu có thành công không
-        if (!ss.fail())
-        {
-            root = insert(root, data_vt);
-        }
-        else
-        {
-            cout << "Loi: Khong the doc du lieu tu dong: " << line << endl;
-        }
-    }
-
-    filein.close();
-}
-
+//
 void displayField(int x, int y, const string &value, bool isActive, int maxLength)
 {
     SetBGColor(BLACK);
@@ -527,6 +395,255 @@ int inputNumber(int x, int y, int current, bool &moveNext)
     drawTableErrors(5, 2, errorMessage);
     return result.empty() ? 0 : stoi(result);
 }
+// chinh sua vt theo mavt
+/*
+void chinhSuaVatTu(treeVatTu &root, string MAVT)
+{
+    // string MAVT;
+    // cout << "Nhap Ma Vat Tu can chinh sua: ";
+    // cin >> MAVT;
+    // cin.ignore();
+    treeVatTu node = search(root, MAVT);
+    if (node == NULL)
+    {
+        cout << "Khong tim thay vat tu voi ma " << MAVT << endl;
+        return;
+    }
+
+    cout << "Thong tin hien tai:" << endl;
+    cout << "Ma vat tu: " << node->data_vt.MAVT << ", Ten: " << node->data_vt.TENVT
+         << ", DVT: " << node->data_vt.DVT << ", So luong ton: " << node->data_vt.soLuongTon << endl;
+
+    cout << "Nhap Ten Vat Tu moi (Enter de giu nguyen): ";
+    string newName;
+    getline(cin, newName);
+    if (!newName.empty())
+        node->data_vt.TENVT = newName;
+
+    cout << "Nhap Don Vi Tinh moi (Enter de giu nguyen): ";
+    string newDVT;
+    getline(cin, newDVT);
+    if (!newDVT.empty())
+        node->data_vt.DVT = newDVT;
+    cout << "Da cap nhat thong tin vat tu." << endl;
+}*/
+
+// xoa vt theo mavt
+void xoaVatTu(treeVatTu &root)
+{
+    string MAVT;
+    cout << "Nhap Ma Vat Tu can xoa: ";
+    cin >> MAVT;
+    cin.ignore();
+
+    treeVatTu node = search(root, MAVT);
+    if (node == NULL)
+    {
+        cout << "Khong tim thay vat tu voi ma " << MAVT << endl;
+        return;
+    }
+
+    char confirm;
+    cout << "Ban co chac chan muon xoa vat tu nay? (y/n): ";
+    cin >> confirm;
+    cin.ignore();
+
+    if (confirm == 'y' || confirm == 'Y')
+    {
+        root = deleteNode(root, MAVT);
+        cout << "Da xoa vat tu voi ma " << MAVT << endl;
+    }
+    else
+    {
+        cout << "Huy bo xoa vat tu." << endl;
+    }
+}
+
+void formatInputVT(string &MAVT, string &TENVT, string &DVT, int &SLT)
+{
+    if (MAVT.length() > 10)
+    {
+        MAVT = MAVT.substr(0, 10);
+    }
+    if (TENVT.length() > 20)
+    {
+        TENVT = TENVT.substr(0, 20);
+    }
+    if (DVT.length() > 6)
+    {
+        DVT = DVT.substr(0, 6);
+    }
+    string sltStr = to_string(SLT);
+    if (sltStr.length() > 6)
+    {
+        sltStr = sltStr.substr(0, 6);
+        SLT = stoi(sltStr);
+    }
+    if (SLT < 0) // Đảm bảo số lượng không âm
+    {
+        SLT = 0;
+    }
+}
+
+// doc file ds_vattu
+void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
+{
+    bool hasError;
+    isOpened = true;
+    ifstream filein;
+    filein.open(filePath_VT, ios_base::in);
+    if (!filein.is_open())
+    {
+        isOpened = false;
+        return;
+    }
+
+    string line;
+    while (getline(filein, line))
+    {
+        // Bỏ qua dòng trống
+        if (line.empty() || line.find_first_not_of(" \t\n\v\f\r") == string::npos)
+            continue;
+
+        // Tạo stringstream để xử lý dòng dữ liệu
+        stringstream ss(line);
+        nodeVatTu data_vt;
+
+        // Đọc từng phần của dữ liệu
+        getline(ss, data_vt.MAVT, '|');
+        getline(ss, data_vt.TENVT, '|');
+        data_vt.TENVT = normalizeString(data_vt.TENVT, hasError);
+        getline(ss, data_vt.DVT, '|');
+        data_vt.DVT = normalizeString(data_vt.DVT, hasError);
+        ss >> data_vt.soLuongTon;
+        formatInputVT(data_vt.MAVT, data_vt.TENVT, data_vt.DVT, data_vt.soLuongTon);
+        // Kiểm tra xem đọc dữ liệu có thành công không
+        if (!ss.fail())
+        {
+            root = insert(root, data_vt);
+        }
+        else
+        {
+            cout << "Loi: Khong the doc du lieu tu dong: " << line << endl;
+        }
+    }
+
+    filein.close();
+}
+void chinhSuaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isSaved)
+{
+    nodeVatTu input;
+    input.MAVT = "";
+    input.TENVT = "";
+    input.DVT = "";
+    input.soLuongTon = 0;
+    string errorMessage;
+    int currentRow = 1;
+    bool hasError;
+    string result;
+    int numResult;
+    bool moveNext;
+    string tempInput;
+    isESC, isSaved = false;
+    treeVatTu node = search(root, MAVT);
+    if (node == NULL)
+    {
+        cout << "Khong tim thay vat tu voi ma " << MAVT << endl;
+        return;
+    }
+    input.MAVT = node->data_vt.MAVT;
+    input.TENVT = node->data_vt.TENVT;
+    input.DVT = node->data_vt.DVT;
+    input.soLuongTon = node->data_vt.soLuongTon;
+    while (true)
+    {
+        displayField(x + 87, y + 4, input.MAVT, false, 10);
+        displayField(x + 87, y + 6, input.TENVT, currentRow == 1, 20);
+        displayField(x + 87, y + 8, input.DVT, currentRow == 2, 6);
+        displayField(x + 87, y + 10, input.soLuongTon > 0 ? to_string(input.soLuongTon) : "", currentRow == 3, 6);
+        switch (currentRow)
+        {
+        case 1:
+        {
+            // Cho phép nhập mọi ký tự
+            result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+            // Chuẩn hóa chuỗi sau khi nhập
+            tempInput = normalizeString(result, hasError);
+            if (hasError)
+            {
+                errorMessage = "Ten vat tu chua ky tu khong hop le!";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+
+            input.TENVT = tempInput;
+            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+            break;
+        }
+        case 2:
+        {
+            // Cho phép nhập mọi ký tự
+            result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+            // Chuẩn hóa chuỗi sau khi nhập
+            tempInput = normalizeString(result, hasError);
+            if (hasError)
+            {
+                errorMessage = "Don vi tinh chua ky tu khong hop le!";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+            input.DVT = tempInput;
+            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+            break;
+        }
+        case 3:
+        {
+            numResult = inputNumber(x + 87, y + 10, input.soLuongTon, moveNext);
+            if (numResult == -1)
+                goto escButton;
+            if (numResult == -4)
+                goto saveButton;
+            input.soLuongTon = numResult;
+            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+            break;
+        }
+        escButton:
+        {
+            isESC = true;
+            return;
+        }
+        saveButton:
+        {
+            if (!moveNext && !input.MAVT.empty() && !input.TENVT.empty() &&
+                !input.DVT.empty() && input.soLuongTon > 0)
+            {
+                node->data_vt.MAVT = input.MAVT;
+                node->data_vt.TENVT = input.TENVT;
+                node->data_vt.DVT = input.DVT;
+                node->data_vt.soLuongTon = input.soLuongTon;
+                isSaved = true;
+                return;
+            }
+        }
+        }
+        if (moveNext)
+        {
+            currentRow = (currentRow < 3) ? currentRow + 1 : 3;
+        }
+        else
+        {
+            currentRow = (currentRow > 1) ? currentRow - 1 : 1;
+        }
+    }
+}
 
 void nhapVatTu(treeVatTu &root, int x, int y)
 {
@@ -558,9 +675,9 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             // Cho phép nhập mọi ký tự
             result = inputString(x + 87, y + 4, input.MAVT, 10, "Ma vat tu", moveNext);
             if (result == "ESC")
-                return;
+                goto escButton;
             if (result == "F4")
-                goto save;
+                goto saveButton;
             // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -587,9 +704,9 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             // Cho phép nhập mọi ký tự
             result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext);
             if (result == "ESC")
-                return;
+                goto escButton;
             if (result == "F4")
-                goto save;
+                goto saveButton;
             // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -607,9 +724,9 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             // Cho phép nhập mọi ký tự
             result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext);
             if (result == "ESC")
-                return;
+                goto escButton;
             if (result == "F4")
-                goto save;
+                goto saveButton;
             // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -626,15 +743,25 @@ void nhapVatTu(treeVatTu &root, int x, int y)
         {
             numResult = inputNumber(x + 87, y + 10, input.soLuongTon, moveNext);
             if (numResult == -1)
-                return;
+                goto escButton;
             if (numResult == -4)
-                goto save;
+                goto saveButton;
             input.soLuongTon = numResult;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
-
             break;
         }
-        save:
+        escButton:
+        {
+            ShowCur(false);
+            errorMessage = "Dang thoat chuong trinh...";
+            drawTableErrors(5, 2, errorMessage);
+            Sleep(1500);
+            errorMessage = "";
+            drawTableErrors(5, 2, errorMessage);
+            fillAreaColor(x + 69, y, 41, 13, LIGHTGRAY);
+            return;
+        }
+        saveButton:
         {
             ShowCur(false);
             if (!moveNext && !input.MAVT.empty() && !input.TENVT.empty() &&
@@ -646,6 +773,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
                 Sleep(1500);
                 errorMessage = "";
                 drawTableErrors(5, 2, errorMessage);
+                fillAreaColor(x + 69, y, 41, 13, LIGHTGRAY);
                 return;
             }
             else

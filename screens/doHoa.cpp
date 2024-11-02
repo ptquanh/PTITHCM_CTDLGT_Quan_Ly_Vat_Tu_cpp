@@ -58,7 +58,7 @@ void deleteOneRow(int y);
 void deleteOneCollumn(int x);
 void drawTableErrors(int x, int y, string errorMessage);
 int pageSearchByTab(int x, int currentPage, int totalPages, string &errorMessage);
-void clearTableContent(int x);
+void clearTablePrint(int x);
 //==================================
 void Normal()
 {
@@ -168,7 +168,7 @@ void drawTableErrors(int x, int y, string errorMessage)
     cout << errorMessage;
     setColorByRequest(LIGHTGRAY, BLACK);
 }
-void clearTableContent(int x)
+void clearTablePrint(int x)
 {
     SetBGColor(LIGHTGRAY);
     for (int currentRow = 5; currentRow <= ROWS + 4; currentRow++)
@@ -237,7 +237,7 @@ int pageSearchByTab(int x, int currentPage, int totalPages, string &errorMessage
     errorMessage = " ";
     currentPage = goToPage;
     setColorByRequest(LIGHTGRAY, BLACK);
-    clearTableContent(x);
+    clearTablePrint(x);
     drawTableErrors(5, 2, errorMessage);
     return currentPage;
 }
