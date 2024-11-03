@@ -12,8 +12,8 @@ time_t to_time_t(int day, int month, int year)
 {
     struct tm t = {0};
     t.tm_mday = day;
-    t.tm_mon = month - 1;
-    t.tm_year = year - 1900;
+    t.tm_mon = month - 1;    // Tháng được lưu trong mảng với index từ 0 đến 11
+    t.tm_year = year - 1900; // Năm được tính từ 1900
     return mktime(&t);
 }
 
@@ -21,19 +21,19 @@ void QuickSort(DoanhThuVatTu arr[], int low, int high)
 {
     if (low < high)
     {
-        int pi = Partition(arr, low, high);
-        QuickSort(arr, low, pi - 1);
-        QuickSort(arr, pi + 1, high);
+        int pi = Partition(arr, low, high); // Thực hiện phân chia từ low đến high ở vị trí pivot
+        QuickSort(arr, low, pi - 1);        // Đệ quy sắp xếp bên trái
+        QuickSort(arr, pi + 1, high);       // Đệ quy sắp xếp bên phải
     }
 }
 
 int Partition(DoanhThuVatTu arr[], int low, int high)
 {
-    float pivot = arr[high].doanhThu;
+    float pivot = arr[high].doanhThu; // Chọn pivot ở cuối
     int i = (low - 1);
     for (int j = low; j < high; j++)
     {
-        if (arr[j].doanhThu > pivot)
+        if (arr[j].doanhThu > pivot) // Đưa những vật tư doanh thu cao lên đầu mảng
         {
             i++;
             DoanhThuVatTu temp = arr[i];
@@ -41,7 +41,7 @@ int Partition(DoanhThuVatTu arr[], int low, int high)
             arr[j] = temp;
         }
     }
-    DoanhThuVatTu temp = arr[i + 1];
+    DoanhThuVatTu temp = arr[i + 1]; // Đưa pivot cuối lên vị trí mà nó nhỏ hơn tất cả phần tử trước nó
     arr[i + 1] = arr[high];
     arr[high] = temp;
     return (i + 1);
@@ -61,9 +61,9 @@ void TinhToanDoanhThu(ptr_DSCTHD ct, DoanhThuVatTu doanhThu[], int &countVatTu, 
     while (ct != nullptr)
     {
         bool found = false;
-        for (int j = 0; j < countVatTu; ++j)
+        for (int j = 0; j < countVatTu; ++j) // Kiểm tra xem MAVT này đã có tồn tại trong mảng hay chưa
         {
-            if (doanhThu[j].MAVT == ct->data_cthd.MAVT)
+            if (doanhThu[j].MAVT == ct->data_cthd.MAVT) // Nếu tìm thấy vật tư đã tồn tại trong mảng
             {
                 if (loai == 'X')
                 {
@@ -73,13 +73,13 @@ void TinhToanDoanhThu(ptr_DSCTHD ct, DoanhThuVatTu doanhThu[], int &countVatTu, 
                 {
                     doanhThu[j].doanhThu -= ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 + ct->data_cthd.VAT / 100);
                 }
-                found = true;
+                found = true; // Đánh dấu đã tìm thấy
                 break;
             }
         }
-        if (!found)
+        if (!found) // Nếu chưa tìm thấy
         {
-            doanhThu[countVatTu].MAVT = ct->data_cthd.MAVT;
+            doanhThu[countVatTu].MAVT = ct->data_cthd.MAVT; // Ghi nhận MAVT mới
             if (loai == 'X')
             {
                 doanhThu[countVatTu].doanhThu = ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 + ct->data_cthd.VAT / 100);
@@ -88,7 +88,7 @@ void TinhToanDoanhThu(ptr_DSCTHD ct, DoanhThuVatTu doanhThu[], int &countVatTu, 
             {
                 doanhThu[countVatTu].doanhThu = -(ct->data_cthd.soLuong * ct->data_cthd.donGia) * (1 + ct->data_cthd.VAT / 100);
             }
-            countVatTu++;
+            countVatTu++; // Đưa index tới vị trí tiếp theo của mảng doanh thu
         }
         ct = ct->next;
     }
