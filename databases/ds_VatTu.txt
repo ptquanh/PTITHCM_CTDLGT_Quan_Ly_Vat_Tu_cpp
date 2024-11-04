@@ -1,21 +1,16 @@
 0123456789|Asdsda|Cai|100000
 1|Banh Mi|O|2
 10|Com|Dia|1
-100|A|B|2
-101|101|Cai|2
 11|Dt|Cai|2
 12|Ca|Con|2
 13|Ban Phim|Cai|2
 14|Banh Mi|O|2
-15|Asdsda|Cai|100
-16|A|B|5
 17|Com|Dia|1
 18|Dt|Cai|2
 19|Ca|Con|2
 2|Asdsda|Cai|100
 20|Ban Phim|Cai|2
 21|Banh Mi|O|2
-22|Asdsda|Cai|100
 23|A|B|5
 24|Com|Dia|1
 25|Dt|Cai|2
@@ -27,4 +22,4 @@
 6|Ban Phim|Cai|2
 7|Banh Mi|O|2
 8|Asdsda|Cai|100
-9|123456789012345678901|1234567|1234567
+9|12345678901234567890|123456|123456

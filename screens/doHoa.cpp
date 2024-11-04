@@ -44,6 +44,7 @@ const char cross = 206;
 #define F2 60
 #define F3 61
 #define F4 62
+#define F5 63
 #define TAB 9
 #define BACKSPACE 8
 //==========tien khai bao==========
@@ -151,7 +152,7 @@ void horizontalLine(int x, int y, int w)
 }
 void drawTableErrors(int x, int y, string errorMessage)
 {
-    setColorByRequest(LIGHTGRAY, BLACK);
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x + 69, y + 17, 41, 6);
     gotoxy(x + 85, y + 19);
     setColorByRequest(LIGHTGRAY, RED);

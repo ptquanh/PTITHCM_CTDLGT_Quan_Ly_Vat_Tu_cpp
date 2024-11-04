@@ -7,7 +7,6 @@ const int Header_x = 20;
 const int Header_y = 6;
 const int CTNNV = 4;
 
-
 int menuChinhDong(char menuchinh[YeuCauChinh][100])
 {
     Normal();
@@ -445,6 +444,7 @@ int main()
     int chon = 0;
     while (1)
     {
+    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
         chon = menuChinhDong(MenuChinh);
         // system("cls");
         switch (chon)

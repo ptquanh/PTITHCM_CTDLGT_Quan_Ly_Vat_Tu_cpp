@@ -126,11 +126,10 @@ treeVatTu minValueNode(treeVatTu node)
     return current;
 }
 
-treeVatTu deleteNode(treeVatTu root, const string &MAVT)
+treeVatTu deleteNode(treeVatTu root, string MAVT)
 {
     if (root == NULL)
         return root;
-
     if (MAVT < root->data_vt.MAVT)
         root->left = deleteNode(root->left, MAVT);
     else if (MAVT > root->data_vt.MAVT)
@@ -177,7 +176,7 @@ treeVatTu deleteNode(treeVatTu root, const string &MAVT)
     return root;
 }
 // tim theo mavt
-treeVatTu search(treeVatTu root, const string &MAVT)
+treeVatTu search(treeVatTu root, string MAVT)
 {
     if (root == NULL || root->data_vt.MAVT == MAVT)
     {
@@ -395,69 +394,6 @@ int inputNumber(int x, int y, int current, bool &moveNext)
     drawTableErrors(5, 2, errorMessage);
     return result.empty() ? 0 : stoi(result);
 }
-// chinh sua vt theo mavt
-/*
-void chinhSuaVatTu(treeVatTu &root, string MAVT)
-{
-    // string MAVT;
-    // cout << "Nhap Ma Vat Tu can chinh sua: ";
-    // cin >> MAVT;
-    // cin.ignore();
-    treeVatTu node = search(root, MAVT);
-    if (node == NULL)
-    {
-        cout << "Khong tim thay vat tu voi ma " << MAVT << endl;
-        return;
-    }
-
-    cout << "Thong tin hien tai:" << endl;
-    cout << "Ma vat tu: " << node->data_vt.MAVT << ", Ten: " << node->data_vt.TENVT
-         << ", DVT: " << node->data_vt.DVT << ", So luong ton: " << node->data_vt.soLuongTon << endl;
-
-    cout << "Nhap Ten Vat Tu moi (Enter de giu nguyen): ";
-    string newName;
-    getline(cin, newName);
-    if (!newName.empty())
-        node->data_vt.TENVT = newName;
-
-    cout << "Nhap Don Vi Tinh moi (Enter de giu nguyen): ";
-    string newDVT;
-    getline(cin, newDVT);
-    if (!newDVT.empty())
-        node->data_vt.DVT = newDVT;
-    cout << "Da cap nhat thong tin vat tu." << endl;
-}*/
-
-// xoa vt theo mavt
-void xoaVatTu(treeVatTu &root)
-{
-    string MAVT;
-    cout << "Nhap Ma Vat Tu can xoa: ";
-    cin >> MAVT;
-    cin.ignore();
-
-    treeVatTu node = search(root, MAVT);
-    if (node == NULL)
-    {
-        cout << "Khong tim thay vat tu voi ma " << MAVT << endl;
-        return;
-    }
-
-    char confirm;
-    cout << "Ban co chac chan muon xoa vat tu nay? (y/n): ";
-    cin >> confirm;
-    cin.ignore();
-
-    if (confirm == 'y' || confirm == 'Y')
-    {
-        root = deleteNode(root, MAVT);
-        cout << "Da xoa vat tu voi ma " << MAVT << endl;
-    }
-    else
-    {
-        cout << "Huy bo xoa vat tu." << endl;
-    }
-}
 
 void formatInputVT(string &MAVT, string &TENVT, string &DVT, int &SLT)
 {
@@ -484,7 +420,6 @@ void formatInputVT(string &MAVT, string &TENVT, string &DVT, int &SLT)
         SLT = 0;
     }
 }
-
 // doc file ds_vattu
 void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 {
@@ -511,6 +446,7 @@ void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 
         // Đọc từng phần của dữ liệu
         getline(ss, data_vt.MAVT, '|');
+        // data_vt.MAVT = normalizeString(data_vt.MAVT, hasError);
         getline(ss, data_vt.TENVT, '|');
         data_vt.TENVT = normalizeString(data_vt.TENVT, hasError);
         getline(ss, data_vt.DVT, '|');
@@ -530,7 +466,8 @@ void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 
     filein.close();
 }
-void chinhSuaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isSaved)
+
+void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isSaved)
 {
     nodeVatTu input;
     input.MAVT = "";
@@ -758,7 +695,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             Sleep(1500);
             errorMessage = "";
             drawTableErrors(5, 2, errorMessage);
-            fillAreaColor(x + 69, y, 41, 13, LIGHTGRAY);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
         saveButton:
@@ -773,7 +710,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
                 Sleep(1500);
                 errorMessage = "";
                 drawTableErrors(5, 2, errorMessage);
-                fillAreaColor(x + 69, y, 41, 13, LIGHTGRAY);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }
             else
@@ -793,6 +730,55 @@ void nhapVatTu(treeVatTu &root, int x, int y)
         else
         {
             currentRow = (currentRow > 0) ? currentRow - 1 : 0;
+        }
+    }
+}
+// xoa vt theo mavt
+void xoaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isSaved)
+{
+    nodeVatTu input;
+    input.MAVT = "";
+    input.TENVT = "";
+    input.DVT = "";
+    input.soLuongTon = 0;
+    isESC = false;
+    isSaved = false;
+    bool hasError;
+    if (root == NULL)
+    {
+        cout << "Danh sach vat tu rong ";
+        return;
+    }
+    treeVatTu node = search(root, MAVT);
+    if (node == NULL)
+    {
+        cout << "Khong tim thay ma vt" << MAVT << endl;
+        return;
+    }
+
+    input.MAVT = node->data_vt.MAVT;
+    input.TENVT = node->data_vt.TENVT;
+    input.DVT = node->data_vt.DVT;
+    input.soLuongTon = node->data_vt.soLuongTon;
+
+    displayField(x + 87, y + 4, input.MAVT, false, 10);
+    displayField(x + 87, y + 6, input.TENVT, false, 20);
+    displayField(x + 87, y + 8, input.DVT, false, 6);
+    displayField(x + 87, y + 10, input.soLuongTon > 0 ? to_string(input.soLuongTon) : "", false, 6);
+
+    char key;
+    while (true)
+    {
+        key = getch();
+        switch (key)
+        {
+        case ESC:
+            isESC = true;
+            return;
+        case F4:
+            root = deleteNode(root, MAVT);
+            isSaved = true;
+            return;
         }
     }
 }
@@ -855,21 +841,12 @@ void quickSort(treeVatTu arr[], int low, int high)
 void inDanhSachVatTu(treeVatTu root, int pageNumber, int selectedRow, int x, string &errorMessage)
 {
     int n = countNodes(root);
-    bool isOpened;
-    readFile_dsVatTu(root, isOpened);
-    if (n == 0 && isOpened == true)
+    if (n == 0)
     {
         errorMessage = "Khong co du lieu vat tu";
         drawTableErrors(5, 2, errorMessage);
         return;
     }
-    else if (n == 0 && isOpened == false)
-    {
-        errorMessage = "Khong the mo file ds_VatTu.txt";
-        drawTableErrors(5, 2, errorMessage);
-        return;
-    }
-
     treeVatTu *arr = new treeVatTu[n];
     int index = 0;
     storeInorder(root, arr, &index);

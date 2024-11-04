@@ -24,7 +24,7 @@ char keyGuides[SoNut][50] = {
     "F1: Them VT",
     "F2: Sua VT",
     "F3: Xoa VT",
-    "F4: Luu",
+    "F5: Tim kiem",
     "ESC: Thoat"};
 // ================ MENU ========================
 char MenuChinh[YeuCauChinh][100] = {

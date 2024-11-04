@@ -280,14 +280,14 @@ void handleNavigationListNhanVien(dsNhanVien &list, int x, int y, int w, int h)
             if (currentPage > 1)
             {
                 currentPage--;
-                clearTableContent(x);
+                clearTablePrint(x);
             }
             break;
         case RIGHT:
             if (currentPage < totalPages)
             {
                 currentPage++;
-                clearTableContent(x);
+                clearTablePrint(x);
             }
             break;
         case TAB:
