@@ -673,13 +673,13 @@ void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x
     cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
 }
 //======================HOA DON===================================
-void lapHoaDon(dsNhanVien &ds_nv)
+void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
 {
     string ma_nv;
     cout << "Nhap ma nhan vien lap hoa don: ";
     cin >> ma_nv;
     nhanVien *nv = nullptr;
-    for (int i = 0; i < ds_nv.CountNV; ++i)
+    for (int i = 0; i < ds_nv.CountNV; ++i) // Tìm  nhân viên trong danh sách
     {
         if (ds_nv.nodes[i]->MANV == ma_nv)
         {
@@ -688,7 +688,7 @@ void lapHoaDon(dsNhanVien &ds_nv)
         }
     }
 
-    if (nv == nullptr)
+    if (nv == nullptr) // Nếu không tìm được
     {
         cout << "Ma nhan vien khong ton tai!" << endl;
         return;
@@ -752,6 +752,31 @@ void lapHoaDon(dsNhanVien &ds_nv)
         cout << "Nhap VAT (%): ";
         cin >> new_cthd->data_cthd.VAT;
 
+        treeVatTu temp = search(root, new_cthd->data_cthd.MAVT);
+        bool checkMAVT;
+        if (temp == nullptr)
+            checkMAVT = false;
+        else
+            checkMAVT = true;
+
+        if (checkMAVT == true)
+        {
+            if (nv->firstDSHD->data_hd.loai == 'N') // Nếu hóa đơn là hóa đơn nhập
+            {
+                temp->data_vt.soLuongTon += new_cthd->data_cthd.soLuong;
+            }
+            else if (nv->firstDSHD->data_hd.loai == 'X') // Nếu hóa đơn là hóa đơn xuất
+            {
+                if (temp->data_vt.soLuongTon < new_cthd->data_cthd.soLuong)
+                {
+                    cout << "Loi: Vui long nhap them vat tu vao kho!" << endl;
+                }
+                else
+                {
+                    temp->data_vt.soLuongTon -= new_cthd->data_cthd.soLuong;
+                }
+            }
+        }
         // Thêm chi tiết hóa đơn vào danh sách chi tiết của hóa đơn hiện tại
         if (new_hd->data_hd.firstCTHD == nullptr)
         {
@@ -768,7 +793,6 @@ void lapHoaDon(dsNhanVien &ds_nv)
             temp_cthd->next = new_cthd;
             new_cthd->next = nullptr;
         }
-
         // Kiểm tra tiếp tục thêm chi tiết hóa đơn
         char choice;
         cout << "Ban co muon them chi tiet hoa don khac? (y/n): ";
