@@ -1,5 +1,6 @@
 #pragma once
 #include "vatTu.h"
+#include "h.cpp"
 bool nhanVienEmpty(dsNhanVien &list)
 {
     return list.CountNV == 0;
@@ -954,44 +955,48 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
     while (true)
     {
         ptr_DSCTHD new_cthd = new dsChiTietHoaDon;
+
+        bool checkMAVT = false;
         treeVatTu temp = nullptr;
-        while (temp == nullptr)
+        do // Kiểm tra vật tư có trong kho không
         {
             cout << "Nhap ma vat tu: ";
             cin >> new_cthd->data_cthd.MAVT;
             temp = search(root, new_cthd->data_cthd.MAVT);
-        }
+
+            if (temp == nullptr) // Không tìm thấy mã vật tư
+            {
+                cout << "Loi: Khong tim thay vat tu" << endl;
+                checkMAVT = false;
+            }
+            else // Tìm thấy mã vật tư
+                checkMAVT = true;
+        } while (!checkMAVT);
+
         cout << "Nhap so luong: ";
         cin >> new_cthd->data_cthd.soLuong;
+
+        if (nv->firstDSHD->data_hd.loai == 'N') // Nếu hóa đơn là hóa đơn nhập
+        {
+            temp->data_vt.soLuongTon += new_cthd->data_cthd.soLuong;
+        }
+        else if (nv->firstDSHD->data_hd.loai == 'X') // Nếu hóa đơn là hóa đơn xuất
+        {
+            if (temp->data_vt.soLuongTon < new_cthd->data_cthd.soLuong) // Số lượng vật tư lấy ra nhiều hơn kho hiện cos
+            {
+                cout << "Loi: Vui long nhap them vat tu vao kho!" << endl;
+            }
+            else
+            {
+                temp->data_vt.soLuongTon -= new_cthd->data_cthd.soLuong;
+            }
+        }
+
         cout << "Nhap don gia: ";
         cin >> new_cthd->data_cthd.donGia;
         cout << "Nhap VAT (%): ";
         cin >> new_cthd->data_cthd.VAT;
 
-        bool checkMAVT;
-        if (temp == nullptr) // Không tìm thấy mã vật tư
-            checkMAVT = false;
-        else // Tìm thấy mã vật tư
-            checkMAVT = true;
-
-        if (checkMAVT == true)
-        {
-            if (nv->firstDSHD->data_hd.loai == 'N') // Nếu hóa đơn là hóa đơn nhập
-            {
-                temp->data_vt.soLuongTon += new_cthd->data_cthd.soLuong;
-            }
-            else if (nv->firstDSHD->data_hd.loai == 'X') // Nếu hóa đơn là hóa đơn xuất
-            {
-                if (temp->data_vt.soLuongTon < new_cthd->data_cthd.soLuong) // Số lượng vật tư lấy ra nhiều hơn kho hiện cos
-                {
-                    cout << "Loi: Vui long nhap them vat tu vao kho!" << endl;
-                }
-                else
-                {
-                    temp->data_vt.soLuongTon -= new_cthd->data_cthd.soLuong;
-                }
-            }
-        }
         // Thêm chi tiết hóa đơn vào danh sách chi tiết của hóa đơn hiện tại
         if (new_hd->data_hd.firstCTHD == nullptr)
         {
@@ -1054,6 +1059,7 @@ void inHoaDon(dsNhanVien &ds_nv)
         return;
     }
 
+    float trigia = TinhTriGiaHoaDon(found_hd->data_hd.firstCTHD);
     // In thông tin hóa đơn
     cout << "\n=============================\n";
     cout << "So Hoa Don: " << found_hd->data_hd.SoHD << endl;
@@ -1062,7 +1068,7 @@ void inHoaDon(dsNhanVien &ds_nv)
          << setw(2) << setfill('0') << found_hd->data_hd.month << "/"
          << found_hd->data_hd.year << endl;
     cout << "Nhan vien lap: " << nv->HO << " " << nv->TEN << " (Ma NV: " << nv->MANV << ")" << endl;
-
+    cout << "Tri gia hoa don: " << trigia << endl;
     ptr_DSCTHD current_cthd = found_hd->data_hd.firstCTHD;
     cout << "\nChi Tiet Hoa Don:\n";
     // cout << setw(15) << left << "Ma Vat Tu" << setw(10) << "So Luong"
