@@ -965,9 +965,9 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
 
         treeVatTu temp = search(root, new_cthd->data_cthd.MAVT);
         bool checkMAVT;
-        if (temp == nullptr)
+        if (temp == nullptr) // Không tìm thấy mã vật tư
             checkMAVT = false;
-        else
+        else // Tìm thấy mã vật tư
             checkMAVT = true;
 
         if (checkMAVT == true)
@@ -978,7 +978,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
             }
             else if (nv->firstDSHD->data_hd.loai == 'X') // Nếu hóa đơn là hóa đơn xuất
             {
-                if (temp->data_vt.soLuongTon < new_cthd->data_cthd.soLuong)
+                if (temp->data_vt.soLuongTon < new_cthd->data_cthd.soLuong) // Số lượng vật tư lấy ra nhiều hơn kho hiện cos
                 {
                     cout << "Loi: Vui long nhap them vat tu vao kho!" << endl;
                 }
