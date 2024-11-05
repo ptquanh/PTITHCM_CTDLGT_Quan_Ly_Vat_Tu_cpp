@@ -10,8 +10,8 @@
 #include <ctime>
 #include <math.h>
 using namespace std;
-#define filePath_VT "../databases/ds_VatTu.txt"
-#define filePath_NV "../databases/ds_NhanVien.txt"
+#define filePath_VT "./databases/ds_VatTu.txt"
+#define filePath_NV "./databases/ds_NhanVien.txt"
 #define MaxNhanVien 500
 #define YeuCauChinh 5
 #define YeuCauVatTu 4
