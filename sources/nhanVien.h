@@ -966,7 +966,10 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
         treeVatTu temp = search(root, new_cthd->data_cthd.MAVT);
         bool checkMAVT;
         if (temp == nullptr) // Không tìm thấy mã vật tư
+        {
+            cout << "Loi: Khong tim thay vat tu" << endl;
             checkMAVT = false;
+        }
         else // Tìm thấy mã vật tư
             checkMAVT = true;
 
