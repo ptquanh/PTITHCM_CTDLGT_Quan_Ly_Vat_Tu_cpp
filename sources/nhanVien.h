@@ -153,7 +153,6 @@ void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
     {
         pos++;
     }
-
     for (int i = list.CountNV; i > pos; i--)
     {
         list.nodes[i] = list.nodes[i - 1];
@@ -162,167 +161,386 @@ void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
     list.nodes[pos] = nhanvienmoi;
 }
 
-void xoaNhanVien(dsNhanVien &list)
+void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool &isSaved)
 {
+    nhanVien input;
+    input.MANV = "";
+    input.HO = "";
+    input.TEN = "";
+    input.PHAI = "";
+    isESC = false;
+    isSaved = false;
     if (nhanVienEmpty(list))
     {
-        cout << "Danh sach nhan vien trong!" << endl;
+        cout << "Danh sach nhan vien rong!";
         return;
     }
-
-    string manv;
-    cout << "Nhap ma nhan vien can xoa: ";
-    getline(cin, manv);
-
-    int pos = searchNhanVien(list, manv);
+    int pos = searchNhanVien(list, MANV);
     if (pos == -1)
     {
+        cout << "Khong tim thay ma nhan vien " << MANV << endl;
         return;
     }
+    input.MANV = list.nodes[pos]->MANV;
+    input.HO = list.nodes[pos]->HO;
+    input.TEN = list.nodes[pos]->TEN;
+    input.PHAI = list.nodes[pos]->PHAI;
 
-    delete list.nodes[pos];
-    for (int i = pos; i < list.CountNV - 1; i++)
+    displayField(x + 87, y + 4, input.MANV, false, 10);
+    displayField(x + 87, y + 6, input.HO, false, 20);
+    displayField(x + 87, y + 8, input.TEN, false, 10);
+    displayField(x + 87, y + 10, input.PHAI, false, 3);
+    char key;
+    while (true)
     {
-        list.nodes[i] = list.nodes[i + 1];
-    }
-    list.CountNV--;
-    cout << "Da xoa nhan vien thanh cong!" << endl;
-}
-void nhapNhanVien(dsNhanVien &list)
-{
-    if (list.CountNV >= MaxNhanVien)
-    {
-        cout << "So luong nhan vien da dat toi da!" << endl;
-        return;
-    }
-
-    nhanVien *nv = new nhanVien;
-    string value;
-    bool check;
-
-    do
-    {
-        cout << "Nhap ma nhan vien (toi da 10 ky tu): ";
-        getline(cin, value);
-        check = checkThongTin("MANV", value, nv, list);
-    } while (check);
-
-    do
-    {
-        cout << "Nhap ho nhan vien: ";
-        getline(cin, value);
-        check = checkThongTin("HO", value, nv, list);
-    } while (check);
-
-    do
-    {
-        cout << "Nhap ten nhan vien: ";
-        getline(cin, value);
-        check = checkThongTin("TEN", value, nv, list);
-    } while (check);
-
-    do
-    {
-        cout << "Nhap gioi tinh (nam/nu): ";
-        getline(cin, value);
-        check = checkThongTin("PHAI", value, nv, list);
-    } while (check);
-
-    if (list.CountNV == 0)
-    {
-        list.nodes[list.CountNV] = nv;
-    }
-    else
-    {
-        chenNhanVien(list, nv);
-    }
-    list.CountNV++;
-}
-
-// Hàm sửa nhân viên
-void suaNhanVien(dsNhanVien &list)
-{
-    if (nhanVienEmpty(list))
-    {
-        cout << "Danh sach nhan vien trong!" << endl;
-        return;
-    }
-
-    string manv;
-    cout << "Nhap ma nhan vien can sua: ";
-    getline(cin, manv);
-
-    int pos = searchNhanVien(list, manv);
-    if (pos == -1)
-    {
-        return;
-    }
-
-    nhanVien *nv = list.nodes[pos];
-    bool check;
-    int choice;
-    string value;
-
-    do
-    {
-        cout << "\nChon thong tin can sua:" << endl;
-        cout << "1. Ho nhan vien" << endl;
-        cout << "2. Ten nhan vien" << endl;
-        cout << "3. Gioi tinh" << endl;
-        cout << "0. Thoat" << endl;
-        cout << "Lua chon cua ban: ";
-        cin >> choice;
-        cin.ignore();
-
-        switch (choice)
+        key = getch();
+        switch (key)
         {
-        case 1:
-            do
-            {
-                cout << "Nhap ho nhan vien moi: ";
-                getline(cin, value);
-                check = checkThongTin("HO", value, nv, list);
-            } while (check);
-            break;
-
-        case 2:
-        {
-            do
-            {
-                cout << "Nhap ten nhan vien moi: ";
-                getline(cin, value);
-                check = checkThongTin("TEN", value, nv, list);
-            } while (check);
-
-            // Sắp xếp lại sau khi sửa tên
-            nhanVien *temp = list.nodes[pos];
+        case ESC:
+            isESC = true;
+            return;
+        case F4:
+            delete list.nodes[pos];
             for (int i = pos; i < list.CountNV - 1; i++)
             {
                 list.nodes[i] = list.nodes[i + 1];
             }
             list.CountNV--;
-            chenNhanVien(list, temp);
-            list.CountNV++;
-            break;
+            isSaved = true;
+            return;
         }
+    }
+}
 
-        case 3:
-            do
-            {
-                cout << "Nhap gioi tinh moi (nam/nu): ";
-                getline(cin, value);
-                check = checkThongTin("PHAI", value, nv, list);
-            } while (check);
-            break;
+void nhapNhanVien(dsNhanVien &list, int x, int y)
+{
+    if (list.CountNV >= MaxNhanVien)
+    {
+        string errorMessage = "So luong nhan vien da dat toi da!";
+        drawTableErrors(5, 2, errorMessage);
+        Sleep(1500);
+        return;
+    }
 
+    nhanVien input;
+    input.MANV = "";
+    input.HO = "";
+    input.TEN = "";
+    input.PHAI = "";
+    string errorMessage;
+    int currentRow = 0;
+    bool hasError;
+    string result;
+    bool moveNext;
+    string tempInput;
+
+    while (true)
+    {
+        // Hiển thị tất cả các trường
+        displayField(x + 87, y + 4, input.MANV, currentRow == 0, 10);
+        displayField(x + 87, y + 6, input.HO, currentRow == 1, 20);
+        displayField(x + 87, y + 8, input.TEN, currentRow == 2, 10);
+        displayField(x + 87, y + 10, input.PHAI, currentRow == 3, 3);
+
+        switch (currentRow)
+        {
         case 0:
-            cout << "Da hoan tat chinh sua!" << endl;
-            break;
+        {
+            result = inputString(x + 87, y + 4, input.MANV, 10, "Ma nhan vien", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
 
-        default:
-            cout << "Lua chon khong hop le!" << endl;
+            tempInput = normalizeString(result, hasError);
+            if (hasError)
+            {
+                errorMessage = "Ma nhan vien chua ky tu khong hop le";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+
+            // Kiểm tra mã nhân viên đã tồn tại
+            if (searchNhanVien(list, tempInput) != -1)
+            {
+                errorMessage = "Ma nhan vien da ton tai";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+            errorMessage = "";
+            drawTableErrors(5, 2, errorMessage);
+            input.MANV = tempInput;
+            formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
+            break;
         }
-    } while (choice != 0);
+        case 1:
+        {
+            result = inputString(x + 87, y + 6, input.HO, 20, "Ho nhan vien", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            tempInput = normalizeString(result, hasError);
+            if (hasError)
+            {
+                errorMessage = "Ho nhan vien chua ky tu khong hop le";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+            input.HO = tempInput;
+            formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
+            break;
+        }
+        case 2:
+        {
+            result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            tempInput = normalizeString(result, hasError);
+            if (hasError)
+            {
+                errorMessage = "Ten nhan vien chua ky tu khong hop le";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+            input.TEN = tempInput;
+            formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
+            break;
+        }
+        case 3:
+        {
+            result = inputString(x + 87, y + 10, input.PHAI, 3, "Gioi tinh (nam/nu)", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            tempInput = normalizeString(result, hasError);
+            if (hasError || (tempInput != "Nam" && tempInput != "Nu"))
+            {
+                errorMessage = "Gioi tinh khong hop le (Nam/Nu)";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+            input.PHAI = tempInput;
+            formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
+            break;
+        }
+        escButton:
+        {
+            ShowCur(false);
+            errorMessage = "Dang thoat chuong trinh...";
+            drawTableErrors(5, 2, errorMessage);
+            Sleep(1500);
+            errorMessage = "";
+            drawTableErrors(5, 2, errorMessage);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            return;
+        }
+        saveButton:
+        {
+            ShowCur(false);
+            if (!moveNext && !input.MANV.empty() && !input.HO.empty() &&
+                !input.TEN.empty() && !input.PHAI.empty())
+            {
+                nhanVien *nv = new nhanVien(input);
+                if (list.CountNV == 0)
+                {
+                    list.nodes[list.CountNV] = nv;
+                }
+                else
+                {
+                    chenNhanVien(list, nv);
+                }
+                list.CountNV++;
+
+                errorMessage = "Them nhan vien thanh cong";
+                drawTableErrors(5, 2, errorMessage);
+                Sleep(1500);
+                errorMessage = "";
+                drawTableErrors(5, 2, errorMessage);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                return;
+            }
+            else
+            {
+                errorMessage = "Thieu thong tin. Chua them nhan vien";
+                drawTableErrors(5, 2, errorMessage);
+                Sleep(1500);
+                errorMessage = "";
+                drawTableErrors(5, 2, errorMessage);
+            }
+        }
+        }
+        if (moveNext)
+        {
+            currentRow = (currentRow < 3) ? currentRow + 1 : 3;
+        }
+        else
+        {
+            currentRow = (currentRow > 0) ? currentRow - 1 : 0;
+        }
+    }
+}
+// Hàm sửa nhân viên
+void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool &isSaved)
+{
+    if (nhanVienEmpty(list))
+    {
+        string errorMessage = "Danh sach nhan vien trong!";
+        drawTableErrors(5, 2, errorMessage);
+        Sleep(1500);
+        return;
+    }
+
+    nhanVien input;
+    input.MANV = "";
+    input.HO = "";
+    input.TEN = "";
+    input.PHAI = "";
+    string errorMessage;
+    int currentRow = 1;
+    bool hasError;
+    string result;
+    bool moveNext;
+    string tempInput;
+    isESC = false;
+    isSaved = false;
+
+    int pos = searchNhanVien(list, MANV);
+    if (pos == -1)
+    {
+        errorMessage = "Khong tim thay nhan vien voi ma " + MANV;
+        drawTableErrors(5, 2, errorMessage);
+        Sleep(1500);
+        return;
+    }
+    input.MANV = list.nodes[pos]->MANV;
+    input.HO = list.nodes[pos]->HO;
+    input.TEN = list.nodes[pos]->TEN;
+    input.PHAI = list.nodes[pos]->PHAI;
+    while (true)
+    {
+        displayField(x + 87, y + 4, input.MANV, false, 10);
+        displayField(x + 87, y + 6, input.HO, currentRow == 1, 20);
+        displayField(x + 87, y + 8, input.TEN, currentRow == 2, 10);
+        displayField(x + 87, y + 10, input.PHAI, currentRow == 3, 3);
+
+        switch (currentRow)
+        {
+        case 1:
+        {
+            result = inputString(x + 87, y + 6, input.HO, 20, "Ho nhan vien", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            tempInput = normalizeString(result, hasError);
+            if (hasError)
+            {
+                errorMessage = "Ho nhan vien chua ky tu khong hop le!";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+            input.HO = tempInput;
+            formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
+            break;
+        }
+        case 2:
+        {
+            result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            tempInput = normalizeString(result, hasError);
+            if (hasError)
+            {
+                errorMessage = "Ten nhan vien chua ky tu khong hop le!";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+            input.TEN = tempInput;
+            formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
+            break;
+        }
+        case 3:
+        {
+            result = inputString(x + 87, y + 10, input.PHAI, 3, "Gioi tinh (nam/nu)", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            tempInput = normalizeString(result, hasError);
+            if (hasError || (tempInput != "nam" && tempInput != "nu"))
+            {
+                errorMessage = "Gioi tinh khong hop le (nam/nu)!";
+                drawTableErrors(5, 2, errorMessage);
+                continue;
+            }
+            input.PHAI = tempInput;
+            formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
+            break;
+        }
+        escButton:
+        {
+            isESC = true;
+            return;
+        }
+        saveButton:
+        {
+            if (!moveNext && !input.MANV.empty() && !input.HO.empty() &&
+                !input.TEN.empty() && !input.PHAI.empty())
+            {
+                bool needReorder = (list.nodes[pos]->HO != input.HO ||
+                                    list.nodes[pos]->TEN != input.TEN);
+
+                if (needReorder)
+                {
+                    // Lưu lại con trỏ node hiện tại
+                    nhanVien *currentNode = list.nodes[pos];
+
+                    // Cập nhật thông tin
+                    currentNode->HO = input.HO;
+                    currentNode->TEN = input.TEN;
+                    currentNode->PHAI = input.PHAI;
+
+                    // Xóa node khỏi vị trí hiện tại
+                    for (int i = pos; i < list.CountNV - 1; i++)
+                    {
+                        list.nodes[i] = list.nodes[i + 1];
+                    }
+                    list.CountNV--;
+
+                    // Chèn lại vào vị trí mới theo thứ tự
+                    chenNhanVien(list, currentNode);
+                    list.CountNV++;
+                }
+                else
+                {
+                    list.nodes[pos]->PHAI = input.PHAI;
+                }
+                isSaved = true;
+                return;
+            }
+        }
+        }
+        if (moveNext)
+        {
+            currentRow = (currentRow < 3) ? currentRow + 1 : 3;
+        }
+        else
+        {
+            currentRow = (currentRow > 1) ? currentRow - 1 : 1;
+        }
+    }
 }
 
 void xoaDSNV(dsNhanVien &list) // goi khi ket thuc
@@ -388,6 +606,7 @@ void writeFile_dsNhanVien(dsNhanVien &dsNV)
         Write_NhanVien(fileout, *dsNV.nodes[i]);
     }
     fileout.close();
+    xoaDSNV(dsNV);
 }
 
 void Read_CTHoaDon(string cthdStr, nodeChiTietHoaDon &cthd)
@@ -617,17 +836,9 @@ void readFile_dsNhanVien(dsNhanVien &dsNV)
 void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x, string &errorMessage)
 {
     int n = list.CountNV;
-    bool isOpened;
-    readFile_dsNhanVien(list);
-    if (n == 0 && isOpened == true)
+    if (n == 0)
     {
         errorMessage = "Khong co du lieu vat tu";
-        drawTableErrors(5, 2, errorMessage);
-        return;
-    }
-    else if (n == 0 && isOpened == false)
-    {
-        errorMessage = "Khong the mo file ds_VatTu.txt";
         drawTableErrors(5, 2, errorMessage);
         return;
     }

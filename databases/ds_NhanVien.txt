@@ -1,10 +1,10 @@
-NV2|Phan Tuan Quoc|Anh|Nam
-\
 NV7|Phan Tuan Quoc|Anh|Nam
 \
 NV12|Phan Tuan Quoc|Anh|Nam
 \
 NV17|Phan Tuan Quoc|Anh|Nam
+\
+Nv1|Le Van|Dai|Nam2
 \
 NV1|Du Hoang|Phi|Nam
 -HD3|1|12|2024|N
@@ -71,6 +71,8 @@ NV22|Nguyen|Toan|Nam
 +VT1|2|1|2
 -2|2|4|2005|X
 +vt23|2|1|1
+\
+2|Le Quoc|Vinh|Nam
 \
 nv5|Le Van|Vinh|nam
 -hd4|1|1|2004|X
