@@ -619,7 +619,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
-                errorMessage = "Ma vat tu chua ky tu khong hop le!";
+                errorMessage = "Ma vat tu chua ky tu khong hop le";
                 drawTableErrors(5, 2, errorMessage);
                 continue;
             }
@@ -648,7 +648,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
-                errorMessage = "Ten vat tu chua ky tu khong hop le!";
+                errorMessage = "Ten vat tu chua ky tu khong hop le";
                 drawTableErrors(5, 2, errorMessage);
                 continue;
             }
@@ -668,7 +668,7 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
-                errorMessage = "Don vi tinh chua ky tu khong hop le!";
+                errorMessage = "Don vi tinh chua ky tu khong hop le";
                 drawTableErrors(5, 2, errorMessage);
                 continue;
             }
