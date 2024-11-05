@@ -139,6 +139,31 @@ int searchNhanVien(dsNhanVien &list, string manv)
     cout << "Khong tim thay nhan vien!" << endl;
     return -1;
 }
+int TimViTriChen(dsNhanVien &list, nhanVien *nhanvienmoi)
+{
+    int low = 0;                 // Vị trí đầu danh sách
+    int high = list.CountNV - 1; // Vị trí cuối danh sách
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;                  // Tìm trung điểm
+        if (nhanvienmoi->TEN < list.nodes[mid]->TEN) // Nếu vị trí cần chèn nhỏ hơn trung điểm
+        {
+            high = mid - 1;
+        }
+        else if (nhanvienmoi->TEN == list.nodes[mid]->TEN) // Nếu đã tìm ra khoảng chèn;
+        {
+            if (nhanvienmoi->HO < list.nodes[mid]->HO) // Nếu vị trí chèn lệch phải
+                high = mid - 1;
+            else if (nhanvienmoi->HO > list.nodes[mid]->HO) // Nếu vị trí chèn lệch trái
+                low = mid + 1;
+        }
+        else // Nếu vị trí cần chèn lớn hơn trung điểm
+        {
+            low = mid + 1;
+        }
+    }
+    return low; // Vị trí cần chèn
+}
 
 void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
 {
@@ -148,13 +173,14 @@ void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
         return;
     }
 
+    // int pos = TimViTriChen(list, nhanvienmoi); //Tìm kiếm vị trí chèn theo Binary Search
     int pos = 0;
     while (pos < list.CountNV && (nhanvienmoi->TEN > list.nodes[pos]->TEN ||
                                   (nhanvienmoi->TEN == list.nodes[pos]->TEN && nhanvienmoi->HO >= list.nodes[pos]->HO)))
     {
         pos++;
     }
-    for (int i = list.CountNV; i > pos; i--)
+    for (int i = list.CountNV; i > pos; i--) // Hàm di chuyển mảng con về sau một vị trí
     {
         list.nodes[i] = list.nodes[i - 1];
     }
