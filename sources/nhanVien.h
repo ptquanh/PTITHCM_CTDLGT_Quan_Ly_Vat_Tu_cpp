@@ -954,8 +954,13 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
     while (true)
     {
         ptr_DSCTHD new_cthd = new dsChiTietHoaDon;
-        cout << "Nhap ma vat tu: ";
-        cin >> new_cthd->data_cthd.MAVT;
+        treeVatTu temp = nullptr;
+        while (temp == nullptr)
+        {
+            cout << "Nhap ma vat tu: ";
+            cin >> new_cthd->data_cthd.MAVT;
+            temp = search(root, new_cthd->data_cthd.MAVT);
+        }
         cout << "Nhap so luong: ";
         cin >> new_cthd->data_cthd.soLuong;
         cout << "Nhap don gia: ";
@@ -963,7 +968,6 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
         cout << "Nhap VAT (%): ";
         cin >> new_cthd->data_cthd.VAT;
 
-        treeVatTu temp = search(root, new_cthd->data_cthd.MAVT);
         bool checkMAVT;
         if (temp == nullptr) // Không tìm thấy mã vật tư
             checkMAVT = false;

@@ -8,7 +8,7 @@ int main()
     dsNhanVien ds_nv;
     int choice;
     bool isOpened;
-    // readFile_dsVatTu(root, isOpened);
+    readFile_dsVatTu(root, isOpened);
     readFile_dsNhanVien(ds_nv);
     do
     {
@@ -27,28 +27,28 @@ int main()
             // nhapVatTu(root);
             break;
         case 2:
-            chinhSuaVatTu(root);
+            // chinhSuaVatTu(root);
             break;
         case 3:
-            xoaVatTu(root);
+            // xoaVatTu(root);
             break;
         case 4:
             timKiemVatTu(root);
             break;
         case 5:
-            nhapNhanVien(ds_nv);
+            // nhapNhanVien(ds_nv);
             break;
         case 6:
-            suaNhanVien(ds_nv);
+            // suaNhanVien(ds_nv);
             break;
         case 7:
-            xoaNhanVien(ds_nv);
+            // xoaNhanVien(ds_nv);
             break;
         case 8:
             // inDanhSachNhanVien(ds_nv);
             break;
         case 9:
-            lapHoaDon(ds_nv);
+            lapHoaDon(ds_nv,root);
             break;
         case 10:
             inHoaDon(ds_nv);
