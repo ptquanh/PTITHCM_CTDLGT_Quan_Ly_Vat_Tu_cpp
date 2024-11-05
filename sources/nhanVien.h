@@ -1,5 +1,6 @@
 #pragma once
 #include "vatTu.h"
+#include "h.cpp"
 bool nhanVienEmpty(dsNhanVien &list)
 {
     return list.CountNV == 0;
@@ -1058,6 +1059,7 @@ void inHoaDon(dsNhanVien &ds_nv)
         return;
     }
 
+    float trigia = TinhTriGiaHoaDon(found_hd->data_hd.firstCTHD);
     // In thông tin hóa đơn
     cout << "\n=============================\n";
     cout << "So Hoa Don: " << found_hd->data_hd.SoHD << endl;
@@ -1066,7 +1068,7 @@ void inHoaDon(dsNhanVien &ds_nv)
          << setw(2) << setfill('0') << found_hd->data_hd.month << "/"
          << found_hd->data_hd.year << endl;
     cout << "Nhan vien lap: " << nv->HO << " " << nv->TEN << " (Ma NV: " << nv->MANV << ")" << endl;
-
+    cout << "Tri gia hoa don: " << trigia << endl;
     ptr_DSCTHD current_cthd = found_hd->data_hd.firstCTHD;
     cout << "\nChi Tiet Hoa Don:\n";
     // cout << setw(15) << left << "Ma Vat Tu" << setw(10) << "So Luong"
