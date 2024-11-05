@@ -52,6 +52,7 @@ float TinhToanChiPhiCuaHoaDon(ptr_DSCTHD ct)
     while (ct != nullptr) // duyệt qua từng vật tư trong hóa đơn
     {
         price += ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 - ct->data_cthd.VAT / 100);
+        ct = ct->next;
     }
 }
 
@@ -103,7 +104,7 @@ void LayDoanhThu(dsNhanVien &dsnv, DoanhThuVatTu doanhThu[], int &countVatTu, ti
             time_t hdTime = to_time_t(p->data_hd.day, p->data_hd.month, p->data_hd.year);
             if (hdTime >= start && hdTime <= end)
             {
-                TinhToanDoanhThu(p->data_hd.firstCTHD, doanhThu, countVatTu, p->data_hd.loai);
+                TinhToanDoanhThu(p->data_hd.ct, doanhThu, countVatTu, p->data_hd.loai);
             }
             p = p->next;
         }
@@ -130,13 +131,13 @@ void Top10VTT(int day1, int month1, int year1, int day2, int month2, int year2, 
     }
 }
 
-float TinhTriGiaHoaDon(ptr_DSCTHD firstCTHD) // Tính trị giá của một hóa đơn
+float TinhTriGiaHoaDon(ptr_DSCTHD ct) // Tính trị giá của một hóa đơn
 {
     float totalValue = 0;
-    while (firstCTHD) // duyệt qua  các chi tiết hóa đơn
+    while (ct) // duyệt qua  các chi tiết hóa đơn
     {
-        totalValue += firstCTHD->data_cthd.soLuong * firstCTHD->data_cthd.donGia * (1 + firstCTHD->data_cthd.VAT / 100);
-        firstCTHD = firstCTHD->next;
+        totalValue += ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 + ct->data_cthd.VAT / 100);
+        ct = ct->next;
     }
     return totalValue;
 }
@@ -158,7 +159,7 @@ void InThongKeHoaDon(int day1, int month1, int year1, int day2, int month2, int 
             time_t invoiceTime = to_time_t(p->data_hd.day, p->data_hd.month, p->data_hd.year); // ngày lập hóa đơn
             if (invoiceTime >= start && invoiceTime <= end)                                    // phạm vi thời gian hóa đơn lập
             {
-                float trigiahoadon = TinhTriGiaHoaDon(p->data_hd.firstCTHD);
+                float trigiahoadon = TinhTriGiaHoaDon(p->data_hd.ct);
                 std::cout << "SoHD: " << p->data_hd.SoHD
                           << ", Ngay lap: " << p->data_hd.day << "/" << p->data_hd.month << "/" << p->data_hd.year
                           << ", Loai: " << p->data_hd.loai
@@ -180,7 +181,7 @@ void DoanhThuNam(dsNhanVien danhsach, int year)
         {
             if (hoadon->data_hd.year == year)
             {
-                float trigiahoadon = TinhTriGiaHoaDon(hoadon->data_hd.firstCTHD);
+                float trigiahoadon = TinhTriGiaHoaDon(hoadon->data_hd.ct);
                 if (hoadon->data_hd.loai == 'N') // nếu hóa đơn nhập
                 {
                     doanhthuthang[hoadon->data_hd.month - 1] -= trigiahoadon;
