@@ -104,7 +104,7 @@ void LayDoanhThu(dsNhanVien &dsnv, DoanhThuVatTu doanhThu[], int &countVatTu, ti
             time_t hdTime = to_time_t(p->data_hd.day, p->data_hd.month, p->data_hd.year);
             if (hdTime >= start && hdTime <= end)
             {
-                TinhToanDoanhThu(p->data_hd.ct, doanhThu, countVatTu, p->data_hd.loai);
+                TinhToanDoanhThu(p->data_hd.firstCTHD, doanhThu, countVatTu, p->data_hd.loai);
             }
             p = p->next;
         }
@@ -159,7 +159,7 @@ void InThongKeHoaDon(int day1, int month1, int year1, int day2, int month2, int 
             time_t invoiceTime = to_time_t(p->data_hd.day, p->data_hd.month, p->data_hd.year); // ngày lập hóa đơn
             if (invoiceTime >= start && invoiceTime <= end)                                    // phạm vi thời gian hóa đơn lập
             {
-                float trigiahoadon = TinhTriGiaHoaDon(p->data_hd.ct);
+                float trigiahoadon = TinhTriGiaHoaDon(p->data_hd.firstCTHD);
                 std::cout << "SoHD: " << p->data_hd.SoHD
                           << ", Ngay lap: " << p->data_hd.day << "/" << p->data_hd.month << "/" << p->data_hd.year
                           << ", Loai: " << p->data_hd.loai
@@ -181,7 +181,7 @@ void DoanhThuNam(dsNhanVien danhsach, int year)
         {
             if (hoadon->data_hd.year == year)
             {
-                float trigiahoadon = TinhTriGiaHoaDon(hoadon->data_hd.ct);
+                float trigiahoadon = TinhTriGiaHoaDon(hoadon->data_hd.firstCTHD);
                 if (hoadon->data_hd.loai == 'N') // nếu hóa đơn nhập
                 {
                     doanhthuthang[hoadon->data_hd.month - 1] -= trigiahoadon;
