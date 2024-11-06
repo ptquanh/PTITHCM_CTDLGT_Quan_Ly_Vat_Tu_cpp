@@ -444,7 +444,7 @@ int main()
     int chon = 0;
     while (1)
     {
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+        fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
         chon = menuChinhDong(MenuChinh);
         // system("cls");
         switch (chon)
