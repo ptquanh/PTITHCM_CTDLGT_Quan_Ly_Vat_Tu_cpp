@@ -116,7 +116,7 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y)
     treeVatTu *arr = new treeVatTu[n];
     int index = 0;
     storeInorder(root, arr, &index);
-    quickSort(arr, 0, n - 1);
+    quickSortVatTu(arr, 0, n - 1);
     string errorMessage;
     string currentMAVT;
     int totalPages = ceil((float)n / ROWS);
@@ -207,7 +207,7 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y)
                 arr = new treeVatTu[n];
                 index = 0;
                 storeInorder(root, arr, &index);
-                quickSort(arr, 0, n - 1);
+                quickSortVatTu(arr, 0, n - 1);
                 totalPages = ceil((float)n / ROWS);
                 if (currentPage > totalPages)
                 {
@@ -248,7 +248,7 @@ void handleNavigationDeleteVatTu(treeVatTu &root, int x, int y)
     treeVatTu *arr = new treeVatTu[n];
     int index = 0;
     storeInorder(root, arr, &index);
-    quickSort(arr, 0, n - 1);
+    quickSortVatTu(arr, 0, n - 1);
     string errorMessage;
     string currentMAVT;
     int totalPages = ceil((float)n / ROWS);
@@ -340,7 +340,7 @@ void handleNavigationDeleteVatTu(treeVatTu &root, int x, int y)
                 arr = new treeVatTu[n];
                 index = 0;
                 storeInorder(root, arr, &index);
-                quickSort(arr, 0, n - 1);
+                quickSortVatTu(arr, 0, n - 1);
                 totalPages = ceil((float)n / ROWS);
                 if (currentPage > totalPages)
                 {
@@ -382,7 +382,7 @@ void handleNavigationListVatTu(treeVatTu root, int x, int y)
     treeVatTu *arr = new treeVatTu[n];
     int index = 0;
     storeInorder(root, arr, &index);
-    quickSort(arr, 0, n - 1);
+    quickSortVatTu(arr, 0, n - 1);
 
     int totalPages = ceil((float)n / ROWS);
     int currentPage = 1;
@@ -432,7 +432,7 @@ void menuVatTu(treeVatTu &root, int x, int y)
     treeVatTu *arr = new treeVatTu[n];
     int index = 0;
     storeInorder(root, arr, &index);
-    quickSort(arr, 0, n - 1);
+    quickSortVatTu(arr, 0, n - 1);
     int totalPages = ceil((float)n / ROWS);
     int currentPage = 1;
     string errorMessage;

@@ -94,7 +94,7 @@ struct nodeHoaDon
 {
 
     string SoHD; // max C20
-    char loai;   // N or X
+    string loai;   // N or X
     int day, month, year;
     ptr_DSCTHD firstCTHD = nullptr;
 };
@@ -119,4 +119,19 @@ struct dsNhanVien
 {
     nhanVien *nodes[MaxNhanVien];
     int CountNV = 0;
+};
+// ================== khac ======================
+time_t to_time_t(int day, int month, int year)
+{
+    struct tm t = {0};
+    t.tm_mday = day;
+    t.tm_mon = month - 1;    // Tháng được lưu trong mảng với index từ 0 đến 11
+    t.tm_year = year - 1900; // Năm được tính từ 1900
+    return mktime(&t);
+}
+
+struct doanhThuVatTu
+{
+    string MAVT;
+    float doanhThu;
 };

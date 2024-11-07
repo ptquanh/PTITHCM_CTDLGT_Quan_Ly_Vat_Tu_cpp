@@ -1,5 +1,5 @@
 NV7|Phan Tuan Quoc|Anh|Nam
--Hd10|1|1|2004|N
+-Hd10|1|1|2024|X
 +0123456789|2|100|2
 +2|5|500|1
 +3|2|10|1
@@ -19,13 +19,12 @@ NV12|Phan Tuan Quoc|Anh|Nam
 NV17|Phan Tuan Quoc|Anh|Nam
 \
 Nv1|Le Van|Dai|Nam
--Hd9|1|1|2004|X
+-Hd9|1|5|2024|X
 +2|5|500|1
-+7|2|10|1
 \
 NV1|Du Hoang|Phi|Nam
 -Hd3|1|12|2024|N
-+VT1|20|100000|10
++12|5|500|10
 \
 NV8|Du Hoang|Phi|Nam
 \
@@ -34,11 +33,9 @@ NV13|Du Hoang|Phi|Nam
 NV18|Du Hoang|Phi|Nam
 \
 NV4|Nguyen|Toan|Nam
--Hd1|1|12|2024|N
+-Hd1|1|12|2023|X
 +VT1|20|100000|10
-+VT2|20|100000|10
-+VT3|20|100000|10
--Hd2|30|12|2024|X
+-Hd2|30|12|2023|X
 +VT1|10|100000|1
 -Hd4|20|4|2005|N
 +VT1|2|1|2
@@ -46,9 +43,9 @@ NV4|Nguyen|Toan|Nam
 +vt23|2|1|1
 \
 NV9|Nguyen|Toan|Nam
--Hd5|1|12|2024|N
+-Hd5|1|12|2023|N
 +VT1|20|100000|10
--Hd6|30|12|2024|X
+-Hd6|30|12|2023|X
 +VT1|10|100000|1
 -Hd7|20|4|2005|N
 +VT1|2|1|2

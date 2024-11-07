@@ -1,75 +1,85 @@
 #include "./libraries/khaibao.h"
 #include "./sources/vatTu.h"
-#include "./sources/nhanVien.h"
 
-int main()
-{
-    treeVatTu root = NULL;
-    dsNhanVien ds_nv;
-    int choice;
-    bool isOpened;
-    readFile_dsVatTu(root, isOpened);
-    readFile_dsNhanVien(ds_nv);
-    do
-    {
-        cout << "\n--- Menu ---\n";
-        for (int i = 0; i < YeuCauChinh; i++)
-        {
-            cout << MenuChinh[i] << endl;
-        }
-        cout << "0. Thoat\n";
-        cout << "Nhap lua chon cua ban: ";
-        cin >> choice;
-        cin.ignore();
-        switch (choice)
-        {
-        case 1:
-            // nhapVatTu(root);
-            break;
-        case 2:
-            // chinhSuaVatTu(root);
-            break;
-        case 3:
-            // xoaVatTu(root);
-            break;
-        case 4:
-            timKiemVatTu(root);
-            break;
-        case 5:
-            // nhapNhanVien(ds_nv);
-            break;
-        case 6:
-            // suaNhanVien(ds_nv);
-            break;
-        case 7:
-            // xoaNhanVien(ds_nv);
-            break;
-        case 8:
-            // inDanhSachNhanVien(ds_nv);
-            break;
-        case 9:
-            lapHoaDon(ds_nv,root);
-            break;
-        case 10:
-            inHoaDon(ds_nv);
-            break;
-        case 11:
 
-            break;
-        case 12:
+// int main()
+// {
+//     treeVatTu root = NULL;
+//     dsNhanVien ds_nv;
+//     int choice;
+//     bool isOpened;
+//     readFile_dsVatTu(root, isOpened);
+//     readFile_dsNhanVien(ds_nv);
+//     // do
+//     // {
+//     //     cout << "\n--- Menu ---\n";
+//     //     for (int i = 0; i < YeuCauChinh; i++)
+//     //     {
+//     //         cout << MenuChinh[i] << endl;
+//     //     }
+//     //     cout << "0. Thoat\n";
+//     //     cout << "Nhap lua chon cua ban: ";
+//     //     cin >> choice;
+//     //     cin.ignore();
+//     //     switch (choice)
+//     //     {
+//     //     case 1:
+//     //         // nhapVatTu(root);
+//     //         break;
+//     //     case 2:
+//     //         // chinhSuaVatTu(root);
+//     //         break;
+//     //     case 3:
+//     //         // xoaVatTu(root);
+//     //         break;
+//     //     case 4:
+//     //         timKiemVatTu(root);
+//     //         break;
+//     //     case 5:
+//     //         // nhapNhanVien(ds_nv);
+//     //         break;
+//     //     case 6:
+//     //         // suaNhanVien(ds_nv);
+//     //         break;
+//     //     case 7:
+//     //         // xoaNhanVien(ds_nv);
+//     //         break;
+//     //     case 8:
+//     //         // inDanhSachNhanVien(ds_nv);
+//     //         break;
+//     //     case 9:
+//     //         lapHoaDon(ds_nv,root);
+//     //         break;
+//     //     case 10:
+//     //         inHoaDon(ds_nv);
+//     //         break;
+//     //     case 11:
 
-            break;
-        case 13:
+//     //         break;
+//     //     case 12:
 
-            break;
-        case 0:
-            cout << "Thoat\n";
-            break;
-        default:
-            cout << "Lua chon khong hop le. Vui long chon lai.\n";
-        }
-    } while (choice != 0);
-    // writeFile_dsVatTu(root);
-    writeFile_dsNhanVien(ds_nv);
-    return 0;
-}
+//     //         break;
+//     //     case 13:
+
+//     //         break;
+//     //     case 0:
+//     //         cout << "Thoat\n";
+//     //         break;
+//     //     default:
+//     //         cout << "Lua chon khong hop le. Vui long chon lai.\n";
+//     //     }
+//     // } while (choice != 0);
+//     int day1, month1, year1, day2, month2, year2;
+//     InputTime(day1, month1, year1, day2, month2, year2);
+//     InThongKeHoaDon(day1, month1, year1, day2, month2, year2, ds_nv);
+//     // InTop10VTT(day1, month1, year1, day2, month2, year2, ds_nv);
+
+//     // int year;
+//     // cout << "Nhap nam muon in ra: ";
+//     // cin >> year;
+//     // InDoanhThuNam(ds_nv, year);
+
+//     // writeFile_dsVatTu(root);
+//     writeFile_dsNhanVien(ds_nv);
+//     return 0;
+// }

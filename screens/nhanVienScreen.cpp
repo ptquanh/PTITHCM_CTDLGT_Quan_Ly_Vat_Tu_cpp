@@ -180,8 +180,6 @@ void handleNavigationUpdateNhanVien(dsNhanVien &dsnv, int x, int y)
             }
             setColorByRequest(BLACK, WHITE);
             currentMANV = dsnv.nodes[currentChoice]->MANV;
-            gotoxy(0,0);
-            cout << currentMANV;
             suaNhanVien(dsnv, currentMANV, x, y, isESC, isSaved);
             ShowCur(false);
             if (isESC)
@@ -477,28 +475,28 @@ void drawKeysGuideNhanVien(int x, int y)
     cout << "ESC: Thoat";
 }
 
-int main()
-{
-    ShowCur(false);
-    dsNhanVien dsnv;
-    // bool isOpened;
-    string errorMessage;
-    int x = 5;
-    int y = 2;
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    readFile_dsNhanVien(dsnv);
-    // if (!isOpened)
-    // {
-    //     errorMessage = "Khong the mo file ds_NhanVien.txt";
-    //     drawTableErrors(errorMessage, true);
-    //     return 0;
-    // }
-    drawTableErrors(errorMessage, true);
-    drawKeysGuideNhanVien(x, y);
-    menuNhanVien(dsnv, x, y);
-    writeFile_dsNhanVien(dsnv);
-    // while (1)
-    // {
-    //     getch();
-    // }
-}
+// int main()
+// {
+//     ShowCur(false);
+//     dsNhanVien dsnv;
+//     // bool isOpened;
+//     string errorMessage;
+//     int x = 5;
+//     int y = 2;
+//     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+//     readFile_dsNhanVien(dsnv);
+//     // if (!isOpened)
+//     // {
+//     //     errorMessage = "Khong the mo file ds_NhanVien.txt";
+//     //     drawTableErrors(errorMessage, true);
+//     //     return 0;
+//     // }
+//     drawTableErrors(errorMessage, true);
+//     drawKeysGuideNhanVien(x, y);
+//     menuNhanVien(dsnv, x, y);
+//     writeFile_dsNhanVien(dsnv);
+//     // while (1)
+//     // {
+//     //     getch();
+//     // }
+// }
