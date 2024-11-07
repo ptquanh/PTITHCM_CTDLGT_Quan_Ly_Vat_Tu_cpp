@@ -36,7 +36,6 @@ int Partition(DoanhThuVatTu arr[], int low, int high)
     arr[high] = temp;
     return (i + 1);
 }
-
 void QuickSort(DoanhThuVatTu arr[], int low, int high)
 {
     if (low < high)
@@ -53,6 +52,7 @@ float TinhToanChiPhiCuaHoaDon(ptr_DSCTHD ct)
     while (ct != nullptr) // duyệt qua từng vật tư trong hóa đơn
     {
         price += ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 - ct->data_cthd.VAT / 100);
+        ct = ct->next;
     }
     return price;
 }
@@ -132,13 +132,13 @@ void Top10VTT(int day1, int month1, int year1, int day2, int month2, int year2, 
     }
 }
 
-float TinhTriGiaHoaDon(ptr_DSCTHD firstCTHD) // Tính trị giá của một hóa đơn
+float TinhTriGiaHoaDon(ptr_DSCTHD ct) // Tính trị giá của một hóa đơn
 {
     float totalValue = 0;
-    while (firstCTHD) // duyệt qua  các chi tiết hóa đơn
+    while (ct) // duyệt qua  các chi tiết hóa đơn
     {
-        totalValue += firstCTHD->data_cthd.soLuong * firstCTHD->data_cthd.donGia * (1 + firstCTHD->data_cthd.VAT / 100);
-        firstCTHD = firstCTHD->next;
+        totalValue += ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 + ct->data_cthd.VAT / 100);
+        ct = ct->next;
     }
     return totalValue;
 }

@@ -139,6 +139,31 @@ int searchNhanVien(dsNhanVien &list, string manv)
     cout << "Khong tim thay nhan vien!" << endl;
     return -1;
 }
+int TimViTriChen(dsNhanVien &list, nhanVien *nhanvienmoi)
+{
+    int low = 0;                 // Vị trí đầu danh sách
+    int high = list.CountNV - 1; // Vị trí cuối danh sách
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;                  // Tìm trung điểm
+        if (nhanvienmoi->TEN < list.nodes[mid]->TEN) // Nếu vị trí cần chèn nhỏ hơn trung điểm
+        {
+            high = mid - 1;
+        }
+        else if (nhanvienmoi->TEN == list.nodes[mid]->TEN) // Nếu đã tìm ra khoảng chèn;
+        {
+            if (nhanvienmoi->HO < list.nodes[mid]->HO) // Nếu vị trí chèn lệch phải
+                high = mid - 1;
+            else if (nhanvienmoi->HO > list.nodes[mid]->HO) // Nếu vị trí chèn lệch trái
+                low = mid + 1;
+        }
+        else // Nếu vị trí cần chèn lớn hơn trung điểm
+        {
+            low = mid + 1;
+        }
+    }
+    return low; // Vị trí cần chèn
+}
 
 void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
 {
@@ -148,13 +173,14 @@ void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
         return;
     }
 
+    // int pos = TimViTriChen(list, nhanvienmoi); //Tìm kiếm vị trí chèn theo Binary Search
     int pos = 0;
     while (pos < list.CountNV && (nhanvienmoi->TEN > list.nodes[pos]->TEN ||
                                   (nhanvienmoi->TEN == list.nodes[pos]->TEN && nhanvienmoi->HO >= list.nodes[pos]->HO)))
     {
         pos++;
     }
-    for (int i = list.CountNV; i > pos; i--)
+    for (int i = list.CountNV; i > pos; i--) // Hàm di chuyển mảng con về sau một vị trí
     {
         list.nodes[i] = list.nodes[i - 1];
     }
@@ -947,41 +973,38 @@ void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x
         {
             cout << "Nhap ma vat tu: ";
             cin >> new_cthd->data_cthd.MAVT;
+            cout << "Nhap so luong: ";
+            cin >> new_cthd->data_cthd.soLuong;
+            cout << "Nhap don gia: ";
+            cin >> new_cthd->data_cthd.donGia;
+            cout << "Nhap VAT (%): ";
+            cin >> new_cthd->data_cthd.VAT;
             temp = search(root, new_cthd->data_cthd.MAVT);
 
-            if (temp == nullptr) // Không tìm thấy mã vật tư
+            if (nv->firstDSHD->data_hd.loai == 'N')
             {
-                cout << "Loi: Khong tim thay vat tu" << endl;
-                checkMAVT = false;
+                if (temp != nullptr)
+                {
+                    temp->data_vt.soLuongTon += new_cthd->data_cthd.soLuong;
+                }
+                else if (temp == nullptr) // khi lập hóa đơn nhập mà vật tư không có trong kho thì tạo mới vật tư vào kho
+                {
+                    // Ở đây là nhập mới vật tư khi không có trong kho
+                }
             }
-            else // Tìm thấy mã vật tư
-                checkMAVT = true;
+            else if (nv->firstDSHD->data_hd.loai == 'X')
+            {
+                if (temp != nullptr)
+                {
+                    temp->data_vt.soLuongTon -= new_cthd->data_cthd.soLuong;
+                }
+                else if (temp == nullptr || temp->data_vt.soLuongTon < new_cthd->data_cthd.soLuong)
+                {
+                    cout << "Loi: Khong co du vat tu, vui long nhap them" << endl;
+                }
+            }
+
         } while (!checkMAVT);
-
-        cout << "Nhap so luong: ";
-        cin >> new_cthd->data_cthd.soLuong;
-
-        if (nv->firstDSHD->data_hd.loai == 'N') // Nếu hóa đơn là hóa đơn nhập
-        {
-            temp->data_vt.soLuongTon += new_cthd->data_cthd.soLuong;
-        }
-        else if (nv->firstDSHD->data_hd.loai == 'X') // Nếu hóa đơn là hóa đơn xuất
-        {
-            if (temp->data_vt.soLuongTon < new_cthd->data_cthd.soLuong) // Số lượng vật tư lấy ra nhiều hơn kho hiện cos
-            {
-                cout << "Loi: Vui long nhap them vat tu vao kho!" << endl;
-            }
-            else
-            {
-                temp->data_vt.soLuongTon -= new_cthd->data_cthd.soLuong;
-            }
-        }
-
-        cout << "Nhap don gia: ";
-        cin >> new_cthd->data_cthd.donGia;
-        cout << "Nhap VAT (%): ";
-        cin >> new_cthd->data_cthd.VAT;
-
         // Thêm chi tiết hóa đơn vào danh sách chi tiết của hóa đơn hiện tại
         if (new_hd->data_hd.firstCTHD == nullptr)
         {
