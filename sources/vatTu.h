@@ -276,7 +276,7 @@ void displayField(int x, int y, const string &value, bool isActive, int maxLengt
     SetColor(WHITE);
 
     gotoxy(x + 1, y);
-    cout << string(maxLength, ' '); // Xóa vùng hiển thị
+    cout << string(maxLength, ' ');
     gotoxy(x + 1, y);
     cout << value;
 
@@ -288,111 +288,204 @@ void displayField(int x, int y, const string &value, bool isActive, int maxLengt
     SetColor(WHITE);
 }
 
-string inputString(int x, int y, string current, int maxLength, string fieldName, bool &moveNext)
+string inputString(int x, int y, string current, int maxLength, string fieldName, bool &moveNext, bool isSmallErrorTable)
 {
-    string result = current;
-    char key;
+    string currentInput = current;
+    int cursorPos = current.length();
     bool isEditing = true;
     string errorMessage;
+    int xTable = 5;
+    int yTable = 2;
     while (isEditing)
     {
-        displayField(x, y, result, true, maxLength);
-        key = getch();
-
-        if (key == ESC)
+        setColorByRequest(BLACK, WHITE);
+        gotoxy(x + 1, y);
+        cout << string(maxLength, ' ');
+        gotoxy(x + 1, y);
+        cout << currentInput;
+        gotoxy(x + 1 + cursorPos, y);
+        int key = _getch();
+        if (key == 224 || key == 0)
         {
-            moveNext = false;
-            return "ESC";
-        }
-        if (key == F4)
-        {
-            moveNext = false;
-            return "F4";
-        }
-        if (key == ENTER)
-        {
-            if (result.empty())
+            key = _getch();
+            switch (key)
             {
-                errorMessage = fieldName + " khong duoc de trong!";
-                drawTableErrors(5, 2, errorMessage);
-                // Sleep(1000);
-                continue;
+            case UP:
+                moveNext = false;
+                isEditing = false;
+                break;
+            case DOWN:
+                moveNext = true;
+                isEditing = false;
+                break;
+            case LEFT:
+                if (cursorPos > 0)
+                    cursorPos--;
+                break;
+            case RIGHT:
+                if (cursorPos < currentInput.length())
+                    cursorPos++;
+                break;
+            case HOME:
+                cursorPos = 0;
+                break;
+            case END:
+                cursorPos = currentInput.length();
+                break;
+            case DEL:
+                if (cursorPos < currentInput.length())
+                {
+                    currentInput.erase(cursorPos, 1);
+                }
+                break;
+            case F4:
+                moveNext = false;
+                return "F4";
             }
-            moveNext = true;
-            isEditing = false;
+            continue;
         }
-        else if (key == UP || key == DOWN)
+        else
         {
-            moveNext = (key == DOWN);
-            isEditing = false;
+            switch (key)
+            {
+            case ESC:
+                moveNext = false;
+                return "ESC";
+            case ENTER:
+                if (currentInput.empty())
+                {
+                    errorMessage = fieldName + " khong duoc de trong!";
+                    drawTableErrors(errorMessage, isSmallErrorTable);
+                continue;
+                }
+                moveNext = true;
+                isEditing = false;
+                break;
+            case BACKSPACE:
+                if (cursorPos > 0)
+                {
+                    currentInput.erase(cursorPos - 1, 1);
+                    cursorPos--;
+                }
+                break;
+            default:
+                if (currentInput.length() < maxLength && isValidChar(key))
+                {
+                    if (cursorPos == currentInput.length())
+                    {
+                        currentInput += (char)key;
+                    }
+                    else
+                    {
+                        currentInput.insert(cursorPos, 1, (char)key);
+                    }
+                    cursorPos++;
+                }
+            }
         }
-        else if (key == '\b' && !result.empty())
-        {
-            result.pop_back();
-        }
-        else if (result.length() < maxLength && isValidChar(key))
-        {
-            result += key;
-        }
+        drawTableErrors("", isSmallErrorTable);
     }
     ShowCurAtXY(0, 0, false);
-    errorMessage = "";
-    drawTableErrors(5, 2, errorMessage);
-    return result;
+    return currentInput;
 }
 
-int inputNumber(int x, int y, int current, bool &moveNext)
+int inputNumber(int x, int y, int current, int maxLength, string fieldName, bool &moveNext, bool isSmallErrorTable)
 {
-    string result = (current > 0) ? to_string(current) : "";
-    char key;
+    string currentInput = (current > 0) ? to_string(current) : "";
+    int cursorPos = currentInput.length();
     bool isEditing = true;
-    int maxLength = 6;
     string errorMessage;
+    int xTable = 5;
+    int yTable = 2;
     while (isEditing)
     {
-        displayField(x, y, result, true, maxLength);
-        key = getch();
+        setColorByRequest(BLACK, WHITE);
+        gotoxy(x + 1, y);
+        cout << string(maxLength, ' ');
+        gotoxy(x + 1, y);
+        cout << currentInput;
+        gotoxy(x + cursorPos + 1, y);
 
-        if (key == ESC)
+        int key = _getch();
+        if (key == 224 || key == 0)
         {
+            key = _getch();
+            switch (key)
+            {
+            case UP:
+                moveNext = false;
+                isEditing = false;
+                break;
+            case DOWN:
+                moveNext = true;
+                isEditing = false;
+                break;
+            case LEFT:
+                if (cursorPos > 0)
+                    cursorPos--;
+                break;
+            case RIGHT:
+                if (cursorPos < currentInput.length())
+                    cursorPos++;
+                break;
+            case HOME:
+                cursorPos = 0;
+                break;
+            case END:
+                cursorPos = currentInput.length();
+                break;
+            case DEL:
+                if (cursorPos < currentInput.length())
+                {
+                    currentInput.erase(cursorPos, 1);
+                }
+                break;
+            case F4:
+                moveNext = false;
+                return -4;
+            }
+            continue;
+        }
+        switch (key)
+        {
+        case ESC:
             moveNext = false;
             return -1;
-        }
-        if (key == F4)
-        {
-            moveNext = false;
-            return -4;
-        }
-        if (key == ENTER)
-        {
-            if (result.empty())
+        case ENTER:
+            if (currentInput.empty())
             {
-                errorMessage = "So luong ton khong duoc de trong!";
-                drawTableErrors(5, 2, errorMessage);
-                // Sleep(1000);
+                errorMessage = fieldName + " khong duoc de trong!";
+                drawTableErrors(errorMessage, isSmallErrorTable);
                 continue;
             }
             moveNext = true;
             isEditing = false;
+            break;
+        case BACKSPACE:
+            if (cursorPos > 0)
+            {
+                currentInput.erase(cursorPos - 1, 1);
+                cursorPos--;
+            }
+            break;
+        default:
+            if (currentInput.length() < maxLength && isdigit(key))
+            {
+                if (cursorPos == currentInput.length())
+                {
+                    currentInput += (char)key;
+                }
+                else
+                {
+                    currentInput.insert(cursorPos, 1, (char)key);
+                }
+                cursorPos++;
+            }
         }
-        else if (key == UP || key == DOWN)
-        {
-            moveNext = (key == DOWN);
-            isEditing = false;
-        }
-        else if (key == '\b' && !result.empty())
-        {
-            result.pop_back();
-        }
-        else if (result.length() < maxLength && isdigit(key))
-        {
-            result += key;
-        }
+        drawTableErrors("", isSmallErrorTable);
     }
     ShowCurAtXY(0, 0, false);
-    errorMessage = "";
-    drawTableErrors(5, 2, errorMessage);
-    return result.empty() ? 0 : stoi(result);
+    return currentInput.empty() ? 0 : stoi(currentInput);
 }
 
 void formatInputVT(string &MAVT, string &TENVT, string &DVT, int &SLT)
@@ -415,7 +508,7 @@ void formatInputVT(string &MAVT, string &TENVT, string &DVT, int &SLT)
         sltStr = sltStr.substr(0, 6);
         SLT = stoi(sltStr);
     }
-    if (SLT < 0) // Đảm bảo số lượng không âm
+    if (SLT < 0)
     {
         SLT = 0;
     }
@@ -502,52 +595,58 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
         {
         case 1:
         {
-            // Cho phép nhập mọi ký tự
-            result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext);
+            result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-            // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
-                errorMessage = "Ten vat tu chua ky tu khong hop le!";
-                drawTableErrors(5, 2, errorMessage);
+                errorMessage = "Ten vat tu chua ky tu khong hop le";
+                drawTableErrors(errorMessage, true);
                 continue;
             }
-
+            drawTableErrors("", true);
             input.TENVT = tempInput;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
         case 2:
         {
-            // Cho phép nhập mọi ký tự
-            result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext);
+            result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-            // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
-                errorMessage = "Don vi tinh chua ky tu khong hop le!";
-                drawTableErrors(5, 2, errorMessage);
+                errorMessage = "Don vi tinh chua ky tu khong hop le";
+                drawTableErrors(errorMessage, true);
+
                 continue;
             }
+            drawTableErrors("", true);
             input.DVT = tempInput;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
         case 3:
         {
-            numResult = inputNumber(x + 87, y + 10, input.soLuongTon, moveNext);
+            numResult = inputNumber(x + 87, y + 10, input.soLuongTon, 6, "So luong ton", moveNext, true);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -4)
                 goto saveButton;
+            if (numResult == 0)
+            {
+                errorMessage = "So luong ton lon hon 0";
+                drawTableErrors(errorMessage, true);
+
+                continue;
+            }
+            drawTableErrors("", true);
             input.soLuongTon = numResult;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
@@ -595,11 +694,10 @@ void nhapVatTu(treeVatTu &root, int x, int y)
     string result;
     int numResult;
     bool moveNext;
-    string tempInput; // Biến tạm để lưu input trước khi chuẩn hóa
+    string tempInput;
 
     while (true)
     {
-        // Hiển thị tất cả các trường
         displayField(x + 87, y + 4, input.MAVT, currentRow == 0, 10);
         displayField(x + 87, y + 6, input.TENVT, currentRow == 1, 20);
         displayField(x + 87, y + 8, input.DVT, currentRow == 2, 6);
@@ -609,80 +707,82 @@ void nhapVatTu(treeVatTu &root, int x, int y)
         {
         case 0:
         {
-            // Cho phép nhập mọi ký tự
-            result = inputString(x + 87, y + 4, input.MAVT, 10, "Ma vat tu", moveNext);
+            result = inputString(x + 87, y + 4, input.MAVT, 10, "Ma vat tu", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-            // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
                 errorMessage = "Ma vat tu chua ky tu khong hop le";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 continue;
             }
 
             if (search(root, tempInput) != NULL)
             {
                 errorMessage = "Ma vat tu da ton tai!";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 continue;
             }
-            errorMessage = "";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors("", true);
             input.MAVT = tempInput;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
         case 1:
         {
-            // Cho phép nhập mọi ký tự
-            result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext);
+            result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-            // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
                 errorMessage = "Ten vat tu chua ky tu khong hop le";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 continue;
             }
+            drawTableErrors("", true);
             input.TENVT = tempInput;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
         case 2:
         {
-            // Cho phép nhập mọi ký tự
-            result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext);
+            result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-            // Chuẩn hóa chuỗi sau khi nhập
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
                 errorMessage = "Don vi tinh chua ky tu khong hop le";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 continue;
             }
+            drawTableErrors("", true);
             input.DVT = tempInput;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
         case 3:
         {
-            numResult = inputNumber(x + 87, y + 10, input.soLuongTon, moveNext);
+            numResult = inputNumber(x + 87, y + 10, input.soLuongTon, 6, "So luong ton", moveNext, true);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -4)
                 goto saveButton;
+            if (numResult == 0)
+            {
+                errorMessage = "So luong ton lon hon 0";
+                drawTableErrors(errorMessage, true);
+                continue;
+            }
+            drawTableErrors("", true);
             input.soLuongTon = numResult;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
@@ -691,10 +791,9 @@ void nhapVatTu(treeVatTu &root, int x, int y)
         {
             ShowCur(false);
             errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors(errorMessage, true);
             Sleep(1500);
-            errorMessage = "";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -706,20 +805,18 @@ void nhapVatTu(treeVatTu &root, int x, int y)
             {
                 root = insert(root, input);
                 errorMessage = "Them vat tu thanh cong";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 Sleep(1500);
-                errorMessage = "";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }
             else
             {
                 errorMessage = "Thieu thong tin. Chua them vat tu";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 Sleep(1500);
-                errorMessage = "";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors("", true);
             }
         }
         }
@@ -844,7 +941,7 @@ void inDanhSachVatTu(treeVatTu root, int pageNumber, int selectedRow, int x, str
     if (n == 0)
     {
         errorMessage = "Khong co du lieu vat tu";
-        drawTableErrors(5, 2, errorMessage);
+        drawTableErrors(errorMessage, true);
         return;
     }
     treeVatTu *arr = new treeVatTu[n];
@@ -858,7 +955,6 @@ void inDanhSachVatTu(treeVatTu root, int pageNumber, int selectedRow, int x, str
     int currentRow = 5;
     for (int i = startIndex; i < endIndex; i++)
     {
-        // MAVT column - với highlight nếu được chọn
         gotoxy(x + 3, currentRow);
         if (selectedRow == -1)
             cout << arr[i]->data_vt.MAVT;
@@ -866,22 +962,16 @@ void inDanhSachVatTu(treeVatTu root, int pageNumber, int selectedRow, int x, str
         {
             Highlight(LIGHTBLUE);
             cout << arr[i]->data_vt.MAVT;
-            setColorByRequest(LIGHTGRAY, BLACK); // Reset về màu bình thường ngay sau khi in MAVT
+            setColorByRequest(LIGHTGRAY, BLACK);
         }
         else
         {
             cout << arr[i]->data_vt.MAVT;
         }
-
-        // TENVT column - không highlight
         gotoxy(x + 18, currentRow);
         cout << arr[i]->data_vt.TENVT;
-
-        // DVT column - không highlight
         gotoxy(x + 43, currentRow);
         cout << arr[i]->data_vt.DVT;
-
-        // SoLuongTon column - không highlight
         gotoxy(x + 54, currentRow);
         cout << arr[i]->data_vt.soLuongTon;
         currentRow++;

@@ -1,4 +1,4 @@
-0123456789|Asdsda|Cai|100000
+9|Asdsda|Cai|100000
 1|Banh Mi|O|2
 10|Com|Dia|1
 11|Dt|Cai|2
@@ -9,7 +9,7 @@
 18|Dt|Cai|2
 19|Ca|Con|2
 2|Asdsda|Cai|100
-20|Ban Phim|Cai|2
+20|Ban Phim|Cai|18
 21|Banh Mi|O|2
 23|A|B|5
 24|Com|Dia|1
@@ -22,4 +22,4 @@
 6|Ban Phim|Cai|2
 7|Banh Mi|O|2
 8|Asdsda|Cai|100
-9|12345678901234567890|123456|123456
+0123456789|12345678901234567890|123456|123456

@@ -115,7 +115,7 @@ bool checkThongTin(string type, string value, nhanVien *&nv, dsNhanVien &list)
     }
     else if (type == "PHAI")
     {
-        if (value.empty() || (value != "nam" && value != "nu"))
+        if (value.empty() || (value != "Nam" && value != "Nu"))
         {
             cout << "Loi: Gioi tinh khong hop le!" << endl;
             return true;
@@ -218,7 +218,7 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
     if (list.CountNV >= MaxNhanVien)
     {
         string errorMessage = "So luong nhan vien da dat toi da!";
-        drawTableErrors(5, 2, errorMessage);
+        drawTableErrors(errorMessage, true);
         Sleep(1500);
         return;
     }
@@ -247,86 +247,82 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
         {
         case 0:
         {
-            result = inputString(x + 87, y + 4, input.MANV, 10, "Ma nhan vien", moveNext);
+            result = inputString(x + 87, y + 4, input.MANV, 10, "Ma nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
                 errorMessage = "Ma nhan vien chua ky tu khong hop le";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 continue;
             }
-
-            // Kiểm tra mã nhân viên đã tồn tại
             if (searchNhanVien(list, tempInput) != -1)
             {
                 errorMessage = "Ma nhan vien da ton tai";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 continue;
             }
-            errorMessage = "";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors("", true);
             input.MANV = tempInput;
             formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
             break;
         }
         case 1:
         {
-            result = inputString(x + 87, y + 6, input.HO, 20, "Ho nhan vien", moveNext);
+            result = inputString(x + 87, y + 6, input.HO, 20, "Ho nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
                 errorMessage = "Ho nhan vien chua ky tu khong hop le";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 continue;
             }
+            drawTableErrors("", true);
             input.HO = tempInput;
             formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
             break;
         }
         case 2:
         {
-            result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext);
+            result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
                 errorMessage = "Ten nhan vien chua ky tu khong hop le";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 continue;
             }
+            drawTableErrors("", true);
             input.TEN = tempInput;
             formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
             break;
         }
         case 3:
         {
-            result = inputString(x + 87, y + 10, input.PHAI, 3, "Gioi tinh (nam/nu)", moveNext);
+            result = inputString(x + 87, y + 10, input.PHAI, 3, "Phai (Nam/Nu)", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-
             tempInput = normalizeString(result, hasError);
             if (hasError || (tempInput != "Nam" && tempInput != "Nu"))
             {
                 errorMessage = "Gioi tinh khong hop le (Nam/Nu)";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 continue;
             }
+            drawTableErrors("", true);
             input.PHAI = tempInput;
             formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
             break;
@@ -335,10 +331,9 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
         {
             ShowCur(false);
             errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors(errorMessage, true);
             Sleep(1500);
-            errorMessage = "";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -360,20 +355,18 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
                 list.CountNV++;
 
                 errorMessage = "Them nhan vien thanh cong";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 Sleep(1500);
-                errorMessage = "";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }
             else
             {
                 errorMessage = "Thieu thong tin. Chua them nhan vien";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 Sleep(1500);
-                errorMessage = "";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors("", true);
             }
         }
         }
@@ -393,7 +386,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
     if (nhanVienEmpty(list))
     {
         string errorMessage = "Danh sach nhan vien trong!";
-        drawTableErrors(5, 2, errorMessage);
+        drawTableErrors(errorMessage, true);
         Sleep(1500);
         return;
     }
@@ -416,7 +409,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
     if (pos == -1)
     {
         errorMessage = "Khong tim thay nhan vien voi ma " + MANV;
-        drawTableErrors(5, 2, errorMessage);
+        drawTableErrors(errorMessage, true);
         Sleep(1500);
         return;
     }
@@ -435,57 +428,57 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
         {
         case 1:
         {
-            result = inputString(x + 87, y + 6, input.HO, 20, "Ho nhan vien", moveNext);
+            result = inputString(x + 87, y + 6, input.HO, 20, "Ho nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
-                errorMessage = "Ho nhan vien chua ky tu khong hop le!";
-                drawTableErrors(5, 2, errorMessage);
+                errorMessage = "Ho nhan vien chua ky tu khong hop le";
+                drawTableErrors(errorMessage, true);
                 continue;
             }
+            drawTableErrors("", true);
             input.HO = tempInput;
             formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
             break;
         }
         case 2:
         {
-            result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext);
+            result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
-                errorMessage = "Ten nhan vien chua ky tu khong hop le!";
-                drawTableErrors(5, 2, errorMessage);
+                errorMessage = "Ten nhan vien chua ky tu khong hop le";
+                drawTableErrors(errorMessage, true);
                 continue;
             }
+            drawTableErrors("", true);
             input.TEN = tempInput;
             formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
             break;
         }
         case 3:
         {
-            result = inputString(x + 87, y + 10, input.PHAI, 3, "Gioi tinh (nam/nu)", moveNext);
+            result = inputString(x + 87, y + 10, input.PHAI, 3, "Phai (Nam/Nu)", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F4")
                 goto saveButton;
-
             tempInput = normalizeString(result, hasError);
-            if (hasError || (tempInput != "nam" && tempInput != "nu"))
+            if (hasError || (tempInput != "Nam" && tempInput != "Nu"))
             {
-                errorMessage = "Gioi tinh khong hop le (nam/nu)!";
-                drawTableErrors(5, 2, errorMessage);
+                errorMessage = "Gioi tinh khong hop le (Nam/Nu)!";
+                drawTableErrors(errorMessage, true);
                 continue;
             }
+            drawTableErrors("", true);
             input.PHAI = tempInput;
             formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
             break;
@@ -840,16 +833,14 @@ void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x
     if (n == 0)
     {
         errorMessage = "Khong co du lieu vat tu";
-        drawTableErrors(5, 2, errorMessage);
+        drawTableErrors(errorMessage, true);
         return;
     }
-    int index = 0;
     int startIndex = (pageNumber - 1) * ROWS;
     int endIndex = min(startIndex + ROWS, n);
     int currentRow = 5;
     for (int i = startIndex; i < endIndex; i++)
     {
-        // MAVT column - với highlight nếu được chọn
         gotoxy(x + 3, currentRow);
         if (selectedRow == -1)
             cout << list.nodes[i]->MANV;
@@ -857,22 +848,16 @@ void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x
         {
             Highlight(LIGHTBLUE);
             cout << list.nodes[i]->MANV;
-            setColorByRequest(LIGHTGRAY, BLACK); // Reset về màu bình thường ngay sau khi in MAVT
+            setColorByRequest(LIGHTGRAY, BLACK);
         }
         else
         {
             cout << list.nodes[i]->MANV;
         }
-
-        // TENVT column - không highlight
         gotoxy(x + 18, currentRow);
         cout << list.nodes[i]->HO;
-
-        // DVT column - không highlight
         gotoxy(x + 43, currentRow);
         cout << list.nodes[i]->TEN;
-
-        // SoLuongTon column - không highlight
         gotoxy(x + 54, currentRow);
         cout << list.nodes[i]->PHAI;
         currentRow++;
@@ -885,7 +870,7 @@ void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x
     cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
 }
 //======================HOA DON===================================
-void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
+/*void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
 {
     string ma_nv;
     cout << "Nhap ma nhan vien lap hoa don: ";
@@ -1022,14 +1007,252 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root)
             break;
         }
     }
-}
-void inHoaDon(dsNhanVien &ds_nv)
+}*/
+/*
+int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
 {
-    string so_hd;
-    cout << "Nhap so hoa don: ";
-    cin >> so_hd;
+    for (int i = 0; i < ds_nv.CountNV; ++i)
+    {
+        if (ds_nv.nodes[i] != nullptr)
+        {
+            ptr_DSHD current_hd = ds_nv.nodes[i]->firstDSHD;
+            while (current_hd != nullptr)
+            {
+                if (current_hd->data_hd.SoHD == so_hd)
+                {
+                    found_hd = current_hd;
+                    return i; // Trả về chỉ số của nhân viên
+                }
+                current_hd = current_hd->next;
+            }
+        }
+    }
 
-    // Tìm hóa đơn với số hóa đơn đã nhập
+    found_hd = nullptr;
+    return -1; // Không tìm thấy
+}
+
+void lapHoaDon(dsHoaDon &list, int x, int y)
+{
+    // if (list.CountHD >= MaxHoaDon)
+    // {
+    //     string errorMessage = "So luong hoa don da dat toi da!";
+    //     drawTableErrors(x + 69, y + 17, errorMessage);
+    //     Sleep(1500);
+    //     return;
+    // }
+
+    nodeChiTietHoaDon input;
+    input.MAVT = "";
+    input.soLuong = 0;
+    input.VAT = 0;
+    input.donGia = 0;
+    string errorMessage;
+    int currentRow = 0;
+    bool hasError;
+    string result;
+    bool moveNext;
+    string tempInput;
+
+    while (true)
+    {
+        // Hiển thị tất cả các trường
+        displayField(x + 87, y + 4, input.MAVT, currentRow == 0, 10);
+        displayField(x + 87, y + 6, to_string(input.soLuong), currentRow == 1, 10);
+        displayField(x + 87, y + 8, to_string(input.VAT), currentRow == 2, 1);
+        displayField(x + 87, y + 10, to_string(input.donGia), currentRow == 3, 3);
+
+        switch (currentRow)
+        {
+        case 0: // Số hóa đơn
+        {
+            result = inputString(x + 87, y + 4, input.MAVT, 10, "So hoa don", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            tempInput = normalizeString(result, hasError);
+            if (hasError)
+            {
+                errorMessage = "So hoa don chua ky tu khong hop le";
+                drawTableErrors(x + 69, y + 17, errorMessage);
+                continue;
+            }
+
+            // Kiểm tra số hóa đơn đã tồn tại
+            if (searchHoaDon(list, tempInput) != -1)
+            {
+                errorMessage = "So hoa don da ton tai";
+                drawTableErrors(x + 69, y + 17, errorMessage);
+                continue;
+            }
+            errorMessage = "";
+            drawTableErrors(x + 69, y + 17, errorMessage);
+            input.MAVT = tempInput;
+            formatInputHD(input.MAVT, input.soLuong, input.LOAI, input.VAT);
+            break;
+        }
+        case 1: // Ngày lập
+        {
+            result = inputString(x + 87, y + 6, input.soLuong, 10, "Ngay lap (dd/mm/yyyy)", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            tempInput = normalizeString(result, hasError);
+            if (hasError || !isValidDate(tempInput))
+            {
+                errorMessage = "Ngay lap khong hop le (dd/mm/yyyy)";
+                drawTableErrors(x + 69, y + 17, errorMessage);
+                continue;
+            }
+            input.soLuong = tempInput;
+            formatInputHD(input.MAVT, input.soLuong, input.LOAI, input.VAT);
+            break;
+        }
+        case 2: // Loại (N/X)
+        {
+            result = inputString(x + 87, y + 8, input.LOAI, 1, "Loai (N/X)", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            tempInput = normalizeString(result, hasError);
+            if (hasError || (tempInput != "N" && tempInput != "X"))
+            {
+                errorMessage = "Loai hoa don khong hop le (N/X)";
+                drawTableErrors(x + 69, y + 17, errorMessage);
+                continue;
+            }
+            input.LOAI = tempInput;
+            formatInputHD(input.MAVT, input.soLuong, input.LOAI, input.VAT);
+            break;
+        }
+        case 3: // VAT
+        {
+            result = inputString(x + 87, y + 10, to_string(input.VAT), 3, "VAT (%)", moveNext);
+            if (result == "ESC")
+                goto escButton;
+            if (result == "F4")
+                goto saveButton;
+
+            try
+            {
+                int vatValue = stoi(result);
+                if (vatValue < 0 || vatValue > 100)
+                {
+                    errorMessage = "VAT phai nam trong khoang 0-100";
+                    drawTableErrors(x + 69, y + 17, errorMessage);
+                    continue;
+                }
+                input.VAT = vatValue;
+                formatInputHD(input.MAVT, input.soLuong, input.LOAI, input.VAT);
+            }
+            catch (...)
+            {
+                errorMessage = "VAT khong hop le";
+                drawTableErrors(x + 69, y + 17, errorMessage);
+                continue;
+            }
+            break;
+        }
+        escButton:
+        {
+            ShowCur(false);
+            errorMessage = "Dang thoat chuong trinh...";
+            drawTableErrors(x + 69, y + 17, errorMessage);
+            Sleep(1500);
+            errorMessage = "";
+            drawTableErrors(x + 69, y + 17, errorMessage);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            return;
+        }
+        saveButton:
+        {
+            ShowCur(false);
+            if (!moveNext && !input.MAVT.empty() && !input.soLuong.empty() &&
+                !input.LOAI.empty())
+            {
+                hoaDon *hd = new hoaDon(input);
+                if (list.CountHD == 0)
+                {
+                    list.nodes[list.CountHD] = hd;
+                }
+                else
+                {
+                    chenHoaDon(list, hd);
+                }
+                list.CountHD++;
+
+                errorMessage = "Them hoa don thanh cong";
+                drawTableErrors(x + 69, y + 17, errorMessage);
+                Sleep(1500);
+                errorMessage = "";
+                drawTableErrors(x + 69, y + 17, errorMessage);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                return;
+            }
+            else
+            {
+                errorMessage = "Thieu thong tin. Chua them hoa don";
+                drawTableErrors(x + 69, y + 17, errorMessage);
+                Sleep(1500);
+                errorMessage = "";
+                drawTableErrors(x + 69, y + 17, errorMessage);
+            }
+        }
+        }
+        if (moveNext)
+        {
+            currentRow = (currentRow < 3) ? currentRow + 1 : 3;
+        }
+        else
+        {
+            currentRow = (currentRow > 0) ? currentRow - 1 : 0;
+        }
+    }
+}
+*/
+void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRow, int &totalPages, int x, int y, string &errorMessage, bool &isESC, bool &isSaved, bool &isInputting)
+{
+    static string so_hd = "";
+    string tempInput;
+    string result;
+    bool hasError = false;
+    bool moveNext;
+    if (isInputting)
+    {
+        displayField(x + 95, y + 4, so_hd, true, 10);
+        while (isInputting)
+        {
+            result = inputString(x + 95, y + 4, so_hd, 10, "So hoa don", moveNext, false);
+            ShowCur(false);
+            if (result == "ESC")
+            {
+                isESC = true;
+                return;
+            }
+            tempInput = normalizeString(result, hasError);
+            if (hasError)
+            {
+                errorMessage = "So hoa don chua ky tu khong hop le";
+                drawTableErrors(errorMessage, false);
+                continue;
+            }
+            if (tempInput.empty())
+            {
+                errorMessage = "So hoa don khong duoc de trong";
+                drawTableErrors(errorMessage, false);
+                continue;
+            }
+            so_hd = tempInput;
+            drawTableErrors("", false);
+            break;
+        }
+    }
     nhanVien *nv = nullptr;
     ptr_DSHD found_hd = nullptr;
 
@@ -1044,6 +1267,9 @@ void inHoaDon(dsNhanVien &ds_nv)
                 {
                     nv = ds_nv.nodes[i];
                     found_hd = current_hd;
+                    nv->MANV = ds_nv.nodes[i]->MANV;
+                    nv->HO = ds_nv.nodes[i]->HO;
+                    nv->TEN = ds_nv.nodes[i]->TEN;
                     break;
                 }
                 current_hd = current_hd->next;
@@ -1055,33 +1281,108 @@ void inHoaDon(dsNhanVien &ds_nv)
 
     if (found_hd == nullptr)
     {
-        cout << "Khong tim thay hoa don voi so hoa don " << so_hd << "!" << endl;
+        ShowCur(false);
+        errorMessage = "Khong tim thay hoa don";
+        drawTableErrors(errorMessage, false);
+        Sleep(1500);
+        drawTableErrors("", false);
         return;
     }
 
-    float trigia = TinhTriGiaHoaDon(found_hd->data_hd.firstCTHD);
-    // In thông tin hóa đơn
-    cout << "\n=============================\n";
-    cout << "So Hoa Don: " << found_hd->data_hd.SoHD << endl;
-    cout << "Loai: " << (found_hd->data_hd.loai == 'N' ? "Nhap" : "Xuat") << endl;
-    cout << "Ngay Lap: " << setw(2) << setfill('0') << found_hd->data_hd.day << "/"
-         << setw(2) << setfill('0') << found_hd->data_hd.month << "/"
-         << found_hd->data_hd.year << endl;
-    cout << "Nhan vien lap: " << nv->HO << " " << nv->TEN << " (Ma NV: " << nv->MANV << ")" << endl;
-    cout << "Tri gia hoa don: " << trigia << endl;
-    ptr_DSCTHD current_cthd = found_hd->data_hd.firstCTHD;
-    cout << "\nChi Tiet Hoa Don:\n";
-    // cout << setw(15) << left << "Ma Vat Tu" << setw(10) << "So Luong"
-    //      << setw(15) << "Don Gia" << setw(10) << "VAT" << endl;
+    float triGiaHD = TinhTriGiaHoaDon(found_hd->data_hd.firstCTHD);
+    gotoxy(x + 15, y + 1);
+    cout << found_hd->data_hd.SoHD;
+    gotoxy(x + 29, y + 1);
+    cout << (found_hd->data_hd.loai == 'N' ? "Nhap" : "Xuat");
+    gotoxy(x + 24, y + 3);
+    cout << nv->MANV;
+    gotoxy(x + 24, y + 5);
+    cout << nv->HO << " " << nv->TEN;
+    gotoxy(x + 9, y + 7);
+    cout << found_hd->data_hd.day;
+    gotoxy(x + 24, y + 7);
+    cout << found_hd->data_hd.month;
+    gotoxy(x + 36, y + 7);
+    cout << found_hd->data_hd.year;
 
+    ptr_DSCTHD current_cthd = found_hd->data_hd.firstCTHD;
+
+    int currentRow = 12;
+    int n = 0;
     while (current_cthd != nullptr)
     {
-        cout << "Ma Vat Tu " << current_cthd->data_cthd.MAVT << endl;
-        cout << "So Luong  " << current_cthd->data_cthd.soLuong << endl;
-        cout << "Don Gia   " << current_cthd->data_cthd.donGia << endl;
-        cout << "VAT       " << current_cthd->data_cthd.VAT << endl;
+        n++;
         current_cthd = current_cthd->next;
     }
-
-    cout << "=============================\n";
+    int startIndex = (pageNumber - 1) * HDROWS;
+    int endIndex = min(startIndex + HDROWS, n);
+    nodeChiTietHoaDon *arrCTHD = new nodeChiTietHoaDon[n];
+    nodeVatTu *arrVT = new nodeVatTu[n];
+    current_cthd = found_hd->data_hd.firstCTHD;
+    int i = startIndex;
+    while (current_cthd != nullptr)
+    {
+        if (i < endIndex)
+        {
+            arrCTHD[i].triGia = 0;
+            arrCTHD[i].MAVT = current_cthd->data_cthd.MAVT;
+            treeVatTu node = search(root, current_cthd->data_cthd.MAVT);
+            if (node == nullptr)
+            {
+                errorMessage = "Khong tim thay ma vat tu";
+                drawTableErrors(errorMessage, false);
+                break;
+            }
+            else
+            {
+                arrVT[i].TENVT = node->data_vt.TENVT;
+                arrCTHD[i].soLuong = current_cthd->data_cthd.soLuong;
+                arrCTHD[i].donGia = current_cthd->data_cthd.donGia;
+                arrCTHD[i].VAT = current_cthd->data_cthd.VAT;
+                arrCTHD[i].triGia += arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + arrCTHD[i].VAT / 100);
+                gotoxy(x + 3, currentRow);
+                if (selectedRow == i - startIndex)
+                {
+                    Highlight(LIGHTBLUE);
+                    cout << arrCTHD[i].MAVT;
+                    setColorByRequest(LIGHTGRAY, BLACK);
+                }
+                else
+                {
+                    cout << arrCTHD[i].MAVT;
+                }
+                gotoxy(x + 18, currentRow);
+                cout << arrVT[i].TENVT;
+                gotoxy(x + 43, currentRow);
+                cout << arrCTHD[i].soLuong;
+                gotoxy(x + 54, currentRow);
+                cout << arrCTHD[i].donGia;
+                gotoxy(x + 65, currentRow);
+                cout << arrCTHD[i].triGia;
+                currentRow++;
+                i++;
+                gotoxy(x + 18, y + 23);
+                cout << triGiaHD << " nghin dong";
+            }
+        }
+        current_cthd = current_cthd->next;
+    }
+    // in so trang
+    totalPages = ceil((float)n / HDROWS);
+    gotoxy(6, 26);
+    cout << "TAB: Di chuyen den trang can tim";
+    gotoxy(52, 26);
+    cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
+    delete[] arrCTHD;
+    delete[] arrVT;
+    if (isInputting)
+    {
+        fillAreaColor(x + 76, y, 41, 9, LIGHTGRAY);
+        isInputting = false;
+        errorMessage = "Xem chi tiet hoa don thanh cong";
+        drawTableErrors(errorMessage, false);
+        Sleep(1500);
+        drawTableErrors("", false);
+    }
+    return;
 }

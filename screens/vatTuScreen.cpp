@@ -155,14 +155,12 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y)
             }
             else
             {
-                // Get number of items on current page
                 int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
                 selectedRow = itemsOnPage - 1;
             }
             break;
         case DOWN:
         {
-            // Get number of items on current page
             int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
             if (selectedRow < itemsOnPage - 1)
             {
@@ -195,10 +193,9 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y)
             if (isESC)
             {
                 errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 Sleep(1500);
-                errorMessage = "";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 delete[] arr;
                 return;
@@ -221,10 +218,9 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y)
                     selectedRow = min(ROWS, n - (currentPage - 1) * ROWS) - 1;
                 }
                 errorMessage = "Sua vat tu thanh cong";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 Sleep(1500);
-                errorMessage = "";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 clearTablePrint(x);
                 delete[] arr;
@@ -236,10 +232,9 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y)
             break;
         case ESC:
             errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors(errorMessage, true);
             Sleep(1500);
-            errorMessage = "";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -331,10 +326,9 @@ void handleNavigationDeleteVatTu(treeVatTu &root, int x, int y)
             if (isESC)
             {
                 errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 Sleep(1500);
-                errorMessage = "";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 delete[] arr;
                 return;
@@ -357,10 +351,9 @@ void handleNavigationDeleteVatTu(treeVatTu &root, int x, int y)
                     selectedRow = min(ROWS, n - (currentPage - 1) * ROWS) - 1;
                 }
                 errorMessage = "Xoa vat tu thanh cong";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors(errorMessage, true);
                 Sleep(1500);
-                errorMessage = "";
-                drawTableErrors(5, 2, errorMessage);
+                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 clearTablePrint(x);
                 delete[] arr;
@@ -372,10 +365,9 @@ void handleNavigationDeleteVatTu(treeVatTu &root, int x, int y)
             break;
         case ESC:
             errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors(errorMessage, true);
             Sleep(1500);
-            errorMessage = "";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -424,10 +416,9 @@ void handleNavigationListVatTu(treeVatTu root, int x, int y)
             break;
         case ESC:
             errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors(errorMessage, true);
             Sleep(1500);
-            errorMessage = "";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -486,10 +477,9 @@ void menuVatTu(treeVatTu &root, int x, int y)
             break;
         case ESC:
             errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors(errorMessage, true);
             Sleep(1500);
-            errorMessage = "";
-            drawTableErrors(5, 2, errorMessage);
+            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -535,10 +525,10 @@ int main()
     if (!isOpened)
     {
         errorMessage = "Khong the mo file ds_VatTu.txt";
-        drawTableErrors(5, 2, errorMessage);
+        drawTableErrors(errorMessage, true);
         return 0;
     }
-    drawTableErrors(x, y, errorMessage);
+    // drawTableErrors(x, y, errorMessage);
     drawKeysGuideVatTu(x, y);
     menuVatTu(root, x, y);
     writeFile_dsVatTu(root);

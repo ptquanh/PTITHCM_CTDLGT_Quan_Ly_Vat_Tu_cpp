@@ -17,16 +17,6 @@ time_t to_time_t(int day, int month, int year)
     return mktime(&t);
 }
 
-void QuickSort(DoanhThuVatTu arr[], int low, int high)
-{
-    if (low < high)
-    {
-        int pi = Partition(arr, low, high); // Thực hiện phân chia từ low đến high ở vị trí pivot
-        QuickSort(arr, low, pi - 1);        // Đệ quy sắp xếp bên trái
-        QuickSort(arr, pi + 1, high);       // Đệ quy sắp xếp bên phải
-    }
-}
-
 int Partition(DoanhThuVatTu arr[], int low, int high)
 {
     float pivot = arr[high].doanhThu; // Chọn pivot ở cuối
@@ -47,6 +37,16 @@ int Partition(DoanhThuVatTu arr[], int low, int high)
     return (i + 1);
 }
 
+void QuickSort(DoanhThuVatTu arr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pi = Partition(arr, low, high); // Thực hiện phân chia từ low đến high ở vị trí pivot
+        QuickSort(arr, low, pi - 1);        // Đệ quy sắp xếp bên trái
+        QuickSort(arr, pi + 1, high);       // Đệ quy sắp xếp bên phải
+    }
+}
+
 float TinhToanChiPhiCuaHoaDon(ptr_DSCTHD ct)
 {
     float price = 0;
@@ -54,6 +54,7 @@ float TinhToanChiPhiCuaHoaDon(ptr_DSCTHD ct)
     {
         price += ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 - ct->data_cthd.VAT / 100);
     }
+    return price;
 }
 
 void TinhToanDoanhThu(ptr_DSCTHD ct, DoanhThuVatTu doanhThu[], int &countVatTu, char loai)
@@ -131,6 +132,17 @@ void Top10VTT(int day1, int month1, int year1, int day2, int month2, int year2, 
     }
 }
 
+float TinhTriGiaHoaDon(ptr_DSCTHD firstCTHD) // Tính trị giá của một hóa đơn
+{
+    float totalValue = 0;
+    while (firstCTHD) // duyệt qua  các chi tiết hóa đơn
+    {
+        totalValue += firstCTHD->data_cthd.soLuong * firstCTHD->data_cthd.donGia * (1 + firstCTHD->data_cthd.VAT / 100);
+        firstCTHD = firstCTHD->next;
+    }
+    return totalValue;
+}
+
 void InThongKeHoaDon(int day1, int month1, int year1, int day2, int month2, int year2, dsNhanVien &dsnv)
 {
     time_t start = to_time_t(day1, month1, year1); // thời gian bắt đầu
@@ -160,16 +172,6 @@ void InThongKeHoaDon(int day1, int month1, int year1, int day2, int month2, int 
     }
 }
 
-float TinhTriGiaHoaDon(ptr_DSCTHD firstCTHD) // Tính trị giá của một hóa đơn
-{
-    float totalValue = 0;
-    while (firstCTHD) // duyệt qua  các chi tiết hóa đơn
-    {
-        totalValue += firstCTHD->data_cthd.soLuong * firstCTHD->data_cthd.donGia * (1 + firstCTHD->data_cthd.VAT / 100);
-        firstCTHD = firstCTHD->next;
-    }
-    return totalValue;
-}
 void DoanhThuNam(dsNhanVien danhsach, int year)
 {
     float doanhthuthang[12] = {0};             // chứa doanh thu 12 tháng
@@ -227,6 +229,7 @@ bool ThoiGianHopLe(int day, int month, int year) // kiểm tra thời gian hợp
     }
     if (day > 0 && day <= days_in_month[month]) // Nếu ngày nhập phù hợp với ngày trong tháng nhập
         return true;
+    return false;
 }
 
 bool XungDotThoiGian(int day1, int month1, int year1, int day2, int month2, int year2)

@@ -2,6 +2,7 @@
 #include "../libraries/khaibao.h"
 #include "../libraries/mylib.h"
 #define ROWS 20
+#define HDROWS 11
 //==========khai bao=========
 const int BLACK = 0;
 const int BLUE = 1;
@@ -47,6 +48,9 @@ const char cross = 206;
 #define F5 63
 #define TAB 9
 #define BACKSPACE 8
+#define HOME 71
+#define END 79
+#define DEL 83
 //==========tien khai bao==========
 void Normal();
 void Highlight(int Color);
@@ -57,7 +61,7 @@ void verticalLine(int x, int y, int h);
 void horizontalLine(int x, int y, int w);
 void deleteOneRow(int y);
 void deleteOneCollumn(int x);
-void drawTableErrors(int x, int y, string errorMessage);
+void drawTableErrors(string errorMessage, bool isSmallErrorTable);
 int pageSearchByTab(int x, int currentPage, int totalPages, string &errorMessage);
 void clearTablePrint(int x);
 //==================================
@@ -150,8 +154,19 @@ void horizontalLine(int x, int y, int w)
         std::cout << hzLine;
     }
 }
-void drawTableErrors(int x, int y, string errorMessage)
+void drawTableErrors(string errorMessage, bool isSmallErrorTable)
 {
+    int x,y;
+    if (isSmallErrorTable)
+    {
+        x = 5;
+        y = 2;
+    }
+    else
+    {
+        x = 8;
+        y = 2;
+    }
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x + 69, y + 17, 41, 6);
     gotoxy(x + 85, y + 19);
@@ -168,7 +183,9 @@ void drawTableErrors(int x, int y, string errorMessage)
     gotoxy(x + 72, y + 21);
     cout << errorMessage;
     setColorByRequest(LIGHTGRAY, BLACK);
+    
 }
+
 void clearTablePrint(int x)
 {
     SetBGColor(LIGHTGRAY);
@@ -222,7 +239,7 @@ int pageSearchByTab(int x, int currentPage, int totalPages, string &errorMessage
     while (goToPage > totalPages)
     {
         errorMessage = "Loi trang. Vui long nhap lai";
-        drawTableErrors(5, 2, errorMessage);
+        drawTableErrors(errorMessage, true);
         for (int i = 0; i <= length + 1; i++)
         {
             gotoxy(x + 26 + i, 26);
@@ -235,11 +252,10 @@ int pageSearchByTab(int x, int currentPage, int totalPages, string &errorMessage
         cin >> goToPage;
         ShowCur(false);
     }
-    errorMessage = " ";
     currentPage = goToPage;
     setColorByRequest(LIGHTGRAY, BLACK);
     clearTablePrint(x);
-    drawTableErrors(5, 2, errorMessage);
+    drawTableErrors("", true);
     return currentPage;
 }
 // int main()
