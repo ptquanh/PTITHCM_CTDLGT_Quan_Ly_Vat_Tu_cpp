@@ -1,10 +1,10 @@
 #include "../sources/nhanVien.h"
 #include "./nhanVienScreen.cpp"
-void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y);
+void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, int x, int y, bool &isSuccess);
 void handleNavigationUpdateChiTietHoaDon(dsNhanVien &dsnv, int x, int y);
 void handleNavigationDeleteChiTietHoaDon(dsNhanVien &dsnv, int x, int y);
 void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, int y);
-void menuChiTietHoaDon(dsNhanVien &dsnv, int x, int y);
+void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y);
 
 void clearTablePrintChiTietHoaDon(int x)
 {
@@ -245,7 +245,7 @@ void drawTablePrintHoaDon(int x, int y, int w, int h)
     cout << "NGAY:         THANG:        NAM:";
 }
 
-void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
+void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, int x, int y, bool &isSuccess)
 {
     int n = dsnv.CountNV;
     string errorMessage;
@@ -255,12 +255,13 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
     int selectedRow = 0;
     char key;
     int currentChoice = -1;
-    ptr_DSHD new_hd = new dsHoaDon;
+    new_hd = new dsHoaDon;
     nhanVien *nv;
     drawTablePrintNhanVien(x + 4, y + 1, 15, 23);
     while (true)
     {
         bool isESC, isSaved = false;
+        isSuccess = false;
         inDanhSachNhanVien(dsnv, currentPage, selectedRow, x + 4, errorMessage);
         key = getch();
         switch (key)
@@ -344,6 +345,7 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
                 cout << new_hd->data_hd.month;
                 gotoxy(x + 36, y + 7);
                 cout << new_hd->data_hd.year;
+                isSuccess = true;
                 return;
             }
             ShowCur(false);
@@ -390,7 +392,7 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
         }
     }
 }
-void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
+void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, int x, int y, bool &isAdding)
 {
     int n = dsnv.CountNV;
     string errorMessage;
@@ -400,139 +402,160 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, 
     int selectedRow = 0;
     char key;
     int currentChoice = -1;
-    ptr_DSHD new_hd = new dsHoaDon;
-    nhanVien *nv;
-    while (true)
+    bool isESC, isSaved = false;
+    // ptr_DSHD new_hd = new dsHoaDon;
+    // nhanVien *nv;
+    if (new_hd == nullptr)
     {
-        bool isESC, isSaved = false;
-        // inHoaDon(dsnv,root, currentPage, -1, x + 4, errorMessage);
-        key = getch();
-        switch (key)
-        {
-        case LEFT:
-            if (currentPage > 1)
-            {
-                currentPage--;
-                selectedRow = 0;
-                clearTablePrint(x + 4);
-            }
-            break;
-        case RIGHT:
-            if (currentPage < totalPages)
-            {
-                currentPage++;
-                selectedRow = 0;
-                clearTablePrint(x + 4);
-            }
-            break;
-        case UP:
-            if (selectedRow > 0)
-            {
-                selectedRow--;
-            }
-            else
-            {
-                int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
-                selectedRow = itemsOnPage - 1;
-            }
-            break;
-        case DOWN:
-        {
-            int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
-            if (selectedRow < itemsOnPage - 1)
-            {
-                selectedRow++;
-            }
-            else
-            {
-                selectedRow = 0;
-            }
-        }
-        break;
-        case ENTER:
-            currentChoice = (currentPage - 1) * ROWS + selectedRow;
-            for (int i = x + 87; i < x + 109; i++)
-            {
-                SetBGColor(BLACK);
-                gotoxy(i, y + 4);
-                cout << " ";
-                gotoxy(i, y + 6);
-                cout << " ";
-                gotoxy(i, y + 8);
-                cout << " ";
-                gotoxy(i, y + 10);
-                cout << " ";
-            }
-            currentMANV = dsnv.nodes[currentChoice]->MANV;
-            nv = layMANV(dsnv, root, currentMANV, x, y, isESC, isSaved);
-            if (nv != nullptr)
-            {
-                fillAreaColor(x + 4, y, 62, 25, LIGHTGRAY);
-                drawTablePrintHoaDon(x, y, 15, 7);
-                drawTableUpdateHoaDon(x, y);
-                setColorByRequest(LIGHTGRAY, BLACK);
-                gotoxy(x + 24, y + 3);
-                cout << nv->MANV;
-                gotoxy(x + 24, y + 5);
-                cout << nv->HO << " " << nv->TEN;
-                lapHoaDon(dsnv, root, nv, new_hd, x, y, isESC, isSaved);
-                drawTablePrintChiTietHoaDon(x, y, 15, 23);
-                setColorByRequest(LIGHTGRAY, BLACK);
-                gotoxy(x + 15, y + 1);
-                cout << new_hd->data_hd.SoHD;
-                gotoxy(x + 42, y + 1);
-                cout << (new_hd->data_hd.loai == "N" ? "Nhap" : "Xuat");
-                gotoxy(x + 9, y + 7);
-                cout << new_hd->data_hd.day;
-                gotoxy(x + 24, y + 7);
-                cout << new_hd->data_hd.month;
-                gotoxy(x + 36, y + 7);
-                cout << new_hd->data_hd.year;
-                return;
-            }
-            ShowCur(false);
-            if (isESC)
-            {
-                errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                return;
-            }
-            if (isSaved)
-            {
-                n = dsnv.CountNV;
-                totalPages = ceil((float)n / ROWS);
-                if (currentPage > totalPages)
-                {
-                    currentPage = totalPages;
-                }
-                if (selectedRow >= min(ROWS, n - (currentPage - 1) * ROWS))
-                {
-                    selectedRow = min(ROWS, n - (currentPage - 1) * ROWS) - 1;
-                }
-                errorMessage = "Sua vat tu thanh cong";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                clearTablePrintChiTietHoaDon(x);
-                return;
-            }
-            break;
-        case TAB:
-            currentPage = pageSearchByTab(x + 4, currentPage, totalPages, errorMessage);
-            break;
-        case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, false);
-            Sleep(1500);
-            drawTableErrors("", false);
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-            return;
-        }
+        isAdding = false;
+        return;
     }
+
+    drawTableUpdateChiTietHoaDon(x, y);
+    nhapChiTietHoaDon(dsnv, root, nullptr, new_hd, x, y, isESC, isSaved);
+    if (isESC)
+    {
+        cout << "ESC";
+    }
+    else if (isSaved)
+    {
+        cout << "Them chi tiet hoa don thanh cong";
+    }
+
+    isAdding = false;
+    // drawTableUpdateChiTietHoaDon(x, y);
+    // nhapChiTietHoaDon(dsnv, root, nullptr, new_hd, x, y, isESC, isSaved);
+    // while (true)
+    // {
+    //     bool isESC, isSaved, isSuccess = false;
+    //     inChiTietHoaDon(dsnv, root, new_hd, currentPage, -1, totalPages, x + 4, y, errorMessage, isESC, isSaved);
+    //     key = getch();
+    //     switch (key)
+    //     {
+    //     case LEFT:
+    //         if (currentPage > 1)
+    //         {
+    //             currentPage--;
+    //             selectedRow = 0;
+    //             clearTablePrint(x + 4);
+    //         }
+    //         break;
+    //     case RIGHT:
+    //         if (currentPage < totalPages)
+    //         {
+    //             currentPage++;
+    //             selectedRow = 0;
+    //             clearTablePrint(x + 4);
+    //         }
+    //         break;
+    //     case UP:
+    //         if (selectedRow > 0)
+    //         {
+    //             selectedRow--;
+    //         }
+    //         else
+    //         {
+    //             int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
+    //             selectedRow = itemsOnPage - 1;
+    //         }
+    //         break;
+    //     case DOWN:
+    //     {
+    //         int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
+    //         if (selectedRow < itemsOnPage - 1)
+    //         {
+    //             selectedRow++;
+    //         }
+    //         else
+    //         {
+    //             selectedRow = 0;
+    //         }
+    //     }
+    //     break;
+    //     case ENTER:
+    //         currentChoice = (currentPage - 1) * ROWS + selectedRow;
+    //         for (int i = x + 87; i < x + 109; i++)
+    //         {
+    //             SetBGColor(BLACK);
+    //             gotoxy(i, y + 4);
+    //             cout << " ";
+    //             gotoxy(i, y + 6);
+    //             cout << " ";
+    //             gotoxy(i, y + 8);
+    //             cout << " ";
+    //             gotoxy(i, y + 10);
+    //             cout << " ";
+    //         }
+    //         currentMANV = dsnv.nodes[currentChoice]->MANV;
+    //         nv = layMANV(dsnv, root, currentMANV, x, y, isESC, isSaved);
+    //         if (nv != nullptr)
+    //         {
+    //             fillAreaColor(x + 4, y, 62, 25, LIGHTGRAY);
+    //             drawTablePrintHoaDon(x, y, 15, 7);
+    //             drawTableUpdateHoaDon(x, y);
+    //             setColorByRequest(LIGHTGRAY, BLACK);
+    //             gotoxy(x + 24, y + 3);
+    //             cout << nv->MANV;
+    //             gotoxy(x + 24, y + 5);
+    //             cout << nv->HO << " " << nv->TEN;
+    //             lapHoaDon(dsnv, root, nv, new_hd, x, y, isESC, isSaved);
+    //             drawTablePrintChiTietHoaDon(x, y, 15, 23);
+    //             setColorByRequest(LIGHTGRAY, BLACK);
+    //             gotoxy(x + 15, y + 1);
+    //             cout << new_hd->data_hd.SoHD;
+    //             gotoxy(x + 42, y + 1);
+    //             cout << (new_hd->data_hd.loai == "N" ? "Nhap" : "Xuat");
+    //             gotoxy(x + 9, y + 7);
+    //             cout << new_hd->data_hd.day;
+    //             gotoxy(x + 24, y + 7);
+    //             cout << new_hd->data_hd.month;
+    //             gotoxy(x + 36, y + 7);
+    //             cout << new_hd->data_hd.year;
+    //             return;
+    //         }
+    //         ShowCur(false);
+    //         if (isESC)
+    //         {
+    //             errorMessage = "Dang thoat chuong trinh...";
+    //             drawTableErrors(errorMessage, false);
+    //             Sleep(1500);
+    //             drawTableErrors("", false);
+    //             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+    //             return;
+    //         }
+    //         if (isSaved)
+    //         {
+    //             n = dsnv.CountNV;
+    //             totalPages = ceil((float)n / ROWS);
+    //             if (currentPage > totalPages)
+    //             {
+    //                 currentPage = totalPages;
+    //             }
+    //             if (selectedRow >= min(ROWS, n - (currentPage - 1) * ROWS))
+    //             {
+    //                 selectedRow = min(ROWS, n - (currentPage - 1) * ROWS) - 1;
+    //             }
+    //             errorMessage = "Sua vat tu thanh cong";
+    //             drawTableErrors(errorMessage, false);
+    //             Sleep(1500);
+    //             drawTableErrors("", false);
+    //             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+    //             clearTablePrintChiTietHoaDon(x);
+    //             return;
+    //         }
+    //         break;
+    //     case TAB:
+    //         currentPage = pageSearchByTab(x + 4, currentPage, totalPages, errorMessage);
+    //         break;
+    //     case ESC:
+    //         errorMessage = "Dang thoat chuong trinh...";
+    //         drawTableErrors(errorMessage, false);
+    //         Sleep(1500);
+    //         drawTableErrors("", false);
+    //         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+    //         return;
+    //     }
+    // }
 }
 
 void handleNavigationUpdateChiTietHoaDon(dsNhanVien &dsnv, int x, int y)
@@ -788,20 +811,17 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
     string errorMessage;
     int totalPages = 1;
     int currentPage = 1;
-    int selectedRow = -1;
     char key;
     bool isESC = false, isSaved = false, isInputting = true;
     string storedSoHD = "";
-
     drawTablePrintChiTietHoaDon(x, y, 15, 23);
     drawTableInputSoHD(x, y);
     setColorByRequest(LIGHTGRAY, BLACK);
-
     while (true)
     {
         if (isInputting)
         {
-            inHoaDon(dsnv, root, currentPage, selectedRow, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
+            inHoaDon(dsnv, root, currentPage, -1, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
             if (isESC)
             {
                 errorMessage = "Dang thoat chuong trinh...";
@@ -830,7 +850,7 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
                 currentPage--;
                 clearTablePrintChiTietHoaDon(x);
                 isInputting = false;
-                inHoaDon(dsnv, root, currentPage, selectedRow, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
+                inHoaDon(dsnv, root, currentPage, -1, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
             }
             break;
 
@@ -840,7 +860,7 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
                 currentPage++;
                 clearTablePrintChiTietHoaDon(x);
                 isInputting = false;
-                inHoaDon(dsnv, root, currentPage, selectedRow, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
+                inHoaDon(dsnv, root, currentPage, -1, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
             }
             break;
 
@@ -858,61 +878,71 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
     }
 }
 
-void menuChiTietHoaDon(dsNhanVien &dsnv, int x, int y)
+void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
 {
     int n = dsnv.CountNV;
     int totalPages = ceil((float)n / ROWS);
     int currentPage = 1;
     string errorMessage;
     char key;
-    drawTablePrintChiTietHoaDon(x, y, 15, 23);
-    while (true)
+    ptr_DSHD new_hd = nullptr;
+    nhanVien *nv = nullptr;
+    bool isESC = false, isSuccess = false, isSaved = false, isAdding = true;
+    handleNavigationAddHoaDon(dsnv, root, new_hd, x, y, isSuccess);
+    if (isSuccess && new_hd != nullptr)
     {
-        setColorByRequest(LIGHTGRAY, BLACK);
-        // inDanhSachNhanVien(dsnv, currentPage, -1, x, errorMessage);
-        key = getch();
-        switch (key)
+        handleNavigationAddChiTietHoaDon(dsnv, root, new_hd, x, y, isAdding);
+        while (true)
         {
-        case LEFT:
-            if (currentPage > 1)
+            setColorByRequest(LIGHTGRAY, BLACK);
+            inChiTietHoaDon(dsnv, root, new_hd, currentPage, -1, totalPages, x, y, errorMessage, isESC, isSaved);
+            key = getch();
+            switch (key)
             {
-                currentPage--;
-                clearTablePrintChiTietHoaDon(x);
+            case LEFT:
+                if (currentPage > 1)
+                {
+                    currentPage--;
+                    clearTablePrintChiTietHoaDon(x);
+                }
+                break;
+            case RIGHT:
+                if (currentPage < totalPages)
+                {
+                    currentPage++;
+                    clearTablePrintChiTietHoaDon(x);
+                }
+                break;
+            case TAB:
+                currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
+                break;
+            case F1:
+                isAdding = true;
+                handleNavigationAddChiTietHoaDon(dsnv, root, new_hd, x, y, isAdding);
+                break;
+            case F2:
+                handleNavigationUpdateChiTietHoaDon(dsnv, x, y);
+                break;
+            case F3:
+                handleNavigationDeleteChiTietHoaDon(dsnv, x, y);
+                break;
+            case F5:
+                gotoxy(0, 0);
+                cout << "F5";
+                break;
+            case ESC:
+                errorMessage = "Dang thoat chuong trinh...";
+                // drawTableErrors(errorMessage, false);
+                Sleep(1500);
+                errorMessage = "";
+                // drawTableErrors(errorMessage, false);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                return;
             }
-            break;
-        case RIGHT:
-            if (currentPage < totalPages)
-            {
-                currentPage++;
-                clearTablePrintChiTietHoaDon(x);
-            }
-            break;
-        case TAB:
-            currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
-            break;
-        case F1:
-            // handleNavigationAddChiTietHoaDon(dsnv, x, y);
-            break;
-        case F2:
-            handleNavigationUpdateChiTietHoaDon(dsnv, x, y);
-            break;
-        case F3:
-            handleNavigationDeleteChiTietHoaDon(dsnv, x, y);
-            break;
-        case F5:
-            gotoxy(0, 0);
-            cout << "F5";
-            break;
-        case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            // drawTableErrors(errorMessage, false);
-            Sleep(1500);
-            errorMessage = "";
-            // drawTableErrors(errorMessage, false);
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-            return;
         }
     }
+    else
+        cout << "do not succeed";
 }
 
 void drawKeysGuideChiTietHoaDon(int x, int y)
@@ -950,8 +980,12 @@ int main()
     ShowCur(false);
     dsNhanVien dsnv;
     treeVatTu root = nullptr;
+    ptr_DSHD new_hd = new dsHoaDon;
+    new_hd = nullptr;
     dsHoaDon dshd;
+    nhanVien *nv = nullptr;
     bool isOpened;
+    bool isSuccess;
     string errorMessage;
     int x = 1;
     int y = 1;
@@ -968,10 +1002,37 @@ int main()
     // drawTablePrintHoaDon(x,y,15,7);
     // drawKeysGuideChiTietHoaDon(x, y);
     // handleNavigationListChiTietHoaDon(dsnv, root, x, y);
-    handleNavigationAddHoaDon(dsnv, root, x, y);
+    // handleNavigationAddHoaDon(dsnv, root, new_hd, x, y, isSuccess);
+    // for (int i = 0; i < dsnv.CountNV; i++)
+    // {
+    //     if (dsnv.nodes[i] != nullptr)
+    //     {
+    //         // Thêm hóa đơn vào danh sách hóa đơn của nhân viên
+    //         if (new_hd != nullptr)
+    //         {
+    //             nv = dsnv.nodes[i];
+    //             if (nv->firstDSHD == nullptr)
+    //             {
+    //                 nv->firstDSHD = new_hd;
+    //             }
+    //             else
+    //             {
+    //                 ptr_DSHD temp = nv->firstDSHD;
+    //                 while (temp->next != nullptr)
+    //                 {
+    //                     temp = temp->next;
+    //                 }
+    //                 temp->next = new_hd;
+    //             }
+    //             break;
+    //         }
+    //     }
+    // }
+    // gotoxy(0,0);
+    // cout << new_hd->data_hd.SoHD;
+    menuChiTietHoaDon(dsnv, root, x, y);
     cout << "return home succeed";
-    // menuChiTietHoaDon(dsnv, x, y);
-    writeFile_dsNhanVien(dsnv);
+    // writeFile_dsNhanVien(dsnv);
     while (1)
     {
         getch();
