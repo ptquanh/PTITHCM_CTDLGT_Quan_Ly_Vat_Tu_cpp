@@ -1235,14 +1235,8 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
             input.donGia = numResult;
             break;
         escButton:
-            ShowCur(false);
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, false);
-            Sleep(1500);
-            drawTableErrors("", false);
-            fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+            isESC = false;
             return;
-
         saveButton:
             ShowCur(false);
             if (!moveNext && !input.MAVT.empty() && input.soLuong > 0 && input.donGia > 0 && input.VAT >= 0)
@@ -1280,11 +1274,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
                     }
                     temp->next = new_cthd;
                 }
-
-                errorMessage = "Them chi tiet hoa don thanh cong";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
+                isSaved = true;
                 return;
             }
             else
