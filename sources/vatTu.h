@@ -1,3 +1,4 @@
+#pragma once
 #include "./sharedResources.h"
 const int searchHighlightColor = 1;
 // ghi tung node vao file ds_vattu

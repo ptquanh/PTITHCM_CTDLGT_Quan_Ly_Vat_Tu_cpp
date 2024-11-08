@@ -258,13 +258,3 @@ int pageSearchByTab(int x, int currentPage, int totalPages, string &errorMessage
     drawTableErrors("", true);
     return currentPage;
 }
-// int main()
-// {
-//     ShowCur(false);
-//     int button = 0;
-//     while (1)
-//     {
-
-//         getch();
-//     }
-// }

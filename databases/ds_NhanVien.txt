@@ -1,5 +1,5 @@
 NV7|Phan Tuan Quoc|Anh|Nam
--Hd10|1|1|2024|X
+-Hd1|1|1|2024|X
 +0123456789|2|100|2
 +2|5|500|1
 +3|2|10|1
@@ -14,71 +14,53 @@ NV7|Phan Tuan Quoc|Anh|Nam
 +20|5|500|10
 +12|5|500|10
 \
-NV12|Phan Tuan Quoc|Anh|Nam
+NV12|Hoang Thien|Bao|Nam
 \
-NV17|Phan Tuan Quoc|Anh|Nam
+NV17|Nguyen Van|An|Nam
 \
 Nv1|Le Van|Dai|Nam
--Hd9|1|5|2024|X
+-Hd2|1|5|2024|X
 +2|5|500|1
 \
 NV1|Du Hoang|Phi|Nam
 -Hd3|1|12|2024|N
 +12|5|500|10
 \
-NV8|Du Hoang|Phi|Nam
+NV8|Tran Van|Hung|Nam
 \
-NV13|Du Hoang|Phi|Nam
+NV13|Le Hoang|Phi|Nam
 \
-NV18|Du Hoang|Phi|Nam
+NV18|Nguyen Hoang|Chau|Nam
 \
-NV4|Nguyen|Toan|Nam
--Hd1|1|12|2023|X
-+VT1|20|100000|10
--Hd2|30|12|2023|X
-+VT1|10|100000|1
--Hd4|20|4|2005|N
-+VT1|2|1|2
--2|2|4|2005|X
-+vt23|2|1|1
+NV4|Nguyen Thi|Nhu|Nu
 \
-NV9|Nguyen|Toan|Nam
--Hd5|1|12|2023|N
-+VT1|20|100000|10
--Hd6|30|12|2023|X
-+VT1|10|100000|1
--Hd7|20|4|2005|N
-+VT1|2|1|2
--2|2|4|2005|X
-+vt23|2|1|1
+NV9|Nguyen|Xuan|Nu
 \
-NV14|Nguyen|Toan|Nam
+NV14|Nguyen Quoc|Toan|Nam
 \
-NV19|Nguyen|Toan|Nam
+NV19|Tran Dai|Hoang|Nam
 \
-NV22|Nguyen|Toan|Nam
+NV22|Nguyen Viet|Toan|Nam
 \
 2|Le Quoc|Vinh|Nam
 \
-nv5|Le Van|Vinh|nam
--Hd8|1|1|2004|X
-+vt2|2|1|1
+nv5|Le Van|Vinh|Nam
 \
-nv6|Le Van|Vinh|nam
+nv6|Truong Viet|Hoang|Nam
 \
-nv10|Le Van|Vinh|nam
+nv10|Nguyen Quoc|Vinh|Nam
 \
-nv11|Le Van|Vinh|nam
+nv11|Dang Kieu|Trang|Nu
 \
-nv15|Le Van|Vinh|nam
+nv15|Nguyen Le|Nhi|Nu
 \
-nv16|Le Van|Vinh|nam
+nv16|Tran Hong|Ngoc|Nu
 \
-nv20|Le Van|Vinh|nam
+nv20|Ly Van|Bien|Nam
 \
-nv21|Le Van|Vinh|nam
+nv21|Luong Chi|Vinh|Nam
 \
-nv23|Le Van|Vinh|nam
+nv23|Luong Minh|Khoi|Nam
 \
-nv24|Le Van|Vinh|nam
+nv24|Nguyen Thanh|Vinh|Nam
 \

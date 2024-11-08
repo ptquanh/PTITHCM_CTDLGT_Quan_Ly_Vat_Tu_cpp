@@ -1,10 +1,35 @@
+#pragma once
 #include "../sources/nhanVien.h"
-#include "./nhanVienScreen.cpp"
-void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, int x, int y, bool &isSuccess);
-void handleNavigationUpdateChiTietHoaDon(dsNhanVien &dsnv, int x, int y);
-void handleNavigationDeleteChiTietHoaDon(dsNhanVien &dsnv, int x, int y);
-void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, int y);
-void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y);
+#include "./nhanVienScreen.h"
+void drawKeysGuideChiTietHoaDon(int x, int y)
+{
+    int space = 6;
+    setColorByRequest(LIGHTGRAY, BROWN);
+    drawHCN(x, y + 26, 10, 2);
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 10 + space, y + 26, 12, 2);
+    drawHCN(x + 22 + 2 * space, y + 26, 11, 2);
+    drawHCN(x + 33 + 3 * space, y + 26, 11, 2);
+    drawHCN(x + 44 + 4 * space, y + 26, 15, 2);
+    drawHCN(x + 59 + 5 * space, y + 26, 11, 2);
+    drawHCN(x + 106, y + 26, 11, 2);
+    setColorByRequest(BROWN, BLACK);
+    gotoxy(x + 1, y + 27);
+    cout << "MENU CTHD";
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 10 + space + 1, y + 27);
+    cout << "F1: Nhap CT";
+    gotoxy(x + 22 + 2 * space + 1, y + 27);
+    cout << "F2: Sua CT";
+    gotoxy(x + 33 + 3 * space + 1, y + 27);
+    cout << "F3: Xoa CT";
+    gotoxy(x + 44 + 4 * space + 1, y + 27);
+    cout << "F5: Tim ten VT";
+    gotoxy(x + 59 + 5 * space + 1, y + 27);
+    cout << "F6: Luu HD";
+    gotoxy(x + 107, y + 27);
+    cout << "ESC: Thoat";
+}
 
 void clearTablePrintChiTietHoaDon(int x)
 {
@@ -38,6 +63,7 @@ void clearTablePrintChiTietHoaDon(int x)
         }
     }
 }
+
 void drawTableInputSoHD(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -65,6 +91,7 @@ void drawTableInputSoHD(int x, int y)
         cout << " ";
     }
 }
+
 void drawTableUpdateChiTietHoaDon(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -80,11 +107,11 @@ void drawTableUpdateChiTietHoaDon(int x, int y)
     gotoxy(x + 78, y + 5);
     cout << "Toi da 10 ki tu";
     gotoxy(x + 78, y + 7);
-    cout << "Toi da 20 ki tu";
+    cout << "Toi da 6 chu so";
     gotoxy(x + 78, y + 9);
-    cout << "Toi da 6 ki tu";
+    cout << "Toi da 3 chu so";
     gotoxy(x + 78, y + 11);
-    cout << "0: Nam - 1: Nu";
+    cout << "Toi da 6 chu so";
     SetColor(BLACK);
     gotoxy(x + 82, y + 2);
     cout << "CAP NHAT CHI TIET HOA DON";
@@ -93,7 +120,7 @@ void drawTableUpdateChiTietHoaDon(int x, int y)
     gotoxy(x + 78, y + 6);
     cout << "SO LUONG       :";
     gotoxy(x + 78, y + 8);
-    cout << "THUE VAT       :";
+    cout << "THUE VAT %     :";
     gotoxy(x + 78, y + 10);
     cout << "DON GIA        :";
     // to mau trang
@@ -110,6 +137,7 @@ void drawTableUpdateChiTietHoaDon(int x, int y)
         cout << " ";
     }
 }
+
 void drawTableUpdateHoaDon(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -161,6 +189,7 @@ void drawTableUpdateHoaDon(int x, int y)
         cout << " ";
     }
 }
+
 void drawTablePrintChiTietHoaDon(int x, int y, int w, int h)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -255,7 +284,6 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_
     int selectedRow = 0;
     char key;
     int currentChoice = -1;
-    new_hd = new dsHoaDon;
     nhanVien *nv;
     drawTablePrintNhanVien(x + 4, y + 1, 15, 23);
     while (true)
@@ -392,25 +420,20 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_
         }
     }
 }
+
 void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, int x, int y, bool &isAdding)
 {
     int n = dsnv.CountNV;
-    string errorMessage;
-    string currentMANV;
     int totalPages = ceil((float)n / ROWS);
     int currentPage = 1;
     int selectedRow = 0;
-    char key;
-    int currentChoice = -1;
+    string errorMessage;
     bool isESC, isSaved = false;
-    // ptr_DSHD new_hd = new dsHoaDon;
-    // nhanVien *nv;
     if (new_hd == nullptr)
     {
         isAdding = false;
         return;
     }
-
     drawTableUpdateChiTietHoaDon(x, y);
     nhapChiTietHoaDon(dsnv, root, nullptr, new_hd, x, y, isESC, isSaved);
     ShowCur(false);
@@ -693,6 +716,7 @@ void handleNavigationDeleteChiTietHoaDon(dsNhanVien &dsnv, int x, int y)
         }
     }
 }
+
 void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, int y)
 {
     string errorMessage;
@@ -800,9 +824,6 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
                     clearTablePrintChiTietHoaDon(x);
                 }
                 break;
-            case TAB:
-                currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
-                break;
             case F1:
                 isAdding = true;
                 handleNavigationAddChiTietHoaDon(dsnv, root, new_hd, x, y, isAdding);
@@ -832,96 +853,39 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
         cout << "do not succeed";
 }
 
-void drawKeysGuideChiTietHoaDon(int x, int y)
-{
-    int space = 6;
-    setColorByRequest(LIGHTGRAY, BROWN);
-    drawHCN(x, y + 26, 10, 2);
-    setColorByRequest(LIGHTGRAY, DARKGRAY);
-    drawHCN(x + 10 + space, y + 26, 12, 2);
-    drawHCN(x + 22 + 2 * space, y + 26, 11, 2);
-    drawHCN(x + 33 + 3 * space, y + 26, 11, 2);
-    drawHCN(x + 44 + 4 * space, y + 26, 15, 2);
-    drawHCN(x + 59 + 5 * space, y + 26, 11, 2);
-    drawHCN(x + 106, y + 26, 11, 2);
-    setColorByRequest(BROWN, BLACK);
-    gotoxy(x + 1, y + 27);
-    cout << "MENU CTHD";
-    setColorByRequest(LIGHTGRAY, BLACK);
-    gotoxy(x + 10 + space + 1, y + 27);
-    cout << "F1: Nhap CT";
-    gotoxy(x + 22 + 2 * space + 1, y + 27);
-    cout << "F2: Sua CT";
-    gotoxy(x + 33 + 3 * space + 1, y + 27);
-    cout << "F3: Xoa CT";
-    gotoxy(x + 44 + 4 * space + 1, y + 27);
-    cout << "F5: Tim ten VT";
-    gotoxy(x + 59 + 5 * space + 1, y + 27);
-    cout << "F6: Luu HD";
-    gotoxy(x + 107, y + 27);
-    cout << "ESC: Thoat";
-}
-
-int main()
-{
-    ShowCur(false);
-    dsNhanVien dsnv;
-    treeVatTu root = nullptr;
-    ptr_DSHD new_hd = new dsHoaDon;
-    new_hd = nullptr;
-    dsHoaDon dshd;
-    nhanVien *nv = nullptr;
-    bool isOpened;
-    bool isSuccess;
-    string errorMessage;
-    int x = 1;
-    int y = 1;
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    readFile_dsNhanVien(dsnv);
-    readFile_dsVatTu(root, isOpened);
-    if (!isOpened)
-    {
-        errorMessage = "Khong the mo file ds_NhanVien.txt";
-        drawTableErrors(errorMessage, false);
-        return 0;
-    }
-    drawTableErrors(errorMessage, false);
-    // drawTablePrintHoaDon(x,y,15,7);
-    // drawKeysGuideChiTietHoaDon(x, y);
-    // handleNavigationListChiTietHoaDon(dsnv, root, x, y);
-    // handleNavigationAddHoaDon(dsnv, root, new_hd, x, y, isSuccess);
-    // for (int i = 0; i < dsnv.CountNV; i++)
-    // {
-    //     if (dsnv.nodes[i] != nullptr)
-    //     {
-    //         // Thêm hóa đơn vào danh sách hóa đơn của nhân viên
-    //         if (new_hd != nullptr)
-    //         {
-    //             nv = dsnv.nodes[i];
-    //             if (nv->firstDSHD == nullptr)
-    //             {
-    //                 nv->firstDSHD = new_hd;
-    //             }
-    //             else
-    //             {
-    //                 ptr_DSHD temp = nv->firstDSHD;
-    //                 while (temp->next != nullptr)
-    //                 {
-    //                     temp = temp->next;
-    //                 }
-    //                 temp->next = new_hd;
-    //             }
-    //             break;
-    //         }
-    //     }
-    // }
-    // gotoxy(0,0);
-    // cout << new_hd->data_hd.SoHD;
-    menuChiTietHoaDon(dsnv, root, x, y);
-    cout << "return home succeed";
-    // writeFile_dsNhanVien(dsnv);
-    while (1)
-    {
-        getch();
-    }
-}
+// int main()
+// {
+//     ShowCur(false);
+//     dsNhanVien dsnv;
+//     treeVatTu root = nullptr;
+//     ptr_DSHD new_hd = new dsHoaDon;
+//     new_hd = nullptr;
+//     dsHoaDon dshd;
+//     nhanVien *nv = nullptr;
+//     bool isOpened;
+//     bool isSuccess;
+//     string errorMessage;
+//     int x = 1;
+//     int y = 1;
+//     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+//     readFile_dsNhanVien(dsnv);
+//     readFile_dsVatTu(root, isOpened);
+//     if (!isOpened)
+//     {
+//         errorMessage = "Khong the mo file ds_NhanVien.txt";
+//         drawTableErrors(errorMessage, false);
+//         return 0;
+//     }
+//     drawTableErrors(errorMessage, false);
+//     // drawTablePrintHoaDon(x,y,15,7);
+//     drawKeysGuideChiTietHoaDon(x, y);
+//     // handleNavigationListChiTietHoaDon(dsnv, root, x, y);
+//     // handleNavigationAddHoaDon(dsnv, root, new_hd, x, y, isSuccess);
+//     menuChiTietHoaDon(dsnv, root, x, y);
+//     cout << "return home succeed";
+//     // writeFile_dsNhanVien(dsnv);
+//     // while (1)
+//     // {
+//     //     getch();
+//     // }
+// }

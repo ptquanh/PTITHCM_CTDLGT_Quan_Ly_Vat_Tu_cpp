@@ -1,9 +1,31 @@
+#pragma once
 #include "../sources/vatTu.h"
-void handleNavigationAddVatTu(treeVatTu &root, int x, int y);
-void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y);
-void handleNavigationDeleteVatTu(treeVatTu &root, int x, int y);
-void handleNavigationListVatTu(treeVatTu root, int x, int y);
-void menuVatTu(treeVatTu &root, int x, int y);
+void drawKeysGuideVatTu(int x, int y)
+{
+    int space = 8;
+    setColorByRequest(LIGHTGRAY, BROWN);
+    drawHCN(x, y + 25, 12, 2);
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 12 + space, y + 25, 12, 2);
+    drawHCN(x + 24 + 2 * space, y + 25, 11, 2);
+    drawHCN(x + 35 + 3 * space, y + 25, 11, 2);
+    drawHCN(x + 46 + 4 * space, y + 25, 15, 2);
+    drawHCN(x + 99, y + 25, 11, 2);
+    setColorByRequest(BROWN, BLACK);
+    gotoxy(x + 1, y + 26);
+    cout << "MENU VAT TU";
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 12 + space + 1, y + 26);
+    cout << "F1: Nhap VT";
+    gotoxy(x + 24 + 2 * space + 1, y + 26);
+    cout << "F2: Sua VT";
+    gotoxy(x + 35 + 3 * space + 1, y + 26);
+    cout << "F3: Xoa VT";
+    gotoxy(x + 46 + 4 * space + 1, y + 26);
+    cout << "F5: Tim ten VT";
+    gotoxy(x + 100, y + 26);
+    cout << "ESC: Thoat";
+}
 
 void drawTableUpdateVatTu(int x, int y)
 {
@@ -437,6 +459,7 @@ void menuVatTu(treeVatTu &root, int x, int y)
     int currentPage = 1;
     string errorMessage;
     char key;
+    drawKeysGuideVatTu(x, y);
     drawTablePrintVatTu(x, y, 15, 23);
     while (true)
     {
@@ -485,55 +508,4 @@ void menuVatTu(treeVatTu &root, int x, int y)
             return;
         }
     }
-}
-
-void drawKeysGuideVatTu(int x, int y)
-{
-    int space = 8;
-    setColorByRequest(LIGHTGRAY, DARKGRAY);
-    drawHCN(x, y + 25, 12, 2);
-    drawHCN(x + 12 + space, y + 25, 12, 2);
-    drawHCN(x + 24 + 2 * space, y + 25, 11, 2);
-    drawHCN(x + 35 + 3 * space, y + 25, 11, 2);
-    drawHCN(x + 46 + 4 * space, y + 25, 15, 2);
-    drawHCN(x + 99, y + 25, 11, 2);
-    setColorByRequest(LIGHTGRAY, BLACK);
-    gotoxy(x + 1, y + 26);
-    cout << "MENU VAT TU";
-    gotoxy(x + 12 + space + 1, y + 26);
-    cout << "F1: Nhap VT";
-    gotoxy(x + 24 + 2 * space + 1, y + 26);
-    cout << "F2: Sua VT";
-    gotoxy(x + 35 + 3 * space + 1, y + 26);
-    cout << "F3: Xoa VT";
-    gotoxy(x + 46 + 4 * space + 1, y + 26);
-    cout << "F5: Tim ten VT";
-    gotoxy(x + 100, y + 26);
-    cout << "ESC: Thoat";
-}
-
-int main()
-{
-    ShowCur(false);
-    treeVatTu root = nullptr;
-    bool isOpened;
-    string errorMessage;
-    int x = 5;
-    int y = 2;
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    readFile_dsVatTu(root, isOpened);
-    if (!isOpened)
-    {
-        errorMessage = "Khong the mo file ds_VatTu.txt";
-        drawTableErrors(errorMessage, true);
-        return 0;
-    }
-    // drawTableErrors(x, y, errorMessage);
-    drawKeysGuideVatTu(x, y);
-    menuVatTu(root, x, y);
-    writeFile_dsVatTu(root);
-    // while (1)
-    // {
-    //     getch();
-    // }
 }

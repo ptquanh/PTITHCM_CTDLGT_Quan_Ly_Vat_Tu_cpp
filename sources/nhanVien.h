@@ -708,13 +708,13 @@ void Read_NhanVien(ifstream &file, nhanVien &nv)
     getline(file, endLine);
 }
 
-void readFile_dsNhanVien(dsNhanVien &dsNV)
+void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
 {
     ifstream filein;
     filein.open(filePath_NV, ios_base::in);
     if (!filein.is_open())
     {
-        cerr << "Khong the mo file doc!" << endl;
+        isOpened = false;
         return;
     }
 
@@ -890,29 +890,29 @@ nhanVien *layMANV(dsNhanVien &ds_nv, treeVatTu &root, string MANV, int x, int y,
     }
     return nullptr;
 }
-int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
-{
-    for (int i = 0; i < ds_nv.CountNV; ++i)
-    {
-        if (ds_nv.nodes[i] != nullptr)
-        {
-            ptr_DSHD current_hd = ds_nv.nodes[i]->firstDSHD;
-            while (current_hd != nullptr)
-            {
-                if (current_hd->data_hd.SoHD == so_hd)
-                {
-                    found_hd = current_hd;
-                    return i; // Trả về chỉ số của nhân viên
-                }
-                current_hd = current_hd->next;
-            }
-        }
-    }
+// int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
+// {
+//     for (int i = 0; i < ds_nv.CountNV; ++i)
+//     {
+//         if (ds_nv.nodes[i] != nullptr)
+//         {
+//             ptr_DSHD current_hd = ds_nv.nodes[i]->firstDSHD;
+//             while (current_hd != nullptr)
+//             {
+//                 if (current_hd->data_hd.SoHD == so_hd)
+//                 {
+//                     found_hd = current_hd;
+//                     return i; // Trả về chỉ số của nhân viên
+//                 }
+//                 current_hd = current_hd->next;
+//             }
+//         }
+//     }
 
-    found_hd = nullptr;
-    return -1; // Không tìm thấy
-}
-ptr_DSHD timHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD &found_hd)
+//     found_hd = nullptr;
+//     return -1; // Không tìm thấy
+// }
+ptr_DSHD searchHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD &found_hd)
 {
     for (int i = 0; i < ds_nv.CountNV; ++i)
     {
@@ -981,7 +981,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
             }
             // check ma hd trung
             ptr_DSHD found_hd;
-            if (searchHoaDon(ds_nv, tempInput, found_hd) != -1)
+            if (searchHoaDon(ds_nv, tempInput, found_hd) != nullptr)
             {
                 errorMessage = "So hoa don da ton tai";
                 drawTableErrors(errorMessage, false);
@@ -1160,11 +1160,38 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
 
             // Kiểm tra vật tư có tồn tại trong kho
             found_vt = search(root, tempInput);
-            if (found_vt == nullptr && hd->data_hd.loai == "X")
+            if (found_vt == nullptr)
             {
-                errorMessage = "Vat tu khong ton tai trong kho";
-                drawTableErrors(errorMessage, false);
-                continue;
+                if (hd->data_hd.loai == "X")
+                {
+                    errorMessage = "Vat tu khong ton tai trong kho";
+                    drawTableErrors(errorMessage, false);
+                    continue;
+                }
+                else
+                {
+                    // Thông báo và hỏi người dùng có muốn tạo vật tư mới không
+                    string message = "Vat tu chua ton tai. Ban co muon tao moi khong? (Y/N)";
+                    drawTableErrors(message, false);
+                    char choice = _getch();
+                    if (toupper(choice) == 'Y')
+                    {
+                        // Gọi hàm tạo vật tư mới với mã đã nhập
+                        // nhapVatTu(root, tempInput, x, y + 15); // Giả sử có hàm nhapVatTu
+                        found_vt = search(root, tempInput);
+                        if (found_vt == nullptr)
+                        {
+                            errorMessage = "Tao vat tu moi that bai";
+                            drawTableErrors(errorMessage, false);
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        drawTableErrors("", false);
+                        continue;
+                    }
+                }
             }
 
             drawTableErrors("", false);
@@ -1191,7 +1218,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
                 treeVatTu vt = search(root, input.MAVT);
                 if (vt->data_vt.soLuongTon < numResult)
                 {
-                    errorMessage = "So luong vuot qua ton kho";
+                    errorMessage = "So luong ton kho hien tai: " + to_string(vt->data_vt.soLuongTon);
                     drawTableErrors(errorMessage, false);
                     continue;
                 }
@@ -1297,6 +1324,219 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
     }
 }
 
+// Hàm xóa chi tiết hóa đơn
+void xoaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &hd, string MAVT, bool &isESC, bool &isSaved)
+{
+    if (hd == nullptr || hd->data_hd.firstCTHD == nullptr)
+    {
+        cout << "Hoa don khong ton tai hoac khong co chi tiet!" << endl;
+        return;
+    }
+
+    // Tìm chi tiết hóa đơn cần xóa
+    ptr_DSCTHD current = hd->data_hd.firstCTHD;
+    ptr_DSCTHD prev = nullptr;
+
+    while (current != nullptr && current->data_cthd.MAVT != MAVT)
+    {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current == nullptr)
+    {
+        cout << "Khong tim thay chi tiet hoa don voi ma vat tu nay!" << endl;
+        return;
+    }
+
+    // Cập nhật số lượng tồn kho trước khi xóa
+    treeVatTu vt = search(root, MAVT);
+    if (vt != nullptr)
+    {
+        if (hd->data_hd.loai == "N")
+        {
+            // Nếu là hóa đơn nhập, trừ số lượng tồn
+            vt->data_vt.soLuongTon -= current->data_cthd.soLuong;
+        }
+        else if (hd->data_hd.loai == "X")
+        {
+            // Nếu là hóa đơn xuất, cộng lại số lượng tồn
+            vt->data_vt.soLuongTon += current->data_cthd.soLuong;
+        }
+    }
+
+    // Xóa node khỏi danh sách
+    if (prev == nullptr)
+    {
+        // Xóa node đầu
+        hd->data_hd.firstCTHD = current->next;
+    }
+    else
+    {
+        prev->next = current->next;
+    }
+
+    delete current;
+    isSaved = true;
+}
+
+// Hàm sửa chi tiết hóa đơn
+void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &hd, string MAVT, int x, int y, bool &isESC, bool &isSaved)
+{
+    if (hd == nullptr || hd->data_hd.firstCTHD == nullptr)
+    {
+        cout << "Hoa don khong ton tai hoac khong co chi tiet!" << endl;
+        return;
+    }
+
+    // Tìm chi tiết hóa đơn cần sửa
+    ptr_DSCTHD current = hd->data_hd.firstCTHD;
+    while (current != nullptr && current->data_cthd.MAVT != MAVT)
+    {
+        current = current->next;
+    }
+
+    if (current == nullptr)
+    {
+        cout << "Khong tim thay chi tiet hoa don voi ma vat tu nay!" << endl;
+        return;
+    }
+
+    // Lưu lại số lượng cũ để tính toán số lượng tồn kho
+    int oldSoLuong = current->data_cthd.soLuong;
+
+    nodeChiTietHoaDon input = current->data_cthd;
+    string errorMessage;
+    int currentRow = 1; // Bắt đầu từ số lượng (không cho sửa mã vật tư)
+    bool hasError;
+    double numResult;
+    bool moveNext;
+
+    while (true)
+    {
+        // Hiển thị các trường thông tin
+        displayField(x + 94, y + 4, input.MAVT, false, 10); // Mã vật tư - readonly
+        displayField(x + 94, y + 6, input.soLuong > 0 ? to_string(input.soLuong) : "", currentRow == 1, 10);
+        displayField(x + 94, y + 8, input.VAT > 0 ? to_string(input.VAT) : "", currentRow == 2, 3);
+        displayField(x + 94, y + 10, input.donGia > 0 ? to_string(input.donGia) : "", currentRow == 3, 10);
+
+        switch (currentRow)
+        {
+        case 1: // Sửa số lượng
+            numResult = inputNumber(x + 94, y + 6, input.soLuong, 10, "So luong", moveNext, false);
+            if (numResult == -1)
+                goto escButton;
+            if (numResult == -4)
+                goto saveButton;
+
+            if (numResult <= 0)
+            {
+                errorMessage = "So luong phai lon hon 0";
+                drawTableErrors(errorMessage, false);
+                continue;
+            }
+
+            // Kiểm tra số lượng tồn kho nếu là hóa đơn xuất
+            if (hd->data_hd.loai == "X")
+            {
+                treeVatTu vt = search(root, input.MAVT);
+                // Tính toán số lượng thực tế cần kiểm tra
+                int soLuongKiemTra = vt->data_vt.soLuongTon + oldSoLuong - numResult;
+                if (soLuongKiemTra < 0)
+                {
+                    errorMessage = "So luong vuot qua ton kho";
+                    drawTableErrors(errorMessage, false);
+                    continue;
+                }
+            }
+
+            drawTableErrors("", false);
+            input.soLuong = numResult;
+            break;
+
+        case 2: // Sửa VAT
+            numResult = inputNumber(x + 94, y + 8, input.VAT, 3, "VAT", moveNext, false);
+            if (numResult == -1)
+                goto escButton;
+            if (numResult == -4)
+                goto saveButton;
+
+            if (numResult < 0 || numResult > 100)
+            {
+                errorMessage = "VAT phai nam trong khoang 0-100";
+                drawTableErrors(errorMessage, false);
+                continue;
+            }
+
+            drawTableErrors("", false);
+            input.VAT = numResult;
+            break;
+
+        case 3: // Sửa đơn giá
+            numResult = inputNumber(x + 94, y + 10, input.donGia, 10, "Don gia", moveNext, false);
+            if (numResult == -1)
+                goto escButton;
+            if (numResult == -4)
+                goto saveButton;
+
+            if (numResult <= 0)
+            {
+                errorMessage = "Don gia phai lon hon 0";
+                drawTableErrors(errorMessage, false);
+                continue;
+            }
+
+            drawTableErrors("", false);
+            input.donGia = numResult;
+            break;
+
+        escButton:
+            isESC = false;
+            return;
+
+        saveButton:
+            ShowCur(false);
+            if (!moveNext && input.soLuong > 0 && input.donGia > 0 && input.VAT >= 0)
+            {
+                // Cập nhật số lượng tồn kho
+                treeVatTu vt = search(root, input.MAVT);
+                if (vt != nullptr)
+                {
+                    if (hd->data_hd.loai == "N")
+                    {
+                        vt->data_vt.soLuongTon = vt->data_vt.soLuongTon - oldSoLuong + input.soLuong;
+                    }
+                    else if (hd->data_hd.loai == "X")
+                    {
+                        vt->data_vt.soLuongTon = vt->data_vt.soLuongTon + oldSoLuong - input.soLuong;
+                    }
+                }
+
+                // Cập nhật thông tin chi tiết hóa đơn
+                current->data_cthd = input;
+                isSaved = true;
+                return;
+            }
+            else
+            {
+                errorMessage = "Thieu thong tin. Chua cap nhat chi tiet hoa don";
+                drawTableErrors(errorMessage, false);
+                Sleep(1500);
+                drawTableErrors("", false);
+            }
+        }
+
+        if (moveNext)
+        {
+            currentRow = (currentRow < 3) ? currentRow + 1 : 3;
+        }
+        else
+        {
+            currentRow = (currentRow > 1) ? currentRow - 1 : 1;
+        }
+    }
+}
+
 // int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
 // {
 //     for (int i = 0; i < ds_nv.CountNV; ++i)
@@ -1337,7 +1577,7 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
     string result;
     bool hasError = false;
     bool moveNext;
-    timHoaDon(ds_nv, found_hd->data_hd.SoHD, found_hd);
+    searchHoaDon(ds_nv, found_hd->data_hd.SoHD, found_hd);
     if (found_hd == nullptr)
     {
         ShowCur(false);
@@ -1348,16 +1588,6 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
         return;
     }
     float triGiaHD = tinhTriGiaHoaDon(found_hd->data_hd.firstCTHD);
-    gotoxy(x + 15, y + 1);
-    cout << found_hd->data_hd.SoHD;
-    gotoxy(x + 29, y + 1);
-    cout << (found_hd->data_hd.loai == "N" ? "Nhap" : "Xuat");
-    gotoxy(x + 9, y + 7);
-    cout << found_hd->data_hd.day;
-    gotoxy(x + 24, y + 7);
-    cout << found_hd->data_hd.month;
-    gotoxy(x + 36, y + 7);
-    cout << found_hd->data_hd.year;
     int n = 0;
     ptr_DSCTHD temp_cthd = found_hd->data_hd.firstCTHD;
     while (temp_cthd != nullptr)
@@ -1419,8 +1649,6 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
     gotoxy(x + 18, y + 23);
     cout << triGiaHD << " nghin dong";
     totalPages = ceil((float)n / HDROWS);
-    gotoxy(6, 26);
-    cout << "TAB: Di chuyen den trang can tim";
     gotoxy(52, 26);
     cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
     delete[] arrCTHD;
@@ -1599,6 +1827,35 @@ float tinhToanChiPhiCuaHoaDon(ptr_DSCTHD ct)
     return price;
 }
 
+void inputTime(int &day1, int &month1, int &year1, int &day2, int &month2, int &year2)
+{
+    do
+    {
+        cout << "Nhap thoi gian bat dau (dd mm yy): ";
+        cin >> day1 >> month1 >> year1;
+
+        if (!isValidTime(day1, month1, year1))
+        {
+            cout << "Thoi gian khong hop le" << endl;
+        }
+    } while (!isValidTime(day1, month1, year1));
+
+    do
+    {
+        cout << "Nhap thoi gian ket thuc (dd mm yy): ";
+        cin >> day2 >> month2 >> year2;
+
+        if (!isValidTime(day2, month2, year2))
+        {
+            cout << "Thoi gian khong hop le" << endl;
+        }
+        if (timeConflict(day1, month1, year1, day2, month2, year2))
+        {
+            cout << "Thoi gian khong hop le" << endl;
+        }
+    } while (!isValidTime(day2, month2, year2) || timeConflict(day1, month1, year1, day2, month2, year2));
+}
+
 void tinhToanDoanhThu(ptr_DSCTHD ct, doanhThuVatTu doanhThu[], int &countVatTu, string loai)
 {
     while (ct != nullptr)
@@ -1654,11 +1911,13 @@ void layDoanhThu(dsNhanVien &dsnv, doanhThuVatTu doanhThu[], int &countVatTu, ti
     }
 }
 
-void inTop10DTVT(int day1, int month1, int year1, int day2, int month2, int year2, dsNhanVien &dsnv)
+void inTop10DTVT(dsNhanVien &dsnv)
 {
     doanhThuVatTu doanhThu[MAX_VATTU];
     int countVatTu = 0;
-
+    char key;
+    int day1, month1, year1, day2, month2, year2;
+    inputTime(day1, month1, year1, day2, month2, year2);
     time_t start = to_time_t(day1, month1, year1);
     time_t end = to_time_t(day2, month2, year2);
 
@@ -1672,10 +1931,19 @@ void inTop10DTVT(int day1, int month1, int year1, int day2, int month2, int year
     {
         cout << doanhThu[i].MAVT << ": " << doanhThu[i].doanhThu << endl;
     }
+    while (1)
+    {
+        key = getch();
+        if (key == ESC)
+            return;
+    }
 }
 
-void inThongKeHoaDon(int day1, int month1, int year1, int day2, int month2, int year2, dsNhanVien &dsnv)
+void inThongKeHoaDon(dsNhanVien &dsnv)
 {
+    int day1, month1, year1, day2, month2, year2;
+    char key;
+    inputTime(day1, month1, year1, day2, month2, year2);
     time_t start = to_time_t(day1, month1, year1);
     time_t end = to_time_t(day2, month2, year2);
 
@@ -1700,6 +1968,11 @@ void inThongKeHoaDon(int day1, int month1, int year1, int day2, int month2, int 
             p = p->next;
         }
     }
+    while (1)
+    {
+        key = getch();
+        if(key == ESC) return;
+    }
 }
 
 void inThuDoanhThuThang(int year, float doanhThuThang[12])
@@ -1712,8 +1985,11 @@ void inThuDoanhThuThang(int year, float doanhThuThang[12])
     }
 }
 
-void inDoanhThuNam(dsNhanVien danhSach, int year)
+void inDoanhThuNam(dsNhanVien danhSach)
 {
+    int year;
+    char key;
+    cin >> year;
     float doanhThuThang[12] = {0};
     for (int i = 0; i < danhSach.CountNV; i++)
     {
@@ -1736,33 +2012,10 @@ void inDoanhThuNam(dsNhanVien danhSach, int year)
         }
     }
     inThuDoanhThuThang(year, doanhThuThang);
-}
-
-void inputTime(int &day1, int &month1, int &year1, int &day2, int &month2, int &year2)
-{
-    do
+    while (1)
     {
-        cout << "Nhap thoi gian bat dau (dd mm yy): ";
-        cin >> day1 >> month1 >> year1;
-
-        if (!isValidTime(day1, month1, year1))
-        {
-            cout << "Thoi gian khong hop le" << endl;
-        }
-    } while (!isValidTime(day1, month1, year1));
-
-    do
-    {
-        cout << "Nhap thoi gian ket thuc (dd mm yy): ";
-        cin >> day2 >> month2 >> year2;
-
-        if (!isValidTime(day2, month2, year2))
-        {
-            cout << "Thoi gian khong hop le" << endl;
-        }
-        if (timeConflict(day1, month1, year1, day2, month2, year2))
-        {
-            cout << "Thoi gian khong hop le" << endl;
-        }
-    } while (!isValidTime(day2, month2, year2) || timeConflict(day1, month1, year1, day2, month2, year2));
+        key = getch();
+        if (key == ESC)
+            return;
+    }
 }

@@ -1,85 +1,96 @@
-#include "./libraries/khaibao.h"
-#include "./sources/vatTu.h"
+#include "./screens/mainScreen.h"
 
-
-// int main()
-// {
-//     treeVatTu root = NULL;
-//     dsNhanVien ds_nv;
-//     int choice;
-//     bool isOpened;
-//     readFile_dsVatTu(root, isOpened);
-//     readFile_dsNhanVien(ds_nv);
-//     // do
-//     // {
-//     //     cout << "\n--- Menu ---\n";
-//     //     for (int i = 0; i < YeuCauChinh; i++)
-//     //     {
-//     //         cout << MenuChinh[i] << endl;
-//     //     }
-//     //     cout << "0. Thoat\n";
-//     //     cout << "Nhap lua chon cua ban: ";
-//     //     cin >> choice;
-//     //     cin.ignore();
-//     //     switch (choice)
-//     //     {
-//     //     case 1:
-//     //         // nhapVatTu(root);
-//     //         break;
-//     //     case 2:
-//     //         // chinhSuaVatTu(root);
-//     //         break;
-//     //     case 3:
-//     //         // xoaVatTu(root);
-//     //         break;
-//     //     case 4:
-//     //         timKiemVatTu(root);
-//     //         break;
-//     //     case 5:
-//     //         // nhapNhanVien(ds_nv);
-//     //         break;
-//     //     case 6:
-//     //         // suaNhanVien(ds_nv);
-//     //         break;
-//     //     case 7:
-//     //         // xoaNhanVien(ds_nv);
-//     //         break;
-//     //     case 8:
-//     //         // inDanhSachNhanVien(ds_nv);
-//     //         break;
-//     //     case 9:
-//     //         lapHoaDon(ds_nv,root);
-//     //         break;
-//     //     case 10:
-//     //         inHoaDon(ds_nv);
-//     //         break;
-//     //     case 11:
-
-//     //         break;
-//     //     case 12:
-
-//     //         break;
-//     //     case 13:
-
-//     //         break;
-//     //     case 0:
-//     //         cout << "Thoat\n";
-//     //         break;
-//     //     default:
-//     //         cout << "Lua chon khong hop le. Vui long chon lai.\n";
-//     //     }
-//     // } while (choice != 0);
-//     int day1, month1, year1, day2, month2, year2;
-//     InputTime(day1, month1, year1, day2, month2, year2);
-//     InThongKeHoaDon(day1, month1, year1, day2, month2, year2, ds_nv);
-//     // InTop10VTT(day1, month1, year1, day2, month2, year2, ds_nv);
-
-//     // int year;
-//     // cout << "Nhap nam muon in ra: ";
-//     // cin >> year;
-//     // InDoanhThuNam(ds_nv, year);
-
-//     // writeFile_dsVatTu(root);
-//     writeFile_dsNhanVien(ds_nv);
-//     return 0;
-// }
+int main()
+{
+    ShowCur(false);
+    dsNhanVien dsnv;
+    treeVatTu root = nullptr;
+    string errorMessage;
+    bool isVTOpened = true, isNVOpened = true;
+    int smallX = 5, smallY = 2;
+    int bigX = 1, bigY = 1;
+    int mainMenu = 0, contentMenu = 0;
+    readFile_dsVatTu(root, isVTOpened);
+    readFile_dsNhanVien(dsnv, isNVOpened);
+    if (!isVTOpened)
+    {
+        errorMessage = "Khong the mo file ds_VatTu.txt";
+        drawTableErrors(errorMessage, true);
+        return 0;
+    }
+    if (!isNVOpened)
+    {
+        errorMessage = "Khong the mo file ds_NhanVien.txt";
+        drawTableErrors(errorMessage, true);
+        return 0;
+    }
+    while (true)
+    {
+        mainMenu = menuChinhDong(MenuChinh);
+        fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+        switch (mainMenu)
+        {
+        case 1:
+            contentMenu = menuVatTuDong(MenuVatTu);
+            system("cls");
+            fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+            switch (contentMenu)
+            {
+            case 0:
+                menuVatTu(root, smallX, smallY);
+                break;
+            case 1:
+                cout << 2;
+                break;
+            }
+            break;
+        case 2:
+            contentMenu = menuNhanVienDong(MenuNhanVien);
+            system("cls");
+            fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+            switch (contentMenu)
+            {
+            case 0:
+                menuNhanVien(dsnv, smallX, smallY);
+                break;
+            case 1:
+                cout << 2;
+                break;
+            }
+            break;
+        case 3:
+            contentMenu = menuHoaDonDong(MenuHoaDon);
+            system("cls");
+            fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+            switch (contentMenu)
+            {
+            case 0:
+                drawKeysGuideChiTietHoaDon(bigX, bigY);
+                menuChiTietHoaDon(dsnv, root, bigX, bigY);
+                break;
+            case 1:
+                cout << 2;
+                break;
+            }
+            break;
+        case 4:
+            contentMenu = menuThongKeDong(MenuThongKe);
+            system("cls");
+            fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+            switch (contentMenu)
+            {
+            case 0:
+                inThongKeHoaDon(dsnv);
+                break;
+            case 1:
+                inTop10DTVT(dsnv);
+                break;
+            case 2:
+                inDoanhThuNam(dsnv);
+                break;
+            }
+            break;
+        }
+    };
+    return 0;
+}

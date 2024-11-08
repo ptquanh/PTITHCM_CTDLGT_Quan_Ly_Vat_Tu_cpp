@@ -1,9 +1,31 @@
+#pragma once
 #include "../sources/nhanVien.h"
-void handleNavigationAddNhanVien(dsNhanVien &dsnv, int x, int y);
-void handleNavigationUpdateNhanVien(dsNhanVien &dsnv, int x, int y);
-void handleNavigationDeleteNhanVien(dsNhanVien &dsnv, int x, int y);
-void handleNavigationListNhanVien(dsNhanVien dsnv, int x, int y);
-void menuNhanVien(dsNhanVien &dsnv, int x, int y);
+void drawKeysGuideNhanVien(int x, int y)
+{
+    int space = 8;
+    setColorByRequest(LIGHTGRAY, BROWN);
+    drawHCN(x, y + 25, 15, 2);
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 12 + space, y + 25, 12, 2);
+    drawHCN(x + 24 + 2 * space, y + 25, 11, 2);
+    drawHCN(x + 35 + 3 * space, y + 25, 11, 2);
+    drawHCN(x + 46 + 4 * space, y + 25, 15, 2);
+    drawHCN(x + 99, y + 25, 11, 2);
+    setColorByRequest(BROWN, BLACK);
+    gotoxy(x + 1, y + 26);
+    cout << "MENU NHAN VIEN";
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 12 + space + 1, y + 26);
+    cout << "F1: Nhap NV";
+    gotoxy(x + 24 + 2 * space + 1, y + 26);
+    cout << "F2: Sua NV";
+    gotoxy(x + 35 + 3 * space + 1, y + 26);
+    cout << "F3: Xoa NV";
+    gotoxy(x + 46 + 4 * space + 1, y + 26);
+    cout << "F5: Tim ten NV";
+    gotoxy(x + 100, y + 26);
+    cout << "ESC: Thoat";
+}
 
 void drawTableUpdateNhanVien(int x, int y)
 {
@@ -399,6 +421,7 @@ void menuNhanVien(dsNhanVien &dsnv, int x, int y)
     int currentPage = 1;
     string errorMessage;
     char key;
+    drawKeysGuideNhanVien(x,y);
     drawTablePrintNhanVien(x, y, 15, 23);
     while (true)
     {
@@ -447,56 +470,3 @@ void menuNhanVien(dsNhanVien &dsnv, int x, int y)
         }
     }
 }
-
-void drawKeysGuideNhanVien(int x, int y)
-{
-    int space = 8;
-    setColorByRequest(LIGHTGRAY, BROWN);
-    drawHCN(x, y + 25, 15, 2);
-    setColorByRequest(LIGHTGRAY, DARKGRAY);
-    drawHCN(x + 12 + space, y + 25, 12, 2);
-    drawHCN(x + 24 + 2 * space, y + 25, 11, 2);
-    drawHCN(x + 35 + 3 * space, y + 25, 11, 2);
-    drawHCN(x + 46 + 4 * space, y + 25, 15, 2);
-    drawHCN(x + 99, y + 25, 11, 2);
-    setColorByRequest(BROWN, BLACK);
-    gotoxy(x + 1, y + 26);
-    cout << "MENU NHAN VIEN";
-    setColorByRequest(LIGHTGRAY, BLACK);
-    gotoxy(x + 12 + space + 1, y + 26);
-    cout << "F1: Nhap NV";
-    gotoxy(x + 24 + 2 * space + 1, y + 26);
-    cout << "F2: Sua NV";
-    gotoxy(x + 35 + 3 * space + 1, y + 26);
-    cout << "F3: Xoa NV";
-    gotoxy(x + 46 + 4 * space + 1, y + 26);
-    cout << "F5: Tim ten NV";
-    gotoxy(x + 100, y + 26);
-    cout << "ESC: Thoat";
-}
-
-// int main()
-// {
-//     ShowCur(false);
-//     dsNhanVien dsnv;
-//     // bool isOpened;
-//     string errorMessage;
-//     int x = 5;
-//     int y = 2;
-//     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-//     readFile_dsNhanVien(dsnv);
-//     // if (!isOpened)
-//     // {
-//     //     errorMessage = "Khong the mo file ds_NhanVien.txt";
-//     //     drawTableErrors(errorMessage, true);
-//     //     return 0;
-//     // }
-//     drawTableErrors(errorMessage, true);
-//     drawKeysGuideNhanVien(x, y);
-//     menuNhanVien(dsnv, x, y);
-//     writeFile_dsNhanVien(dsnv);
-//     // while (1)
-//     // {
-//     //     getch();
-//     // }
-// }

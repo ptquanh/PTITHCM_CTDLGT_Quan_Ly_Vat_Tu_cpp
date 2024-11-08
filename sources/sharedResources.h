@@ -1,4 +1,5 @@
-#include "../screens/doHoa.cpp"
+#pragma once
+#include "../screens/doHoa.h"
 bool isValidChar(char c)
 {
     // Chấp nhận chữ cái (A-Z, a-z)

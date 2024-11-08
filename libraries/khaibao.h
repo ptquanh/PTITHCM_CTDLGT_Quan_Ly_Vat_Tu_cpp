@@ -10,12 +10,12 @@
 #include <ctime>
 #include <math.h>
 using namespace std;
-#define filePath_VT "../databases/ds_VatTu.txt"
-#define filePath_NV "../databases/ds_NhanVien.txt"
+#define filePath_VT "./databases/ds_VatTu.txt"
+#define filePath_NV "./databases/ds_NhanVien.txt"
 #define MaxNhanVien 500
 #define YeuCauChinh 5
-#define YeuCauVatTu 4
-#define YeuCauNhanVien 4
+#define YeuCauVatTu 2
+#define YeuCauNhanVien 2
 #define YeuCauHoaDon 2
 #define YeuCauThongKe 3
 #define SoNut 5
@@ -35,25 +35,21 @@ char MenuChinh[YeuCauChinh][100] = {
     "THONG KE"};
 
 char MenuVatTu[YeuCauVatTu][100] = {
-    "1. Them vat tu",
-    "2. Sua vat tu",
-    "3. Xoa vat tu",
-    "4. In danh sach vat tu theo ten tang dan"};
+    "Cap nhat vat tu",
+    "In danh sach vat tu theo ten"};
 
 char MenuNhanVien[YeuCauNhanVien][100] = {
-    "1. Them nhan vien",
-    "2. Sua nhan vien",
-    "3. Xoa nhan vien (theo ma)",
-    "4. In danh sach nhan vien ten tang dan neu trung thi ho tang dan"};
+    "Cap nhat nhan vien",
+    "In danh sach nhan vien theo ten"};
 
 char MenuHoaDon[YeuCauHoaDon][100] = {
-    "1. Lap hoa don (N/X)",
-    "2. In hoa don theo so hoa don (SoHD)"};
+    "Lap hoa don (N/X)",
+    "In hoa don theo so hoa don"};
 
 char MenuThongKe[YeuCauThongKe][100] = {
-    "1. Thong ke cac hoa don trong 1 khoang thoi gian",
-    "2. Thong ke 10 vat tu co doanh thu cao nhat trong 1 khoang thoi gian",
-    "3. Thong ke doanh thu tung thang thuoc 1 nam do user nhap vao"};
+    "Hoa don trong 1 khoang thoi gian",
+    "Top 10 vat tu doanh thu cao nhat",
+    "Doanh thu tung thang thuoc 1 nam"};
 
 // =============== danh sach vat tu =================
 // ======= cay nhi phan tim kiem can bang ===========
@@ -94,7 +90,7 @@ struct nodeHoaDon
 {
 
     string SoHD; // max C20
-    string loai;   // N or X
+    string loai; // N or X
     int day, month, year;
     ptr_DSCTHD firstCTHD = nullptr;
 };
