@@ -27,6 +27,34 @@ void drawKeysGuideVatTu(int x, int y)
     cout << "ESC: Thoat";
 }
 
+void drawTableSearchTenVatTu(int x, int y)
+{
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 69, y, 41, 9);
+    drawHCN(x + 85, y + 6, 9, 2);
+    drawHCN(x + 97, y + 6, 11, 2);
+    SetColor(BLACK);
+    gotoxy(x + 86, y + 7);
+    cout << "ESC: Huy";
+    gotoxy(x + 98, y + 7);
+    cout << "ENTER: Tim";
+    SetColor(GREEN);
+    gotoxy(x + 71, y + 5);
+    cout << "Toi da 20 ki tu";
+    SetColor(BLACK);
+    gotoxy(x + 82, y + 2);
+    cout << "TIM KIEM VAT TU";
+    gotoxy(x + 71, y + 4);
+    cout << "TEN VAT TU     :";
+    // to mau trang
+    for (int i = x + 87; i < x + 109; i++)
+    {
+        SetBGColor(BLACK);
+        gotoxy(i, y + 4);
+        cout << " ";
+    }
+}
+
 void drawTableUpdateVatTu(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -448,6 +476,84 @@ void handleNavigationListVatTu(treeVatTu root, int x, int y)
     }
 }
 
+void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
+{
+    treeVatTu result;
+    drawTableSearchTenVatTu(x, y);
+    drawTablePrintVatTu(x, y, 15, 23);
+    timKiemTenVatTu(root, x, y, result);
+    bool isESC = false, isSaved = false;
+    ShowCur(false);
+    drawTableErrors("F3 sua, F5 xoa", true);
+    Sleep(1500);
+    drawTableErrors("", true);
+    char key;
+    while (true)
+    {
+        key = _getch();
+        switch (key)
+        {
+        case F2:
+            drawTableErrors("Dang den trang sua vat tu", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            drawTableUpdateVatTu(x, y);
+            suaVatTu(root, result->data_vt.MAVT, x, y, isESC, isSaved);
+            ShowCur(false);
+            if (isESC)
+            {
+                drawTableErrors("Dang thoat chuong trinh...", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                clearTablePrint(x);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                return;
+            }
+            if (isSaved)
+            {
+                drawTableErrors("Xoa vat tu thanh cong", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                clearTablePrint(x);
+                return;
+            }
+            break;
+        case F3:
+            drawTableErrors("Dang den trang xoa vat tu", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            drawTableUpdateVatTu(x, y);
+            xoaVatTu(root, result->data_vt.MAVT, x, y, isESC, isSaved);
+            ShowCur(false);
+            if (isESC)
+            {
+                drawTableErrors("Dang thoat chuong trinh...", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                clearTablePrint(x);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                return;
+            }
+            if (isSaved)
+            {
+                drawTableErrors("Xoa vat tu thanh cong", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                clearTablePrint(x);
+                return;
+            }
+            break;
+        case ESC:
+            cout << "ESC";
+            return;
+        }
+    }
+}
+
 void menuVatTu(treeVatTu &root, int x, int y)
 {
     int n = countNodes(root);
@@ -495,8 +601,7 @@ void menuVatTu(treeVatTu &root, int x, int y)
             handleNavigationDeleteVatTu(root, x, y);
             break;
         case F5:
-            gotoxy(0, 0);
-            cout << "F5";
+            handleNavigationSearchVatTu(root, x, y);
             break;
         case ESC:
             errorMessage = "Dang thoat chuong trinh...";

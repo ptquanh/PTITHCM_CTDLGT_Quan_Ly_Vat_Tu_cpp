@@ -18,97 +18,97 @@ bool isMANV(dsNhanVien &list, string maso)
     return false;
 }
 
-bool checkThongTin(string type, string value, nhanVien *&nv, dsNhanVien &list)
-{
-    if (type == "MANV")
-    {
-        if (value.empty())
-        {
-            cout << "Loi: Ma nhan vien khong duoc rong!" << endl;
-            return true;
-        }
+// bool checkThongTin(string type, string value, nhanVien *&nv, dsNhanVien &list)
+// {
+//     if (type == "MANV")
+//     {
+//         if (value.empty())
+//         {
+//             cout << "Loi: Ma nhan vien khong duoc rong!" << endl;
+//             return true;
+//         }
 
-        // Xóa khoảng trắng
-        string result;
-        for (const char c : value)
-        {
-            if (c != ' ')
-            {
-                result += c;
-            }
-        }
-        value = result;
+//         // Xóa khoảng trắng
+//         string result;
+//         for (const char c : value)
+//         {
+//             if (c != ' ')
+//             {
+//                 result += c;
+//             }
+//         }
+//         value = result;
 
-        if (value.length() > 10)
-        {
-            cout << "Loi: Ma nhan vien khong duoc qua 10 ky tu!" << endl;
-            return true;
-        }
+//         if (value.length() > 10)
+//         {
+//             cout << "Loi: Ma nhan vien khong duoc qua 10 ky tu!" << endl;
+//             return true;
+//         }
 
-        if (isMANV(list, value))
-        {
-            cout << "Loi: Ma nhan vien da ton tai!" << endl;
-            return true;
-        }
+//         if (isMANV(list, value))
+//         {
+//             cout << "Loi: Ma nhan vien da ton tai!" << endl;
+//             return true;
+//         }
 
-        nv->MANV = value;
-    }
-    else if (type == "HO")
-    {
-        if (value.empty())
-        {
-            cout << "Loi: Ho nhan vien khong duoc rong!" << endl;
-            return true;
-        }
+//         nv->MANV = value;
+//     }
+//     else if (type == "HO")
+//     {
+//         if (value.empty())
+//         {
+//             cout << "Loi: Ho nhan vien khong duoc rong!" << endl;
+//             return true;
+//         }
 
-        bool hasError;
-        value = normalizeString(value, hasError);
-        if (hasError)
-        {
-            return true;
-        }
+//         bool hasError;
+//         value = normalizeString(value, hasError);
+//         if (hasError)
+//         {
+//             return true;
+//         }
 
-        nv->HO = value;
-    }
-    else if (type == "TEN")
-    {
-        if (value.empty())
-        {
-            cout << "Loi: Ten nhan vien khong duoc rong!" << endl;
-            return true;
-        }
+//         nv->HO = value;
+//     }
+//     else if (type == "TEN")
+//     {
+//         if (value.empty())
+//         {
+//             cout << "Loi: Ten nhan vien khong duoc rong!" << endl;
+//             return true;
+//         }
 
-        bool hasError;
-        value = normalizeString(value, hasError);
-        if (hasError)
-        {
-            return true;
-        }
+//         bool hasError;
+//         value = normalizeString(value, hasError);
+//         if (hasError)
+//         {
+//             return true;
+//         }
 
-        for (char c : value)
-        {
-            if (c == ' ')
-            {
-                cout << "Loi: Ten nhan vien khong duoc chua khoang trang!" << endl;
-                return true;
-            }
-        }
+//         for (char c : value)
+//         {
+//             if (c == ' ')
+//             {
+//                 cout << "Loi: Ten nhan vien khong duoc chua khoang trang!" << endl;
+//                 return true;
+//             }
+//         }
 
-        nv->TEN = value;
-    }
-    else if (type == "PHAI")
-    {
-        if (value.empty() || (value != "Nam" && value != "Nu"))
-        {
-            cout << "Loi: Gioi tinh khong hop le!" << endl;
-            return true;
-        }
+//         nv->TEN = value;
+//     }
+//     else if (type == "PHAI")
+//     {
+//         if (value.empty() || (value != "Nam" && value != "Nu"))
+//         {
+//             cout << "Loi: Gioi tinh khong hop le!" << endl;
+//             return true;
+//         }
 
-        nv->PHAI = value;
-    }
+//         nv->PHAI = value;
+//     }
 
-    return false;
-}
+//     return false;
+// }
 
 int searchNhanVien(dsNhanVien &list, string manv)
 {
@@ -629,84 +629,84 @@ void Read_CTHoaDon(string cthdStr, nodeChiTietHoaDon &cthd)
     cthd.VAT = stof(line);
 }
 
-void Read_HoaDon(ifstream &file, nodeHoaDon &hd)
-{
-    string line;
-    getline(file, line);
+// void Read_HoaDon(ifstream &file, nodeHoaDon &hd)
+// {
+//     string line;
+//     getline(file, line);
 
-    if (line[0] != '-')
-        return; // Kiểm tra dòng hóa đơn
+//     if (line[0] != '-')
+//         return; // Kiểm tra dòng hóa đơn
 
-    stringstream ss(line.substr(1)); // Bỏ qua dấu '-'
+//     stringstream ss(line.substr(1)); // Bỏ qua dấu '-'
 
-    getline(ss, hd.SoHD, '|');
+//     getline(ss, hd.SoHD, '|');
 
-    string temp;
-    getline(ss, temp, '|');
-    hd.day = stoi(temp);
+//     string temp;
+//     getline(ss, temp, '|');
+//     hd.day = stoi(temp);
 
-    getline(ss, temp, '|');
-    hd.month = stoi(temp);
+//     getline(ss, temp, '|');
+//     hd.month = stoi(temp);
 
-    getline(ss, temp, '|');
-    hd.year = stoi(temp);
+//     getline(ss, temp, '|');
+//     hd.year = stoi(temp);
 
-    getline(ss, temp);
-    hd.loai = temp[0];
+//     getline(ss, temp);
+//     hd.loai = temp[0];
 
-    // Đọc chi tiết hóa đơn
-    hd.firstCTHD = nullptr;
-    ptr_DSCTHD *tail = &hd.firstCTHD;
+//     // Đọc chi tiết hóa đơn
+//     hd.firstCTHD = nullptr;
+//     ptr_DSCTHD *tail = &hd.firstCTHD;
 
-    string chiTietLine;
-    getline(file, chiTietLine);
+//     string chiTietLine;
+//     getline(file, chiTietLine);
 
-    stringstream ctss(chiTietLine);
-    string cthdStr;
-    while (getline(ctss, cthdStr, ' '))
-    {
-        nodeChiTietHoaDon cthd;
-        cthdStr = cthdStr.substr(1); // Bỏ qua dấu '+'
-        Read_CTHoaDon(cthdStr, cthd);
+//     stringstream ctss(chiTietLine);
+//     string cthdStr;
+//     while (getline(ctss, cthdStr, ' '))
+//     {
+//         nodeChiTietHoaDon cthd;
+//         cthdStr = cthdStr.substr(1); // Bỏ qua dấu '+'
+//         Read_CTHoaDon(cthdStr, cthd);
 
-        *tail = new dsChiTietHoaDon{cthd, nullptr};
-        tail = &(*tail)->next;
-    }
-}
+//         *tail = new dsChiTietHoaDon{cthd, nullptr};
+//         tail = &(*tail)->next;
+//     }
+// }
 
-void Read_NhanVien(ifstream &file, nhanVien &nv)
-{
-    string line;
-    getline(file, line);
+// void Read_NhanVien(ifstream &file, nhanVien &nv)
+// {
+//     string line;
+//     getline(file, line);
 
-    stringstream ss(line);
+//     stringstream ss(line);
 
-    getline(ss, nv.MANV, '|');
-    getline(ss, nv.HO, '|');
-    getline(ss, nv.TEN, '|');
-    getline(ss, nv.PHAI);
+//     getline(ss, nv.MANV, '|');
+//     getline(ss, nv.HO, '|');
+//     getline(ss, nv.TEN, '|');
+//     getline(ss, nv.PHAI);
 
-    // Đọc danh sách hóa đơn
-    nv.firstDSHD = nullptr;
-    ptr_DSHD *tail = &nv.firstDSHD;
+//     // Đọc danh sách hóa đơn
+//     nv.firstDSHD = nullptr;
+//     ptr_DSHD *tail = &nv.firstDSHD;
 
-    while (true)
-    {
-        char peek = file.peek();
-        if (peek == '\\' || peek == EOF)
-            break;
+//     while (true)
+//     {
+//         char peek = file.peek();
+//         if (peek == '\\' || peek == EOF)
+//             break;
 
-        nodeHoaDon hd;
-        Read_HoaDon(file, hd);
+//         nodeHoaDon hd;
+//         Read_HoaDon(file, hd);
 
-        *tail = new dsHoaDon{hd, nullptr};
-        tail = &(*tail)->next;
-    }
+//         *tail = new dsHoaDon{hd, nullptr};
+//         tail = &(*tail)->next;
+//     }
 
-    // Đọc dấu '\' và xuống dòng
-    string endLine;
-    getline(file, endLine);
-}
+//     // Đọc dấu '\' và xuống dòng
+//     string endLine;
+//     getline(file, endLine);
+// }
 
 void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
 {
@@ -890,6 +890,7 @@ nhanVien *layMANV(dsNhanVien &ds_nv, treeVatTu &root, string MANV, int x, int y,
     }
     return nullptr;
 }
+
 // int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
 // {
 //     for (int i = 0; i < ds_nv.CountNV; ++i)
@@ -912,6 +913,7 @@ nhanVien *layMANV(dsNhanVien &ds_nv, treeVatTu &root, string MANV, int x, int y,
 //     found_hd = nullptr;
 //     return -1; // Không tìm thấy
 // }
+
 ptr_DSHD searchHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD &found_hd)
 {
     for (int i = 0; i < ds_nv.CountNV; ++i)

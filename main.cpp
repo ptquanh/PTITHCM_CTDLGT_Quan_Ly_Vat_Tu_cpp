@@ -40,7 +40,7 @@ int main()
                 menuVatTu(root, smallX, smallY);
                 break;
             case 1:
-                cout << 2;
+                handleNavigationListVatTu(root, smallX, smallY);
                 break;
             }
             break;
@@ -54,7 +54,7 @@ int main()
                 menuNhanVien(dsnv, smallX, smallY);
                 break;
             case 1:
-                cout << 2;
+                handleNavigationListNhanVien(dsnv, smallX, smallY);
                 break;
             }
             break;
@@ -65,11 +65,10 @@ int main()
             switch (contentMenu)
             {
             case 0:
-                drawKeysGuideChiTietHoaDon(bigX, bigY);
                 menuChiTietHoaDon(dsnv, root, bigX, bigY);
                 break;
             case 1:
-                cout << 2;
+                handleNavigationListChiTietHoaDon(dsnv, root, bigX, bigY);
                 break;
             }
             break;

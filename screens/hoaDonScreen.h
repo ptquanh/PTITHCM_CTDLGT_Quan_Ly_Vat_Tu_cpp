@@ -799,6 +799,7 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
     ptr_DSHD new_hd = nullptr;
     nhanVien *nv = nullptr;
     bool isESC = false, isSuccess = false, isSaved = false, isAdding = true;
+    drawKeysGuideChiTietHoaDon(x, y);
     handleNavigationAddHoaDon(dsnv, root, new_hd, x, y, isSuccess);
     if (isSuccess && new_hd != nullptr)
     {

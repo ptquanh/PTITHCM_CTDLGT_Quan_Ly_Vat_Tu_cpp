@@ -700,23 +700,6 @@ void storeSearchResults(treeVatTu root, const string &kyTu, treeVatTu results[],
     storeSearchResults(root->right, kyTu, results, index);
 }
 
-// Sắp xếp kết quả theo tên vật tư
-void sortSearchResults(treeVatTu results[], int n)
-{
-    for (int i = 0; i < n - 1; i++)
-    {
-        for (int j = 0; j < n - i - 1; j++)
-        {
-            if (results[j]->data_vt.TENVT > results[j + 1]->data_vt.TENVT)
-            {
-                treeVatTu temp = results[j];
-                results[j] = results[j + 1];
-                results[j + 1] = temp;
-            }
-        }
-    }
-}
-
 // Hàm đánh dấu ký tự tìm thấy trong chuỗi
 void printHighlightedText(const string &text, const string &searchStr)
 {
@@ -766,11 +749,11 @@ void printHighlightedText(const string &text, const string &searchStr)
 
         if (isMatch)
         {
-            SetBGColor(searchHighlightColor); // Đặt nền màu xanh
+            SetBGColor(BROWN); // Đặt nền màu xanh
             if (searchStr.length() == 1)
             {
                 cout << text[i];
-                SetBGColor(0); // Reset về nền đen
+                SetBGColor(LIGHTGRAY); // Reset về nền đen
             }
             else
             {
@@ -780,7 +763,7 @@ void printHighlightedText(const string &text, const string &searchStr)
                     cout << text[i + j];
                 }
                 i += searchStr.length() - 1;
-                SetBGColor(0); // Reset về nền đen
+                SetBGColor(LIGHTGRAY); // Reset về nền đen
             }
         }
         else
@@ -789,106 +772,314 @@ void printHighlightedText(const string &text, const string &searchStr)
         }
     }
 }
-// search theo ten
-void timKiemVatTu(treeVatTu root)
+
+void displaySearchResults(treeVatTu *results, int n, int pageNumber, int selectedRow, int x, const string &searchStr)
 {
-    string searchStr = "";
     bool hasError;
-    char ch;
-
-    cout << "Nhap ky tu de tim kiem (ESC de thoat): ";
-
-    while (true)
+    setColorByRequest(LIGHTGRAY, BLACK);
+    int currentRow = 5;
+    int startIndex = (pageNumber - 1) * ROWS;
+    int endIndex = min(startIndex + ROWS, n);
+    for (int i = startIndex; i < endIndex; i++)
     {
-        // Đọc ký tự từ bàn phím mà không cần nhấn Enter
-        ch = _getch();
-
-        // Nếu người dùng nhấn ESC thì thoát
-        if (ch == 27)
+        gotoxy(x + 3, currentRow);
+        if (selectedRow == -1)
+            cout << results[i]->data_vt.MAVT;
+        else if (i - startIndex == selectedRow)
         {
-            cout << "\nDa thoat tim kiem!" << endl;
-            break;
-        }
-        // Xử lý phím Backspace
-        else if (ch == 8 && !searchStr.empty())
-        {
-            searchStr.pop_back();
-            // Xóa màn hình phía dưới dòng nhập
-            cout << "\033[2K\r"; // Xóa dòng hiện tại
-            cout << "Dang tim kiem: " << searchStr;
-        }
-        // Chỉ xử lý các ký tự in được
-        else if (ch >= 32 && ch <= 126)
-        {
-            searchStr += ch;
-            cout << ch;
+            Highlight(LIGHTBLUE);
+            cout << results[i]->data_vt.MAVT;
+            setColorByRequest(LIGHTGRAY, BLACK);
         }
         else
         {
-            continue;
+            cout << results[i]->data_vt.MAVT;
         }
-
-        // Xóa màn hình kết quả cũ
-        cout << "\n\033[J"; // Xóa từ vị trí con trỏ đến cuối màn hình
-
-        if (searchStr.empty())
+        setColorByRequest(LIGHTGRAY, BLACK);
+        gotoxy(x + 18, currentRow);
+        string tenVT = results[i]->data_vt.TENVT;
+        string normalizedSearch = normalizeString(searchStr, hasError);
+        if (!hasError)
         {
+            printHighlightedText(tenVT, normalizedSearch);
+        }
+        else
+        {
+            cout << tenVT;
+        }
+        gotoxy(x + 43, currentRow);
+        cout << results[i]->data_vt.DVT;
+        gotoxy(x + 54, currentRow);
+        cout << results[i]->data_vt.soLuongTon;
+        currentRow++;
+    }
+    // in so trang
+    int totalPages = ceil((float)n / ROWS);
+    gotoxy(52, 26);
+    cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
+    setColorByRequest(LIGHTGRAY, BLACK);
+}
+
+void timKiemTenVatTu(treeVatTu root, int x, int y, treeVatTu &selectedResult)
+{
+    static string searchHistory[10];
+    static int historyCount = 0;
+    static int historyIndex = -1;
+    static string searchStr = "";
+    string currentInput = searchStr;
+    int cursorPos = currentInput.length();
+    bool hasError;
+    bool isSearching = true;
+    int selectedRow = 0;
+    bool isViewingResults = false;
+    int n = countNodes(root);
+    treeVatTu *results = new treeVatTu[n];
+    int resultCount = 0;
+    int currentPage = 1;
+
+    while (isSearching)
+    {
+        int totalPages = ceil((float)resultCount / ROWS);
+        int startIndex = (currentPage - 1) * ROWS;
+        int itemsOnPage = min(ROWS, resultCount - startIndex);
+
+        ShowCur(true);
+        setColorByRequest(BLACK, WHITE);
+        gotoxy(x + 88, y + 4);
+        cout << string(20, ' ');
+        gotoxy(x + 88, y + 4);
+        cout << currentInput;
+        gotoxy(x + 88 + cursorPos, y + 4);
+
+        int key = _getch();
+        if (key == 224 || key == 0)
+        {
+            key = _getch();
+            switch (key)
+            {
+            case LEFT:
+                if (!isViewingResults && cursorPos > 0)
+                    cursorPos--;
+                else if (isViewingResults && currentPage > 1)
+                {
+                    currentPage--;
+                    selectedRow = 0;
+                    clearTablePrint(x);
+                }
+                break;
+
+            case RIGHT:
+                if (!isViewingResults && cursorPos < currentInput.length())
+                    cursorPos++;
+                else if (isViewingResults && currentPage < totalPages)
+                {
+                    currentPage++;
+                    selectedRow = 0;
+                    clearTablePrint(x);
+                }
+                break;
+
+            case UP:
+                if (isViewingResults && resultCount > 0)
+                {
+                    if (selectedRow > 0)
+                        selectedRow--;
+                    else if (selectedRow <= 0)
+                        selectedRow = itemsOnPage - 1;
+                }
+                else if (!isViewingResults && historyCount > 0)
+                {
+                    if (historyIndex < historyCount - 1)
+                    {
+                        historyIndex++;
+                        currentInput = searchHistory[historyIndex];
+                        cursorPos = currentInput.length();
+                        searchStr = currentInput;
+                    }
+                }
+                break;
+
+            case DOWN:
+                if (isViewingResults && resultCount > 0)
+                {
+                    if (selectedRow < itemsOnPage - 1)
+                        selectedRow++;
+                    else if (selectedRow >= itemsOnPage - 1)
+                        selectedRow = 0;
+                }
+                else if (!isViewingResults && historyCount > 0)
+                {
+                    if (historyIndex > 0)
+                    {
+                        historyIndex--;
+                        currentInput = searchHistory[historyIndex];
+                        cursorPos = currentInput.length();
+                        searchStr = currentInput;
+                    }
+                    else if (historyIndex == 0)
+                    {
+                        historyIndex = -1;
+                        currentInput = "";
+                        cursorPos = 0;
+                        searchStr = "";
+                    }
+                }
+                break;
+
+            case HOME:
+                if (!isViewingResults)
+                    cursorPos = 0;
+                break;
+
+            case END:
+                if (!isViewingResults)
+                    cursorPos = currentInput.length();
+                break;
+
+            case DEL:
+                if (!isViewingResults && cursorPos < currentInput.length())
+                {
+                    currentInput.erase(cursorPos, 1);
+                    searchStr = currentInput;
+                }
+                break;
+            }
+
+            if (isViewingResults)
+            {
+                for (int currentRow = 5; currentRow <= ROWS + 4; currentRow++)
+                {
+                    for (int i = x + 3; i < x + 15; i++)
+                    {
+                        if (currentRow == selectedRow + 5)
+                        {
+                            SetBGColor(LIGHTGRAY);
+                            gotoxy(i, currentRow);
+                            cout << " ";
+                        }
+                    }
+                }
+                displaySearchResults(results, resultCount, currentPage, selectedRow, x, currentInput);
+            }
             continue;
         }
 
-        // Chuẩn hóa chuỗi tìm kiếm
-        string normalizedStr = normalizeString(searchStr, hasError);
+        switch (key)
+        {
+        case ENTER:
+            if (isViewingResults && resultCount > 0)
+            {
+                int actualIndex = (currentPage - 1) * ROWS + selectedRow;
+                if (actualIndex < resultCount)
+                {
+                    selectedResult = results[actualIndex];
+                    return;
+                }
+            }
+            else if (!currentInput.empty())
+            {
+                bool isDuplicate = false;
+                selectedRow = 0;
+                for (int i = 0; i < historyCount; i++)
+                {
+                    if (searchHistory[i] == currentInput)
+                    {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
 
+                if (!isDuplicate)
+                {
+                    for (int i = historyCount; i > 0; i--)
+                    {
+                        if (i < 10)
+                        {
+                            searchHistory[i] = searchHistory[i - 1];
+                        }
+                    }
+                    searchHistory[0] = currentInput;
+                    if (historyCount < 10)
+                        historyCount++;
+                }
+                historyIndex = -1;
+                isViewingResults = true;
+            }
+            break;
+
+        case ESC:
+            if (isViewingResults)
+            {
+                isViewingResults = false;
+                selectedRow = 0;
+            }
+            else
+            {
+                delete[] results;
+                drawTableErrors("Da thoat tim kiem", true);
+                return;
+            }
+            break;
+
+        case BACKSPACE:
+            if (!isViewingResults && cursorPos > 0)
+            {
+                currentInput.erase(cursorPos - 1, 1);
+                cursorPos--;
+                searchStr = currentInput;
+            }
+            break;
+
+        case TAB:
+            if (resultCount > 0)
+            {
+                isViewingResults = !isViewingResults;
+                if (!isViewingResults)
+                    selectedRow = 0;
+            }
+            break;
+
+        default:
+            if (!isViewingResults && currentInput.length() < 20 && isValidChar(key))
+            {
+                if (cursorPos == currentInput.length())
+                {
+                    currentInput += (char)key;
+                }
+                else
+                {
+                    currentInput.insert(cursorPos, 1, (char)key);
+                }
+                cursorPos++;
+                searchStr = currentInput;
+            }
+        }
+
+        clearTablePrint(x);
+
+        string tempInput = normalizeString(searchStr, hasError);
         if (hasError)
         {
-            cout << "Du lieu nhap khong hop le!" << endl;
+            drawTableErrors("Du lieu nhap khong hop le", true);
             continue;
         }
+        drawTableErrors("", true);
 
-        // Đếm số lượng kết quả
-        int count = countSearchResults(root, normalizedStr);
-
-        if (count == 0)
+        if (!searchStr.empty())
         {
-            cout << "Khong tim thay vat tu nao co chua '" << searchStr << "' trong ten" << endl;
-            continue;
+            resultCount = countSearchResults(root, tempInput);
+
+            if (resultCount == 0)
+            {
+                drawTableErrors("Khong tim thay '" + searchStr + "'", true);
+                continue;
+            }
+
+            int index = 0;
+            storeSearchResults(root, tempInput, results, index);
+            quickSortVatTu(results, 0, resultCount - 1);
+            displaySearchResults(results, resultCount, currentPage, selectedRow, x, currentInput);
         }
-
-        // Tạo mảng để lưu kết quả
-        treeVatTu *results = new treeVatTu[count];
-        int index = 0;
-
-        // Lưu các kết quả vào mảng
-        storeSearchResults(root, normalizedStr, results, index);
-
-        // Sắp xếp kết quả theo tên
-        sortSearchResults(results, count);
-
-        // Hiển thị kết quả
-        cout << "\nTim thay " << count << " vat tu co chua '" << searchStr << "' trong ten:" << endl;
-        cout << left << setw(15) << "Ma VT"
-             << setw(30) << "Ten vat tu"
-             << setw(20) << "Don vi tinh"
-             << "So luong ton" << endl;
-        cout << string(75, '-') << endl;
-
-        for (int i = 0; i < count; i++)
-        {
-            cout << left << setw(15) << results[i]->data_vt.MAVT;
-
-            // In tên vật tư với highlight
-            string tenVT = results[i]->data_vt.TENVT;
-            int padding = 30 - tenVT.length();
-            printHighlightedText(tenVT, normalizedStr);
-            cout << string(padding > 0 ? padding : 0, ' ');
-
-            cout << setw(20) << results[i]->data_vt.DVT
-                 << results[i]->data_vt.soLuongTon << endl;
-        }
-
-        delete[] results;
-
-        // Di chuyển con trỏ lên đầu dòng nhập
-        cout << "\033[F";
     }
+    delete[] results;
 }

@@ -42,7 +42,7 @@ NV19|Tran Dai|Hoang|Nam
 \
 NV22|Nguyen Viet|Toan|Nam
 \
-2|Le Quoc|Vinh|Nam
+2|Nguyen Quoc|Vinh|Nam
 \
 nv5|Le Van|Vinh|Nam
 \
