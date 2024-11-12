@@ -16,11 +16,11 @@ void drawKeysGuideNhanVien(int x, int y)
     cout << "MENU NHAN VIEN";
     setColorByRequest(LIGHTGRAY, BLACK);
     gotoxy(x + 12 + space + 1, y + 26);
-    cout << "F1: Nhap NV";
+    cout << "F3: Nhap NV";
     gotoxy(x + 24 + 2 * space + 1, y + 26);
-    cout << "F2: Sua NV";
+    cout << "F4: Sua NV";
     gotoxy(x + 35 + 3 * space + 1, y + 26);
-    cout << "F3: Xoa NV";
+    cout << "DEL: Xoa NV";
     gotoxy(x + 46 + 4 * space + 1, y + 26);
     cout << "F5: Tim ten NV";
     gotoxy(x + 100, y + 26);
@@ -37,7 +37,7 @@ void drawTableUpdateNhanVien(int x, int y)
     gotoxy(x + 89, y + 13);
     cout << "ESC: Huy";
     gotoxy(x + 101, y + 13);
-    cout << "F4: Luu";
+    cout << "F10: Luu";
     SetColor(GREEN);
     gotoxy(x + 71, y + 5);
     cout << "Toi da 10 ki tu";
@@ -421,7 +421,7 @@ void menuNhanVien(dsNhanVien &dsnv, int x, int y)
     int currentPage = 1;
     string errorMessage;
     char key;
-    drawKeysGuideNhanVien(x,y);
+    drawKeysGuideNhanVien(x, y);
     drawTablePrintNhanVien(x, y, 15, 23);
     while (true)
     {
@@ -447,13 +447,13 @@ void menuNhanVien(dsNhanVien &dsnv, int x, int y)
         case TAB:
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
-        case F1:
+        case F3:
             handleNavigationAddNhanVien(dsnv, x, y);
             break;
-        case F2:
+        case F4:
             handleNavigationUpdateNhanVien(dsnv, x, y);
             break;
-        case F3:
+        case DEL:
             handleNavigationDeleteNhanVien(dsnv, x, y);
             break;
         case F5:

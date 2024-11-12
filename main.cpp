@@ -24,72 +24,75 @@ int main()
         drawTableErrors(errorMessage, true);
         return 0;
     }
-    while (true)
-    {
-        mainMenu = menuChinhDong(MenuChinh);
-        fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-        switch (mainMenu)
-        {
-        case 1:
-            contentMenu = menuVatTuDong(MenuVatTu);
-            system("cls");
-            fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-            switch (contentMenu)
-            {
-            case 0:
-                menuVatTu(root, smallX, smallY);
-                break;
-            case 1:
-                handleNavigationListVatTu(root, smallX, smallY);
-                break;
-            }
-            break;
-        case 2:
-            contentMenu = menuNhanVienDong(MenuNhanVien);
-            system("cls");
-            fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-            switch (contentMenu)
-            {
-            case 0:
-                menuNhanVien(dsnv, smallX, smallY);
-                break;
-            case 1:
-                handleNavigationListNhanVien(dsnv, smallX, smallY);
-                break;
-            }
-            break;
-        case 3:
-            contentMenu = menuHoaDonDong(MenuHoaDon);
-            system("cls");
-            fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-            switch (contentMenu)
-            {
-            case 0:
-                menuChiTietHoaDon(dsnv, root, bigX, bigY);
-                break;
-            case 1:
-                handleNavigationListChiTietHoaDon(dsnv, root, bigX, bigY);
-                break;
-            }
-            break;
-        case 4:
-            contentMenu = menuThongKeDong(MenuThongKe);
-            system("cls");
-            fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-            switch (contentMenu)
-            {
-            case 0:
-                inThongKeHoaDon(dsnv);
-                break;
-            case 1:
-                inTop10DTVT(dsnv);
-                break;
-            case 2:
-                inDoanhThuNam(dsnv);
-                break;
-            }
-            break;
-        }
-    };
+    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+    drawTableUpdateVatTu(smallX, smallY);
+    drawTableSuggestVatTu(smallX, smallY);
+    // while (true)
+    // {
+    //     mainMenu = menuChinhDong(MenuChinh);
+    //     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+    //     switch (mainMenu)
+    //     {
+    //     case 1:
+    //         contentMenu = menuVatTuDong(MenuVatTu);
+    //         system("cls");
+    //         fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+    //         switch (contentMenu)
+    //         {
+    //         case 0:
+    //             menuVatTu(root, smallX, smallY);
+    //             break;
+    //         case 1:
+    //             handleNavigationListVatTu(root, smallX, smallY);
+    //             break;
+    //         }
+    //         break;
+    //     case 2:
+    //         contentMenu = menuNhanVienDong(MenuNhanVien);
+    //         system("cls");
+    //         fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+    //         switch (contentMenu)
+    //         {
+    //         case 0:
+    //             menuNhanVien(dsnv, smallX, smallY);
+    //             break;
+    //         case 1:
+    //             handleNavigationListNhanVien(dsnv, smallX, smallY);
+    //             break;
+    //         }
+    //         break;
+    //     case 3:
+    //         contentMenu = menuHoaDonDong(MenuHoaDon);
+    //         system("cls");
+    //         fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+    //         switch (contentMenu)
+    //         {
+    //         case 0:
+    //             menuChiTietHoaDon(dsnv, root, bigX, bigY);
+    //             break;
+    //         case 1:
+    //             handleNavigationListChiTietHoaDon(dsnv, root, bigX, bigY);
+    //             break;
+    //         }
+    //         break;
+    //     case 4:
+    //         contentMenu = menuThongKeDong(MenuThongKe);
+    //         system("cls");
+    //         fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+    //         switch (contentMenu)
+    //         {
+    //         case 0:
+    //             inThongKeHoaDon(dsnv);
+    //             break;
+    //         case 1:
+    //             inTop10DTVT(dsnv);
+    //             break;
+    //         case 2:
+    //             inDoanhThuNam(dsnv);
+    //             break;
+    //         }
+    //         break;
+    //     }
+    // };
     return 0;
 }

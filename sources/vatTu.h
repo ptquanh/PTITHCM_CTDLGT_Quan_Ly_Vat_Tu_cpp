@@ -1,6 +1,5 @@
 #pragma once
 #include "./sharedResources.h"
-const int searchHighlightColor = 1;
 // ghi tung node vao file ds_vattu
 void writeNodeToFile(treeVatTu node, ofstream &fileout)
 {
@@ -211,7 +210,10 @@ void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 
         // Đọc từng phần của dữ liệu
         getline(ss, data_vt.MAVT, '|');
-        // data_vt.MAVT = normalizeString(data_vt.MAVT, hasError);
+        for (char &c : data_vt.MAVT)
+        {
+            c = std::toupper(c);
+        }
         getline(ss, data_vt.TENVT, '|');
         data_vt.TENVT = normalizeString(data_vt.TENVT, hasError);
         getline(ss, data_vt.DVT, '|');
@@ -262,7 +264,7 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
         displayField(x + 87, y + 4, input.MAVT, false, 10);
         displayField(x + 87, y + 6, input.TENVT, currentRow == 1, 20);
         displayField(x + 87, y + 8, input.DVT, currentRow == 2, 6);
-        displayField(x + 87, y + 10, input.soLuongTon > 0 ? to_string(input.soLuongTon) : "", currentRow == 3, 6);
+        displayField(x + 87, y + 10, input.soLuongTon > 0 ? to_string(input.soLuongTon) : "", false, 6);
         switch (currentRow)
         {
         case 1:
@@ -270,7 +272,7 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
             result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext, true);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -289,7 +291,7 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
             result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext, true);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -304,25 +306,25 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
-        case 3:
-        {
-            numResult = inputNumber(x + 87, y + 10, input.soLuongTon, 6, "So luong ton", moveNext, true);
-            if (numResult == -1)
-                goto escButton;
-            if (numResult == -4)
-                goto saveButton;
-            if (numResult == 0)
-            {
-                errorMessage = "So luong ton lon hon 0";
-                drawTableErrors(errorMessage, true);
+        // case 3:
+        // {
+        //     numResult = inputNumber(x + 87, y + 10, input.soLuongTon, 6, "So luong ton", moveNext, true);
+        //     if (numResult == -1)
+        //         goto escButton;
+        //     if (numResult == -10)
+        //         goto saveButton;
+        //     if (numResult == 0)
+        //     {
+        //         errorMessage = "So luong ton lon hon 0";
+        //         drawTableErrors(errorMessage, true);
 
-                continue;
-            }
-            drawTableErrors("", true);
-            input.soLuongTon = numResult;
-            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
-            break;
-        }
+        //         continue;
+        //     }
+        //     drawTableErrors("", true);
+        //     input.soLuongTon = numResult;
+        //     formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+        //     break;
+        // }
         escButton:
         {
             isESC = true;
@@ -344,7 +346,7 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
         }
         if (moveNext)
         {
-            currentRow = (currentRow < 3) ? currentRow + 1 : 3;
+            currentRow = (currentRow < 2) ? currentRow + 1 : 2;
         }
         else
         {
@@ -353,7 +355,7 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
     }
 }
 
-void nhapVatTu(treeVatTu &root, int x, int y)
+void nhapVatTu(treeVatTu &root, int x, int y, string mavt, int soLuong, bool isSmallScreen, bool isInCTHD)
 {
     nodeVatTu input;
     input.MAVT = "";
@@ -367,138 +369,265 @@ void nhapVatTu(treeVatTu &root, int x, int y)
     int numResult;
     bool moveNext;
     string tempInput;
-
-    while (true)
+    if (!isInCTHD)
     {
-        displayField(x + 87, y + 4, input.MAVT, currentRow == 0, 10);
-        displayField(x + 87, y + 6, input.TENVT, currentRow == 1, 20);
-        displayField(x + 87, y + 8, input.DVT, currentRow == 2, 6);
-        displayField(x + 87, y + 10, input.soLuongTon > 0 ? to_string(input.soLuongTon) : "", currentRow == 3, 6);
+        while (true)
+        {
+            displayField(x + 87, y + 4, input.MAVT, currentRow == 0, 10);
+            displayField(x + 87, y + 6, input.TENVT, currentRow == 1, 20);
+            displayField(x + 87, y + 8, input.DVT, currentRow == 2, 6);
+            displayField(x + 87, y + 10, input.soLuongTon > 0 ? to_string(input.soLuongTon) : "", currentRow == 3, 6);
 
-        switch (currentRow)
-        {
-        case 0:
-        {
-            result = inputString(x + 87, y + 4, input.MAVT, 10, "Ma vat tu", moveNext, true);
-            if (result == "ESC")
-                goto escButton;
-            if (result == "F4")
-                goto saveButton;
-            tempInput = normalizeString(result, hasError);
-            if (hasError)
+            switch (currentRow)
             {
-                errorMessage = "Ma vat tu chua ky tu khong hop le";
-                drawTableErrors(errorMessage, true);
-                continue;
+            case 0:
+            {
+                result = inputString(x + 87, y + 4, input.MAVT, 10, "Ma vat tu", moveNext, isSmallScreen);
+                if (result == "ESC")
+                    goto escButton;
+                if (result == "F10")
+                    goto saveButton;
+                tempInput = normalizeString(result, hasError);
+                if (hasError)
+                {
+                    drawTableErrors("Ma vat tu chua ky tu khong hop le", isSmallScreen);
+                    continue;
+                }
+                if (search(root, tempInput) != NULL)
+                {
+                    drawTableErrors("Ma vat tu da ton tai", isSmallScreen);
+                    continue;
+                }
+                for (char &c : tempInput)
+                {
+                    c = std::toupper(c);
+                }
+                drawTableErrors("", isSmallScreen);
+                input.MAVT = tempInput;
+                formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+                break;
             }
-
-            if (search(root, tempInput) != NULL)
+            case 1:
             {
-                errorMessage = "Ma vat tu da ton tai!";
-                drawTableErrors(errorMessage, true);
-                continue;
+                result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext, isSmallScreen);
+                if (result == "ESC")
+                    goto escButton;
+                if (result == "F10")
+                    goto saveButton;
+                tempInput = normalizeString(result, hasError);
+                if (hasError)
+                {
+                    drawTableErrors("Ten vat tu chua ky tu khong hop le", isSmallScreen);
+                    continue;
+                }
+                drawTableErrors("", isSmallScreen);
+                input.TENVT = tempInput;
+                formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+                break;
             }
-            drawTableErrors("", true);
-            input.MAVT = tempInput;
-            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
-            break;
-        }
-        case 1:
-        {
-            result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext, true);
-            if (result == "ESC")
-                goto escButton;
-            if (result == "F4")
-                goto saveButton;
-            tempInput = normalizeString(result, hasError);
-            if (hasError)
+            case 2:
             {
-                errorMessage = "Ten vat tu chua ky tu khong hop le";
-                drawTableErrors(errorMessage, true);
-                continue;
+                result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext, isSmallScreen);
+                if (result == "ESC")
+                    goto escButton;
+                if (result == "F10")
+                    goto saveButton;
+                tempInput = normalizeString(result, hasError);
+                if (hasError)
+                {
+                    drawTableErrors("Don vi tinh chua ky tu khong hop le", isSmallScreen);
+                    continue;
+                }
+                drawTableErrors("", isSmallScreen);
+                input.DVT = tempInput;
+                formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+                break;
             }
-            drawTableErrors("", true);
-            input.TENVT = tempInput;
-            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
-            break;
-        }
-        case 2:
-        {
-            result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext, true);
-            if (result == "ESC")
-                goto escButton;
-            if (result == "F4")
-                goto saveButton;
-            tempInput = normalizeString(result, hasError);
-            if (hasError)
+            case 3:
             {
-                errorMessage = "Don vi tinh chua ky tu khong hop le";
-                drawTableErrors(errorMessage, true);
-                continue;
+                numResult = inputNumber(x + 87, y + 10, input.soLuongTon, 6, "So luong ton", moveNext, isSmallScreen);
+                if (numResult == -1)
+                    goto escButton;
+                if (numResult == -10)
+                    goto saveButton;
+                if (numResult == 0)
+                {
+                    drawTableErrors("So luong ton lon hon 0", isSmallScreen);
+                    continue;
+                }
+                drawTableErrors("", isSmallScreen);
+                input.soLuongTon = numResult;
+                formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+                break;
             }
-            drawTableErrors("", true);
-            input.DVT = tempInput;
-            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
-            break;
-        }
-        case 3:
-        {
-            numResult = inputNumber(x + 87, y + 10, input.soLuongTon, 6, "So luong ton", moveNext, true);
-            if (numResult == -1)
-                goto escButton;
-            if (numResult == -4)
-                goto saveButton;
-            if (numResult == 0)
+            escButton:
             {
-                errorMessage = "So luong ton lon hon 0";
-                drawTableErrors(errorMessage, true);
-                continue;
-            }
-            drawTableErrors("", true);
-            input.soLuongTon = numResult;
-            formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
-            break;
-        }
-        escButton:
-        {
-            ShowCur(false);
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-            return;
-        }
-        saveButton:
-        {
-            ShowCur(false);
-            if (!moveNext && !input.MAVT.empty() && !input.TENVT.empty() &&
-                !input.DVT.empty() && input.soLuongTon > 0)
-            {
-                root = insert(root, input);
-                errorMessage = "Them vat tu thanh cong";
-                drawTableErrors(errorMessage, true);
+                ShowCur(false);
+                drawTableErrors("Dang thoat chuong trinh...", isSmallScreen);
                 Sleep(1500);
-                drawTableErrors("", true);
+                drawTableErrors("", isSmallScreen);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }
+            saveButton:
+            {
+                ShowCur(false);
+                if (!moveNext && !input.MAVT.empty() && !input.TENVT.empty() &&
+                    !input.DVT.empty() && input.soLuongTon > 0)
+                {
+                    root = insert(root, input);
+                    drawTableErrors("Them vat tu thanh cong", isSmallScreen);
+                    Sleep(1500);
+                    drawTableErrors("", isSmallScreen);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    return;
+                }
+                else
+                {
+                    drawTableErrors("Thieu thong tin. Chua them vat tu", isSmallScreen);
+                    Sleep(1500);
+                    drawTableErrors("", isSmallScreen);
+                }
+            }
+            }
+            if (moveNext)
+            {
+                currentRow = (currentRow < 3) ? currentRow + 1 : 3;
+            }
             else
             {
-                errorMessage = "Thieu thong tin. Chua them vat tu";
-                drawTableErrors(errorMessage, true);
-                Sleep(1500);
-                drawTableErrors("", true);
+                currentRow = (currentRow > 0) ? currentRow - 1 : 0;
             }
         }
-        }
-        if (moveNext)
+    }
+    else
+    {
+        currentRow = 1;
+        char key;
+        while (true)
         {
-            currentRow = (currentRow < 3) ? currentRow + 1 : 3;
-        }
-        else
-        {
-            currentRow = (currentRow > 0) ? currentRow - 1 : 0;
+            input.MAVT = mavt;
+            input.soLuongTon = soLuong;
+            displayField(x + 87, y + 4, input.MAVT, false, 10);
+            displayField(x + 87, y + 6, input.TENVT, currentRow == 1, 20);
+            displayField(x + 87, y + 8, input.DVT, currentRow == 2, 6);
+
+            switch (currentRow)
+            {
+            // case 0:
+            // {
+            //     // result = inputString(x + 87, y + 4, input.MAVT, 10, "Ma vat tu", moveNext, isSmallScreen);
+            //     // if (result == "ESC")
+            //     //     goto escButton;
+            //     // if (result == "F10")
+            //     //     goto saveButton;
+            //     tempInput = normalizeString(mavt, hasError);
+            //     if (hasError)
+            //     {
+            //         drawTableErrors("Ma vat tu chua ky tu khong hop le", isSmallScreen);
+            //         continue;
+            //     }
+
+            //     if (search(root, tempInput) != NULL)
+            //     {
+            //         drawTableErrors("Ma vat tu da ton tai", isSmallScreen);
+            //         continue;
+            //     }
+            //     drawTableErrors("", isSmallScreen);
+            //     input.MAVT = tempInput;
+            //     formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+            //     break;
+            // }
+            case 1:
+            {
+                result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext, isSmallScreen);
+                if (result == "ESC")
+                    goto escButton;
+                if (result == "F10")
+                    goto saveButton;
+                tempInput = normalizeString(result, hasError);
+                if (hasError)
+                {
+                    drawTableErrors("Ten vat tu chua ky tu khong hop le", isSmallScreen);
+                    continue;
+                }
+                drawTableErrors("", isSmallScreen);
+                input.TENVT = tempInput;
+                formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+                break;
+            }
+            case 2:
+            {
+                result = inputString(x + 87, y + 8, input.DVT, 6, "Don vi tinh", moveNext, isSmallScreen);
+                if (result == "ESC")
+                    goto escButton;
+                if (result == "F10")
+                    goto saveButton;
+                tempInput = normalizeString(result, hasError);
+                if (hasError)
+                {
+                    drawTableErrors("Don vi tinh chua ky tu khong hop le", isSmallScreen);
+                    continue;
+                }
+                drawTableErrors("", isSmallScreen);
+                input.DVT = tempInput;
+                formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+                break;
+            }
+            // case 3:
+            // {
+            //     // numResult = inputNumber(x + 87, y + 10, input.soLuongTon, 6, "So luong ton", moveNext, isSmallScreen);
+            //     if (numResult == -1)
+            //         goto escButton;
+            //     if (numResult == -10)
+            //         goto saveButton;
+            //     if (numResult == 0)
+            //     {
+            //         drawTableErrors("So luong ton lon hon 0", isSmallScreen);
+            //         continue;
+            //     }
+            //     drawTableErrors("", isSmallScreen);
+            //     input.soLuongTon = numResult;
+            //     formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
+            //     break;
+            // }
+            escButton2:
+            {
+                ShowCur(false);
+                drawTableErrors("Dang thoat chuong trinh...", isSmallScreen);
+                Sleep(1500);
+                drawTableErrors("", isSmallScreen);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                return;
+            }
+            saveButton2:
+            {
+                ShowCur(false);
+                if (!moveNext && !input.MAVT.empty() && !input.TENVT.empty())
+                {
+                    root = insert(root, input);
+                    drawTableErrors("Them vat tu thanh cong", isSmallScreen);
+                    Sleep(1500);
+                    drawTableErrors("", isSmallScreen);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    return;
+                }
+                else
+                {
+                    drawTableErrors("Thieu thong tin. Chua them vat tu", isSmallScreen);
+                    Sleep(1500);
+                    drawTableErrors("", isSmallScreen);
+                }
+            }
+            }
+            if (moveNext)
+            {
+                currentRow = (currentRow < 3) ? currentRow + 1 : 2;
+            }
+            else
+            {
+                currentRow = (currentRow > 1) ? currentRow - 1 : 1;
+            }
         }
     }
 }
@@ -544,10 +673,21 @@ void xoaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
         case ESC:
             isESC = true;
             return;
-        case F4:
-            root = deleteNode(root, MAVT);
-            isSaved = true;
-            return;
+        case F10:
+            if (input.soLuongTon <= 0)
+            {
+                root = deleteNode(root, MAVT);
+                isSaved = true;
+                return;
+            }
+            else
+            {
+                drawTableErrors("Khong the xoa vat tu so luong > 0", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                return;
+            }
         }
     }
 }
@@ -820,7 +960,7 @@ void displaySearchResults(treeVatTu *results, int n, int pageNumber, int selecte
     setColorByRequest(LIGHTGRAY, BLACK);
 }
 
-void timKiemTenVatTu(treeVatTu root, int x, int y, treeVatTu &selectedResult)
+void timKiemTenVatTu(treeVatTu root, int x, int y, treeVatTu &selectedResult, bool &isESC)
 {
     static string searchHistory[10];
     static int historyCount = 0;
@@ -830,7 +970,7 @@ void timKiemTenVatTu(treeVatTu root, int x, int y, treeVatTu &selectedResult)
     int cursorPos = currentInput.length();
     bool hasError;
     bool isSearching = true;
-    int selectedRow = 0;
+    int selectedRow = -1;
     bool isViewingResults = false;
     int n = countNodes(root);
     treeVatTu *results = new treeVatTu[n];
@@ -1011,12 +1151,17 @@ void timKiemTenVatTu(treeVatTu root, int x, int y, treeVatTu &selectedResult)
             if (isViewingResults)
             {
                 isViewingResults = false;
-                selectedRow = 0;
+                selectedRow = -1;
+                ShowCur(false);
+                drawTableErrors("Dang thoat che do xem...", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                ShowCur(true);
             }
             else
             {
                 delete[] results;
-                drawTableErrors("Da thoat tim kiem", true);
+                isESC = true;
                 return;
             }
             break;

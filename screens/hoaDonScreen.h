@@ -18,11 +18,11 @@ void drawKeysGuideChiTietHoaDon(int x, int y)
     cout << "MENU CTHD";
     setColorByRequest(LIGHTGRAY, BLACK);
     gotoxy(x + 10 + space + 1, y + 27);
-    cout << "F1: Nhap CT";
+    cout << "F3: Nhap CT";
     gotoxy(x + 22 + 2 * space + 1, y + 27);
-    cout << "F2: Sua CT";
+    cout << "F4: Sua CT";
     gotoxy(x + 33 + 3 * space + 1, y + 27);
-    cout << "F3: Xoa CT";
+    cout << "DEL: Xoa CT";
     gotoxy(x + 44 + 4 * space + 1, y + 27);
     cout << "F5: Tim ten VT";
     gotoxy(x + 59 + 5 * space + 1, y + 27);
@@ -102,7 +102,7 @@ void drawTableUpdateChiTietHoaDon(int x, int y)
     gotoxy(x + 96, y + 13);
     cout << "ESC: Huy";
     gotoxy(x + 108, y + 13);
-    cout << "F4: Luu";
+    cout << "F10: Luu";
     SetColor(GREEN);
     gotoxy(x + 78, y + 5);
     cout << "Toi da 10 ki tu";
@@ -148,7 +148,7 @@ void drawTableUpdateHoaDon(int x, int y)
     gotoxy(x + 96, y + 15);
     cout << "ESC: Huy";
     gotoxy(x + 108, y + 15);
-    cout << "F4: Luu";
+    cout << "F10: Luu";
     SetColor(GREEN);
     gotoxy(x + 78, y + 5);
     cout << "Toi da 10 ki tu";
@@ -445,6 +445,8 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
         Sleep(1500);
         drawTableErrors("", false);
         fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+        isAdding = false;
+        return;
     }
     if (isSaved)
     {
@@ -464,8 +466,9 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
         drawTableErrors("", false);
         fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
         clearTablePrintChiTietHoaDon(x);
+        isAdding = false;
+        return;
     }
-    isAdding = false;
 }
 
 void handleNavigationUpdateChiTietHoaDon(dsNhanVien &dsnv, int x, int y)
@@ -803,7 +806,7 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
     handleNavigationAddHoaDon(dsnv, root, new_hd, x, y, isSuccess);
     if (isSuccess && new_hd != nullptr)
     {
-        handleNavigationAddChiTietHoaDon(dsnv, root, new_hd, x, y, isAdding);
+        // handleNavigationAddChiTietHoaDon(dsnv, root, new_hd, x, y, isAdding);
         while (true)
         {
             setColorByRequest(LIGHTGRAY, BLACK);
@@ -825,26 +828,23 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
                     clearTablePrintChiTietHoaDon(x);
                 }
                 break;
-            case F1:
+            case F3:
                 isAdding = true;
                 handleNavigationAddChiTietHoaDon(dsnv, root, new_hd, x, y, isAdding);
                 break;
-            case F2:
+            case F4:
                 handleNavigationUpdateChiTietHoaDon(dsnv, x, y);
                 break;
-            case F3:
+            case DEL:
                 handleNavigationDeleteChiTietHoaDon(dsnv, x, y);
                 break;
             case F5:
-                gotoxy(0, 0);
-                cout << "F5";
+                // handleNavigationSearchVatTu(root, x, y);
                 break;
             case ESC:
-                errorMessage = "Dang thoat chuong trinh...";
-                // drawTableErrors(errorMessage, false);
+                drawTableErrors("Dang thoat chuong trinh...", false);
                 Sleep(1500);
-                errorMessage = "";
-                // drawTableErrors(errorMessage, false);
+                drawTableErrors("", false);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }

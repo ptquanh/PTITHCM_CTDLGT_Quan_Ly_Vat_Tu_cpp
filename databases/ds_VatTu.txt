@@ -1,40 +1,60 @@
-0123456789|12345678901234567890|123456|123456
-1|Banh Mi|O|2
-10|Com|Dia|1
-11|Dt|Cai|2
-12|Ca|Con|2
-13|Ban Phim|Cai|2
-14|Banh Mi|O|2
-17|Com|Dia|1
-18|Dt|Cai|2
-19|Ca|Con|2
-2|Asdsda|Cai|100
-20|Ban Phim|Cai|18
-21|Banh Mi|O|2
-23|A|B|5
-24|Com|Dia|1
-25|Dt|Cai|2
-26|Ca|Con|2
-27|Ban Phim|Cai|2
-3|Com|Dia|1
-4|Dt|Cai|2
-5|Ca|Con|2
-6|Ban Phim|Cai|2
-7|Banh Mi|O|2
-8|Asdsda|Cai|100
-9|Asdsda|Cai|100000
-Vt123|Banh Trang|Bich|2
-28|Ban Phim Co|Cai|2
-29|Ban Phim Co|Cai|2
-30|Ban Phim Co|Cai|2
-31|Ban Phim Co|Cai|2
-32|Ban Phim Co|Cai|2
-33|Ban Phim Co|Cai|2
-34|Ban Phim Co|Cai|2
-35|Ban Phim Co|Cai|2
-36|Ban Phim Co|Cai|2
-37|Ban Phim Co|Cai|2
-38|Ban Phim 38|Cai|2
-39|Ban Phim 39|Cai|2
-40|Ban Phim 40|Cai|2
-41|Ban Phim 41|Cai|2
+Vt001|Xi Mang|kg|500
+Vt002|Gach Men|vien|1200
+Vt003|Sat Tron|kg|750
+Vt004|Son Chong Tham|lit|300
+Vt005|Cat Xay Dung|m3|950
+Vt006|Da 1x2|m3|400
+Vt007|Thep Cay D10|cay|600
+Vt008|Xi Mang Roi|kg|200
+Vt009|Son Nuoc|lit|150
+Vt010|Keo Dan Gach|kg|100
+Vt011|Tam Tran Thach Cao|tam|220
+Vt012|Tam Xi Mang|tam|180
+Vt013|Dinh Thep|kg|550
+Vt014|Day Dien 2m5|cuon|75
+Vt015|Go Cong Nghiep|m3|60
+Vt016|Bot Ba Tuong|kg|250
+Vt017|Tam Chong Chay|m2|90
+Vt018|Ong Nhua PVC|met|1200
+Vt019|Cua Nhua Loi Thep|cai|50
+Vt020|Ong Dong|kg|35
+Vt021|Bu Long|cai|300
+Vt022|Oc Vit|cai|200
+Vt023|Be Tong|m3|450
+Vt024|Thep Tam|kg|120
+Vt025|Gach Bong Kinh|vien|600
+Vt026|Cap Dien 3 Pha|cuon|100
+Vt027|Son Epoxy|lit|80
+Vt028|Van Cong|cai|40
+Vt029|Day Keo Noi|cuon|500
+Vt030|Thung Phuy Nhua|cai|20
+Vt031|Hop Cap|hop|150
+Vt032|Hop Kim Loai|kg|75
+Vt033|Gach Lat Nen|vien|350
+Vt034|Kinh Cuong Luc|tam|90
+Vt035|Tam Nhua PVC|tam|140
+Vt036|Thung Carton|cai|60
+Vt037|Keo Silic|chai|85
+Vt038|Bat Nhua|met|400
+Vt039|Dong Tam|kg|120
+Vt040|Keo Epoxy|kg|70
+Vt041|Coc Thep|cai|55
+Vt042|Vien Gach Lo|vien|250
+Vt043|Hop Chia Dien|cai|95
+Vt044|Den LED|cai|150
+Vt045|Ban Le Cua|cai|130
+Vt046|May Phat Dien|cai|5
+Vt047|Van Bi|cai|110
+Vt048|Hop Nhua Dung|cai|200
+Vt049|Vach Ngan|tam|30
+Vt050|Ong Gang|met|60
+Vt051|Khoan Bosch|cai|15
+Vt052|Son Tuong|lit|300
+Vt053|Thung Nhua|cai|40
+Vt054|May Cat Sat|cai|10
+Vt055|Dinh Vit|kg|500
+Vt056|Gioang Cao Su|met|220
+Vt057|Tam Chiu Luc|tam|180
+Vt058|Son Trang Tri|lit|75
+Vt059|Bo Xa Dung|cai|85
+Vt060|Nap Cong|cai|35

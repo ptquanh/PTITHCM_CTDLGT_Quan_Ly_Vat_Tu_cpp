@@ -41,11 +41,10 @@ const char cross = 206;
 #define LEFT 75
 #define RIGHT 77
 #define ESC 27
-#define F1 59
-#define F2 60
 #define F3 61
 #define F4 62
 #define F5 63
+#define F10 68
 #define TAB 9
 #define BACKSPACE 8
 #define HOME 71

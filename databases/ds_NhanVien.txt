@@ -1,66 +1,66 @@
-NV7|Phan Tuan Quoc|Anh|Nam
--Hd1|1|1|2024|X
-+0123456789|2|100|2
-+2|5|500|1
-+3|2|10|1
-+4|5|500|10
-+5|2|10|1
-+6|5|500|10
-+7|2|10|1
-+8|5|500|10
-+9|2|10|1
-+10|5|500|10
-+11|2|10|1
-+20|5|500|10
-+12|5|500|10
+Nv7|Phan Tuan Quoc 12345678|Anh|Nam
+-Hd1|123|121|2024|X
++Vt001|10|0010|10
++Vt002|5|1|500
++Vt003|2|1|10
++Vt004|5|10|500
++Vt005|2|1|10
++Vt006|5|10|500
++Vt007|2|1|10
++Vt008|5|10|500
++Vt009|2|1|10
++Vt010|5|10|500
++Vt011|2|1|10
++Vt012|5|10|500
++Vt020|5|10|500
 \
-NV12|Hoang Thien|Bao|Nam
+Nv12|Hoang Thien|Bao|Nam
 \
-NV17|Nguyen Van|An|Nam
+Nv17|Nguyen Van|An|Nam
 \
 Nv1|Le Van|Dai|Nam
 -Hd2|1|5|2024|X
-+2|5|500|1
++Vt002|5|1|500
 \
-NV1|Du Hoang|Phi|Nam
+Nv1|Du Hoang|Phi|Nam
 -Hd3|1|12|2024|N
-+12|5|500|10
++Vt030|5|10|500
 \
-NV8|Tran Van|Hung|Nam
+Nv8|Tran Van|Hung|Nam
 \
-NV13|Le Hoang|Phi|Nam
+Nv13|Le Hoang|Phi|Nam
 \
-NV18|Nguyen Hoang|Chau|Nam
+Nv18|Nguyen Hoang Nam|Chau|Nam
 \
-NV4|Nguyen Thi|Nhu|Nu
+Nv4|Nguyen Thi|Nhu|Nu
 \
-NV9|Nguyen|Xuan|Nu
+Nv9|Nguyen|Xuan|Nu
 \
-NV14|Nguyen Quoc|Toan|Nam
+Nv14|Nguyen Quoc|Toan|Nam
 \
-NV19|Tran Dai|Hoang|Nam
+Nv19|Tran Dai|Hoang|Nam
 \
-NV22|Nguyen Viet|Toan|Nam
+Nv22|Nguyen Viet|Toan|Nam
 \
-2|Nguyen Quoc|Vinh|Nam
+Nv2|Nguyen Quoc|Vinh|Nam
 \
-nv5|Le Van|Vinh|Nam
+Nv5|Le Van|Vinh|Nam
 \
-nv6|Truong Viet|Hoang|Nam
+Nv6|Truong Viet|Hoang|Nam
 \
-nv10|Nguyen Quoc|Vinh|Nam
+Nv10|Nguyen Quoc|Vinh|Nam
 \
-nv11|Dang Kieu|Trang|Nu
+Nv11|Dang Kieu|Trang|Nu
 \
-nv15|Nguyen Le|Nhi|Nu
+Nv15|Nguyen Le|Nhi|Nu
 \
-nv16|Tran Hong|Ngoc|Nu
+Nv16|Tran Hong|Ngoc|Nu
 \
-nv20|Ly Van|Bien|Nam
+Nv20|Ly Van|Bien|Nam
 \
-nv21|Luong Chi|Vinh|Nam
+Nv21|Luong Chi|Vinh|Nam
 \
-nv23|Luong Minh|Khoi|Nam
+Nv23|Luong Minh|Khoi|Nam
 \
-nv24|Nguyen Thanh|Vinh|Nam
+Nv24|Nguyen Thanh|Vinh|Nam
 \

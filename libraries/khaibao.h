@@ -21,9 +21,9 @@ using namespace std;
 #define SoNut 5
 // ================ others ======================
 char keyGuides[SoNut][50] = {
-    "F1: Them VT",
-    "F2: Sua VT",
-    "F3: Xoa VT",
+    "F3: Them VT",
+    "F4: Sua VT",
+    "DEL: Xoa VT",
     "F5: Tim kiem",
     "ESC: Thoat"};
 // ================ MENU ========================

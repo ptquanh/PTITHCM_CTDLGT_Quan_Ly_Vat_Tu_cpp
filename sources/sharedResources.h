@@ -150,9 +150,9 @@ string inputString(int x, int y, string current, int maxLength, string fieldName
                     currentInput.erase(cursorPos, 1);
                 }
                 break;
-            case F4:
+            case F10:
                 moveNext = false;
-                return "F4";
+                return "F10";
             }
             continue;
         }
@@ -252,9 +252,9 @@ int inputNumber(int x, int y, int current, int maxLength, string fieldName, bool
                     currentInput.erase(cursorPos, 1);
                 }
                 break;
-            case F4:
+            case F10:
                 moveNext = false;
-                return -4;
+                return -10;
             }
             continue;
         }
@@ -343,6 +343,48 @@ void formatInputNV(string &MANV, string &HO, string &TEN, string &PHAI)
     if (PHAI.length() > 6)
     {
         PHAI = PHAI.substr(0, 6);
+    }
+}
+void formatInputHD(string &SoHD, string &day, string &month, string &year,string &loai)
+{
+    if (SoHD.length() > 20)
+    {
+        SoHD = SoHD.substr(0, 20);
+    }
+    if (day.length() > 2)
+    {
+        day = day.substr(0, 2);
+    }
+    if (month.length() > 2)
+    {
+        month = month.substr(0, 2);
+    }
+    if (year.length() > 4)
+    {
+        year = year.substr(0, 4);
+    }
+    if (loai.length() > 1)
+    {
+        loai = loai.substr(0, 1);
+    }
+}
+void formatInputCTHD(string &MAVT, string &soLuong, string &donGia, string &VAT)
+{
+    if (MAVT.length() > 10)
+    {
+        MAVT = MAVT.substr(0, 10);
+    }
+    if (soLuong.length() > 6)
+    {
+        soLuong = soLuong.substr(0, 6);
+    }
+    if (donGia.length() > 9)
+    {
+        donGia = donGia.substr(0, 9);
+    }
+    if (VAT.length() > 3)
+    {
+        VAT = VAT.substr(0, 3);
     }
 }
 int partitionDoanhThu(doanhThuVatTu arr[], int low, int high)

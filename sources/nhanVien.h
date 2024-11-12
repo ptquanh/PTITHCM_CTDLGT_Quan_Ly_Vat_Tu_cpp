@@ -1,5 +1,8 @@
 #pragma once
 #include "vatTu.h"
+#include "../screens/vatTuScreen.h"
+#include "../screens/hoaDonScreen.h"
+void drawTableUpdateChiTietHoaDon(int x, int y);
 #define MAX_VATTU 1000
 
 bool nhanVienEmpty(dsNhanVien &list)
@@ -156,14 +159,14 @@ void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
         return;
     }
 
-    // int pos = TimViTriChen(list, nhanvienmoi); //Tìm kiếm vị trí chèn theo Binary Search
+    // int pos = TimViTriChen(list, nhanvienmoi);
     int pos = 0;
     while (pos < list.CountNV && (nhanvienmoi->TEN > list.nodes[pos]->TEN ||
                                   (nhanvienmoi->TEN == list.nodes[pos]->TEN && nhanvienmoi->HO >= list.nodes[pos]->HO)))
     {
         pos++;
     }
-    for (int i = list.CountNV; i > pos; i--) // Hàm di chuyển mảng con về sau một vị trí
+    for (int i = list.CountNV; i > pos; i--)
     {
         list.nodes[i] = list.nodes[i - 1];
     }
@@ -209,7 +212,7 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
         case ESC:
             isESC = true;
             return;
-        case F4:
+        case F10:
             delete list.nodes[pos];
             for (int i = pos; i < list.CountNV - 1; i++)
             {
@@ -259,7 +262,7 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
             result = inputString(x + 87, y + 4, input.MANV, 10, "Ma nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -274,6 +277,10 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
                 drawTableErrors(errorMessage, true);
                 continue;
             }
+            for (char &c : tempInput)
+            {
+                c = std::toupper(c);
+            }
             drawTableErrors("", true);
             input.MANV = tempInput;
             formatInputNV(input.MANV, input.HO, input.TEN, input.PHAI);
@@ -284,7 +291,7 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
             result = inputString(x + 87, y + 6, input.HO, 20, "Ho nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -303,7 +310,7 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
             result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -322,7 +329,7 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
             result = inputString(x + 87, y + 10, input.PHAI, 3, "Phai (Nam/Nu)", moveNext, true);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError || (tempInput != "Nam" && tempInput != "Nu"))
@@ -440,7 +447,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
             result = inputString(x + 87, y + 6, input.HO, 20, "Ho nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -459,7 +466,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
             result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -478,7 +485,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
             result = inputString(x + 87, y + 10, input.PHAI, 3, "Phai (Nam/Nu)", moveNext, true);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError || (tempInput != "Nam" && tempInput != "Nu"))
@@ -561,7 +568,7 @@ void xoaDSNV(dsNhanVien &list) // goi khi ket thuc
 
 void Write_CTHoaDon(ofstream &file, nodeChiTietHoaDon &cthd)
 {
-    file << "+" << cthd.MAVT << "|" << cthd.soLuong << "|" << cthd.donGia << "|" << cthd.VAT;
+    file << "+" << cthd.MAVT << "|" << cthd.soLuong << "|" << cthd.VAT << "|" << cthd.donGia;
 }
 
 void Write_HoaDon(ofstream &file, nodeHoaDon &hd)
@@ -612,104 +619,9 @@ void writeFile_dsNhanVien(dsNhanVien &dsNV)
     xoaDSNV(dsNV);
 }
 
-void Read_CTHoaDon(string cthdStr, nodeChiTietHoaDon &cthd)
-{
-    stringstream ss(cthdStr);
-
-    getline(ss, cthd.MAVT, '|');
-    string line;
-
-    getline(ss, line, '|');
-    cthd.soLuong = stoi(line);
-
-    getline(ss, line, '|');
-    cthd.donGia = stof(line);
-
-    getline(ss, line);
-    cthd.VAT = stof(line);
-}
-
-// void Read_HoaDon(ifstream &file, nodeHoaDon &hd)
-// {
-//     string line;
-//     getline(file, line);
-
-//     if (line[0] != '-')
-//         return; // Kiểm tra dòng hóa đơn
-
-//     stringstream ss(line.substr(1)); // Bỏ qua dấu '-'
-
-//     getline(ss, hd.SoHD, '|');
-
-//     string temp;
-//     getline(ss, temp, '|');
-//     hd.day = stoi(temp);
-
-//     getline(ss, temp, '|');
-//     hd.month = stoi(temp);
-
-//     getline(ss, temp, '|');
-//     hd.year = stoi(temp);
-
-//     getline(ss, temp);
-//     hd.loai = temp[0];
-
-//     // Đọc chi tiết hóa đơn
-//     hd.firstCTHD = nullptr;
-//     ptr_DSCTHD *tail = &hd.firstCTHD;
-
-//     string chiTietLine;
-//     getline(file, chiTietLine);
-
-//     stringstream ctss(chiTietLine);
-//     string cthdStr;
-//     while (getline(ctss, cthdStr, ' '))
-//     {
-//         nodeChiTietHoaDon cthd;
-//         cthdStr = cthdStr.substr(1); // Bỏ qua dấu '+'
-//         Read_CTHoaDon(cthdStr, cthd);
-
-//         *tail = new dsChiTietHoaDon{cthd, nullptr};
-//         tail = &(*tail)->next;
-//     }
-// }
-
-// void Read_NhanVien(ifstream &file, nhanVien &nv)
-// {
-//     string line;
-//     getline(file, line);
-
-//     stringstream ss(line);
-
-//     getline(ss, nv.MANV, '|');
-//     getline(ss, nv.HO, '|');
-//     getline(ss, nv.TEN, '|');
-//     getline(ss, nv.PHAI);
-
-//     // Đọc danh sách hóa đơn
-//     nv.firstDSHD = nullptr;
-//     ptr_DSHD *tail = &nv.firstDSHD;
-
-//     while (true)
-//     {
-//         char peek = file.peek();
-//         if (peek == '\\' || peek == EOF)
-//             break;
-
-//         nodeHoaDon hd;
-//         Read_HoaDon(file, hd);
-
-//         *tail = new dsHoaDon{hd, nullptr};
-//         tail = &(*tail)->next;
-//     }
-
-//     // Đọc dấu '\' và xuống dòng
-//     string endLine;
-//     getline(file, endLine);
-// }
-
 void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
 {
+    bool hasError;
     ifstream filein;
     filein.open(filePath_NV, ios_base::in);
     if (!filein.is_open())
@@ -734,10 +646,17 @@ void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
             // Parse thông tin nhân viên
             stringstream ss(line);
             getline(ss, tempNodes[tempCount]->MANV, '|');
+            for (char &c : tempNodes[tempCount]->MANV)
+            {
+                c = std::toupper(c);
+            }
             getline(ss, tempNodes[tempCount]->HO, '|');
+            tempNodes[tempCount]->HO = normalizeString(tempNodes[tempCount]->HO, hasError);
             getline(ss, tempNodes[tempCount]->TEN, '|');
+            tempNodes[tempCount]->TEN = normalizeString(tempNodes[tempCount]->TEN, hasError);
             getline(ss, tempNodes[tempCount]->PHAI);
-
+            tempNodes[tempCount]->PHAI = normalizeString(tempNodes[tempCount]->PHAI, hasError);
+            formatInputNV(tempNodes[tempCount]->MANV, tempNodes[tempCount]->HO, tempNodes[tempCount]->TEN, tempNodes[tempCount]->PHAI);
             // Khởi tạo con trỏ danh sách hóa đơn
             tempNodes[tempCount]->firstDSHD = nullptr;
 
@@ -752,16 +671,24 @@ void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
             stringstream ss(line.substr(1)); // Bỏ qua dấu '-'
 
             getline(ss, hd.SoHD, '|');
+            for (char &c : hd.SoHD)
+            {
+                c = std::toupper(c);
+            }
             string temp;
             getline(ss, temp, '|');
-            hd.day = stoi(temp);
+            string day = temp;
             getline(ss, temp, '|');
-            hd.month = stoi(temp);
+            string month = temp;
             getline(ss, temp, '|');
-            hd.year = stoi(temp);
+            string year = temp;
             getline(ss, temp);
             hd.loai = temp[0];
-
+            hd.loai = normalizeString(hd.loai, hasError);
+            formatInputHD(hd.SoHD, day, month, year, hd.loai);
+            hd.day = stoi(day);
+            hd.month = stoi(month);
+            hd.year = stoi(year);
             // Khởi tạo con trỏ chi tiết hóa đơn
             hd.firstCTHD = nullptr;
 
@@ -789,8 +716,24 @@ void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
         {
             // Thêm chi tiết hóa đơn vào hóa đơn cuối cùng của nhân viên cuối cùng
             nodeChiTietHoaDon cthd;
-            Read_CTHoaDon(line.substr(1), cthd);
+            stringstream ss(line.substr(1));
 
+            getline(ss, cthd.MAVT, '|');
+            for (char &c : cthd.MAVT)
+            {
+                c = std::toupper(c);
+            }
+            string line;
+            getline(ss, line, '|');
+            string soLuong = line;
+            getline(ss, line, '|');
+            string VAT = line;
+            getline(ss, line);
+            string donGia = line;
+            formatInputCTHD(cthd.MAVT, soLuong, donGia, VAT);
+            cthd.soLuong = stoi(soLuong);
+            cthd.donGia = stof(donGia);
+            cthd.VAT = stof(VAT);
             // Tìm hóa đơn cuối cùng của nhân viên cuối cùng
             ptr_DSHD current_hd = tempNodes[tempCount - 1]->firstDSHD;
             while (current_hd->next != nullptr)
@@ -972,7 +915,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
             result = inputString(x + 94, y + 4, input.SoHD, 20, "So hoa don", moveNext, false);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError)
@@ -980,6 +923,10 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
                 errorMessage = "So hoa don chua ky tu khong hop le";
                 drawTableErrors(errorMessage, false);
                 continue;
+            }
+            for (char &c : tempInput)
+            {
+                c = std::toupper(c);
             }
             // check ma hd trung
             ptr_DSHD found_hd;
@@ -996,7 +943,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
             numResult = inputNumber(x + 94, y + 6, input.day, 2, "Ngay lap", moveNext, false);
             if (numResult == -1)
                 goto escButton;
-            if (numResult == -4)
+            if (numResult == -10)
                 goto saveButton;
             if (numResult == 0)
             {
@@ -1017,7 +964,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
             numResult = inputNumber(x + 94, y + 8, input.month, 2, "Thang lap", moveNext, false);
             if (numResult == -1)
                 goto escButton;
-            if (numResult == -4)
+            if (numResult == -10)
                 goto saveButton;
             if (numResult == 0)
             {
@@ -1038,7 +985,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
             numResult = inputNumber(x + 94, y + 10, input.year, 4, "Nam lap", moveNext, false);
             if (numResult == -1)
                 goto escButton;
-            if (numResult == -4)
+            if (numResult == -10)
                 goto saveButton;
             if (numResult == 0)
             {
@@ -1059,7 +1006,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
             result = inputString(x + 94, y + 12, input.loai, 1, "Loai (N/X)", moveNext, false);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
             tempInput = normalizeString(result, hasError);
             if (hasError || (tempInput != "N" && tempInput != "X"))
@@ -1149,7 +1096,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
             result = inputString(x + 94, y + 4, input.MAVT, 10, "Ma vat tu", moveNext, false);
             if (result == "ESC")
                 goto escButton;
-            if (result == "F4")
+            if (result == "F10")
                 goto saveButton;
 
             tempInput = normalizeString(result, hasError);
@@ -1159,7 +1106,10 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
                 drawTableErrors(errorMessage, false);
                 continue;
             }
-
+            for (char &c : tempInput)
+            {
+                c = std::toupper(c);
+            }
             // Kiểm tra vật tư có tồn tại trong kho
             found_vt = search(root, tempInput);
             if (found_vt == nullptr)
@@ -1172,26 +1122,54 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
                 }
                 else
                 {
-                    // Thông báo và hỏi người dùng có muốn tạo vật tư mới không
-                    string message = "Vat tu chua ton tai. Ban co muon tao moi khong? (Y/N)";
-                    drawTableErrors(message, false);
-                    char choice = _getch();
-                    if (toupper(choice) == 'Y')
+                    drawTableErrors("Nhap so luong de tao vat tu...", false);
+                    Sleep(1500);
+                    drawTableErrors("", false);
+                    ShowCur(true);
+                    numResult = inputNumber(x + 94, y + 6, input.soLuong, 10, "So luong", moveNext, false);
+                    if (numResult == -1)
+                        goto escButton;
+                    if (numResult == -10)
+                        goto saveButton;
+
+                    if (numResult <= 0)
                     {
-                        // Gọi hàm tạo vật tư mới với mã đã nhập
-                        // nhapVatTu(root, tempInput, x, y + 15); // Giả sử có hàm nhapVatTu
-                        found_vt = search(root, tempInput);
-                        if (found_vt == nullptr)
+                        errorMessage = "So luong phai lon hon 0";
+                        drawTableErrors(errorMessage, false);
+                        continue;
+                    }
+
+                    // Kiểm tra số lượng tồn kho nếu là hóa đơn xuất
+                    if (hd->data_hd.loai == "X")
+                    {
+                        treeVatTu vt = search(root, input.MAVT);
+                        if (vt->data_vt.soLuongTon < numResult)
                         {
-                            errorMessage = "Tao vat tu moi that bai";
+                            errorMessage = "So luong ton kho hien tai: " + to_string(vt->data_vt.soLuongTon);
                             drawTableErrors(errorMessage, false);
                             continue;
                         }
                     }
-                    else
+                    ShowCur(false);
+                    drawTableErrors("", false);
+                    input.soLuong = numResult;
+                    drawTableErrors("Dang den trang tao vat tu...", false);
+                    Sleep(1500);
+                    drawTableErrors("", false);
+                    fillAreaColor(x + 76, y, 41, 15, LIGHTGRAY);
+                    drawTableAddVatTuInCTHD(x + 7, y);
+                    nhapVatTu(root, x + 7, y, tempInput, input.soLuong, false, true);
+                    treeVatTu node = search(root, tempInput);
+                    SetColor(WHITE);
+                    gotoxy(0, 0);
+                    cout << node->data_vt.MAVT << " " << node->data_vt.TENVT;
+                    fillAreaColor(x + 76, y, 41, 9, LIGHTGRAY);
+                    drawTableUpdateChiTietHoaDon(x, y);
+                    found_vt = search(root, tempInput);
+                    if (found_vt == nullptr)
                     {
-                        drawTableErrors("", false);
-                        continue;
+                        drawTableErrors("Tao vat tu moi that bai", false);
+                        return;
                     }
                 }
             }
@@ -1204,7 +1182,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
             numResult = inputNumber(x + 94, y + 6, input.soLuong, 10, "So luong", moveNext, false);
             if (numResult == -1)
                 goto escButton;
-            if (numResult == -4)
+            if (numResult == -10)
                 goto saveButton;
 
             if (numResult <= 0)
@@ -1233,7 +1211,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
             numResult = inputNumber(x + 94, y + 8, input.VAT, 3, "VAT", moveNext, false);
             if (numResult == -1)
                 goto escButton;
-            if (numResult == -4)
+            if (numResult == -10)
                 goto saveButton;
 
             if (numResult < 0 || numResult > 100)
@@ -1250,7 +1228,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
             numResult = inputNumber(x + 94, y + 10, input.donGia, 10, "Don gia", moveNext, false);
             if (numResult == -1)
                 goto escButton;
-            if (numResult == -4)
+            if (numResult == -10)
                 goto saveButton;
 
             if (numResult <= 0)
@@ -1264,7 +1242,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
             input.donGia = numResult;
             break;
         escButton:
-            isESC = false;
+            isESC = true;
             return;
         saveButton:
             ShowCur(false);
@@ -1428,7 +1406,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
             numResult = inputNumber(x + 94, y + 6, input.soLuong, 10, "So luong", moveNext, false);
             if (numResult == -1)
                 goto escButton;
-            if (numResult == -4)
+            if (numResult == -10)
                 goto saveButton;
 
             if (numResult <= 0)
@@ -1460,7 +1438,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
             numResult = inputNumber(x + 94, y + 8, input.VAT, 3, "VAT", moveNext, false);
             if (numResult == -1)
                 goto escButton;
-            if (numResult == -4)
+            if (numResult == -10)
                 goto saveButton;
 
             if (numResult < 0 || numResult > 100)
@@ -1478,7 +1456,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
             numResult = inputNumber(x + 94, y + 10, input.donGia, 10, "Don gia", moveNext, false);
             if (numResult == -1)
                 goto escButton;
-            if (numResult == -4)
+            if (numResult == -10)
                 goto saveButton;
 
             if (numResult <= 0)
@@ -1690,6 +1668,10 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
                 drawTableErrors(errorMessage, false);
                 continue;
             }
+            for (char &c : tempInput)
+            {
+                c = std::toupper(c); // Chuyển từng ký tự sang chữ hoa
+            }
             so_hd = tempInput;
             drawTableErrors("", false);
             break;
@@ -1731,7 +1713,7 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
     float triGiaHD = tinhTriGiaHoaDon(found_hd->data_hd.firstCTHD);
     gotoxy(x + 15, y + 1);
     cout << found_hd->data_hd.SoHD;
-    gotoxy(x + 29, y + 1);
+    gotoxy(x + 42, y + 1);
     cout << (found_hd->data_hd.loai == "N" ? "Nhap" : "Xuat");
     gotoxy(x + 24, y + 3);
     cout << nv->MANV;
@@ -1973,7 +1955,8 @@ void inThongKeHoaDon(dsNhanVien &dsnv)
     while (1)
     {
         key = getch();
-        if(key == ESC) return;
+        if (key == ESC)
+            return;
     }
 }
 

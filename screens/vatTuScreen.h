@@ -16,17 +16,21 @@ void drawKeysGuideVatTu(int x, int y)
     cout << "MENU VAT TU";
     setColorByRequest(LIGHTGRAY, BLACK);
     gotoxy(x + 12 + space + 1, y + 26);
-    cout << "F1: Nhap VT";
+    cout << "F3: Nhap VT";
     gotoxy(x + 24 + 2 * space + 1, y + 26);
-    cout << "F2: Sua VT";
+    cout << "F4: Sua VT";
     gotoxy(x + 35 + 3 * space + 1, y + 26);
-    cout << "F3: Xoa VT";
+    cout << "DEL: Xoa VT";
     gotoxy(x + 46 + 4 * space + 1, y + 26);
     cout << "F5: Tim ten VT";
     gotoxy(x + 100, y + 26);
     cout << "ESC: Thoat";
 }
-
+void drawTableSuggestVatTu(int x, int y)
+{
+    //dung trong cthd, tim kiem real-time
+    fillAreaColor(x + 87, y + 6, 22, 5, LIGHTGRAY);
+}
 void drawTableSearchTenVatTu(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -55,6 +59,46 @@ void drawTableSearchTenVatTu(int x, int y)
     }
 }
 
+void drawTableAddVatTuInCTHD(int x, int y)
+{
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 69, y, 41, 13);
+    drawHCN(x + 100, y + 10, 8, 2);
+    drawHCN(x + 88, y + 10, 9, 2);
+    SetColor(BLACK);
+    gotoxy(x + 89, y + 11);
+    cout << "ESC: Huy";
+    gotoxy(x + 101, y + 11);
+    cout << "F10: Luu";
+    SetColor(GREEN);
+    gotoxy(x + 71, y + 5);
+    cout << "Toi da 10 ki tu";
+    gotoxy(x + 71, y + 7);
+    cout << "Toi da 20 ki tu";
+    gotoxy(x + 71, y + 9);
+    cout << "Toi da 6 ki tu";
+    SetColor(BLACK);
+    gotoxy(x + 82, y + 2);
+    cout << "THEM VAT TU";
+    gotoxy(x + 71, y + 4);
+    cout << "MA VAT TU      :";
+    gotoxy(x + 71, y + 6);
+    cout << "TEN VAT TU     :";
+    gotoxy(x + 71, y + 8);
+    cout << "DON VI TINH    :";
+    // to mau trang
+    for (int i = x + 87; i < x + 109; i++)
+    {
+        SetBGColor(BLACK);
+        gotoxy(i, y + 4);
+        cout << " ";
+        gotoxy(i, y + 6);
+        cout << " ";
+        gotoxy(i, y + 8);
+        cout << " ";
+    }
+}
+
 void drawTableUpdateVatTu(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -65,7 +109,7 @@ void drawTableUpdateVatTu(int x, int y)
     gotoxy(x + 89, y + 13);
     cout << "ESC: Huy";
     gotoxy(x + 101, y + 13);
-    cout << "F4: Luu";
+    cout << "F10: Luu";
     SetColor(GREEN);
     gotoxy(x + 71, y + 5);
     cout << "Toi da 10 ki tu";
@@ -149,14 +193,10 @@ void drawTablePrintVatTu(int x, int y, int w, int h)
     cout << "SL";
 }
 
-void drawTableSearchTenVatTu()
-{
-}
-
 void handleNavigationAddVatTu(treeVatTu &root, int x, int y)
 {
     drawTableUpdateVatTu(x, y);
-    nhapVatTu(root, x, y);
+    nhapVatTu(root, x, y, "", 0, true, false);
     clearTablePrint(x);
 }
 
@@ -481,28 +521,85 @@ void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
     treeVatTu result;
     drawTableSearchTenVatTu(x, y);
     drawTablePrintVatTu(x, y, 15, 23);
-    timKiemTenVatTu(root, x, y, result);
     bool isESC = false, isSaved = false;
+    timKiemTenVatTu(root, x, y, result, isESC);
     ShowCur(false);
-    drawTableErrors("F3 sua, F5 xoa", true);
-    Sleep(1500);
-    drawTableErrors("", true);
-    char key;
-    while (true)
+    if (isESC)
     {
-        key = _getch();
-        switch (key)
+
+        drawTableErrors("Dang thoat chuong trinh...", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        clearTablePrint(x);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        return;
+    }
+    else
+    {
+        drawTableErrors("F4 sua, DEL xoa", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        char key;
+        while (true)
         {
-        case F2:
-            drawTableErrors("Dang den trang sua vat tu", true);
-            Sleep(1500);
-            drawTableErrors("", true);
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-            drawTableUpdateVatTu(x, y);
-            suaVatTu(root, result->data_vt.MAVT, x, y, isESC, isSaved);
-            ShowCur(false);
-            if (isESC)
+            key = _getch();
+            switch (key)
             {
+            case F4:
+                drawTableErrors("Dang den trang sua vat tu", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                drawTableUpdateVatTu(x, y);
+                suaVatTu(root, result->data_vt.MAVT, x, y, isESC, isSaved);
+                ShowCur(false);
+                if (isESC)
+                {
+                    drawTableErrors("Dang thoat chuong trinh...", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    clearTablePrint(x);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    return;
+                }
+                if (isSaved)
+                {
+                    drawTableErrors("Sua vat tu thanh cong", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    clearTablePrint(x);
+                    return;
+                }
+                break;
+            case DEL:
+                drawTableErrors("Dang den trang xoa vat tu", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                drawTableUpdateVatTu(x, y);
+                xoaVatTu(root, result->data_vt.MAVT, x, y, isESC, isSaved);
+                ShowCur(false);
+                if (isESC)
+                {
+                    drawTableErrors("Dang thoat chuong trinh...", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    clearTablePrint(x);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    return;
+                }
+                if (isSaved)
+                {
+                    drawTableErrors("Xoa vat tu thanh cong", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    clearTablePrint(x);
+                    return;
+                }
+                break;
+            case ESC:
                 drawTableErrors("Dang thoat chuong trinh...", true);
                 Sleep(1500);
                 drawTableErrors("", true);
@@ -510,46 +607,6 @@ void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }
-            if (isSaved)
-            {
-                drawTableErrors("Xoa vat tu thanh cong", true);
-                Sleep(1500);
-                drawTableErrors("", true);
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                clearTablePrint(x);
-                return;
-            }
-            break;
-        case F3:
-            drawTableErrors("Dang den trang xoa vat tu", true);
-            Sleep(1500);
-            drawTableErrors("", true);
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-            drawTableUpdateVatTu(x, y);
-            xoaVatTu(root, result->data_vt.MAVT, x, y, isESC, isSaved);
-            ShowCur(false);
-            if (isESC)
-            {
-                drawTableErrors("Dang thoat chuong trinh...", true);
-                Sleep(1500);
-                drawTableErrors("", true);
-                clearTablePrint(x);
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                return;
-            }
-            if (isSaved)
-            {
-                drawTableErrors("Xoa vat tu thanh cong", true);
-                Sleep(1500);
-                drawTableErrors("", true);
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                clearTablePrint(x);
-                return;
-            }
-            break;
-        case ESC:
-            cout << "ESC";
-            return;
         }
     }
 }
@@ -591,13 +648,13 @@ void menuVatTu(treeVatTu &root, int x, int y)
         case TAB:
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
-        case F1:
+        case F3:
             handleNavigationAddVatTu(root, x, y);
             break;
-        case F2:
+        case F4:
             handleNavigationUpdateVatTu(root, x, y);
             break;
-        case F3:
+        case DEL:
             handleNavigationDeleteVatTu(root, x, y);
             break;
         case F5:
