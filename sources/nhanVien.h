@@ -3,6 +3,7 @@
 #include "../screens/vatTuScreen.h"
 #include "../screens/hoaDonScreen.h"
 void drawTableUpdateChiTietHoaDon(int x, int y);
+void clearTablePrintChiTietHoaDon(int x);
 #define MAX_VATTU 1000
 
 bool nhanVienEmpty(dsNhanVien &list)
@@ -901,6 +902,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
     new_hd = new dsHoaDon;
     new_hd->data_hd.firstCTHD = nullptr;
     new_hd->next = nullptr;
+    layNgayThangNam(input.day, input.month, input.year);
     while (true)
     {
         displayField(x + 94, y + 4, input.SoHD, currentRow == 0, 20);
@@ -1074,7 +1076,8 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
     input.soLuong = 0;
     input.donGia = 0;
     input.VAT = 0;
-
+    string TENVT;
+    string DVT;
     string errorMessage;
     int currentRow = 0;
     bool hasError;
@@ -1082,18 +1085,20 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
     double numResult;
     bool moveNext;
     string tempInput;
+    string donGia;
     treeVatTu found_vt = nullptr;
     while (true)
     {
-        displayField(x + 94, y + 4, input.MAVT, currentRow == 0, 10);
-        displayField(x + 94, y + 6, input.soLuong > 0 ? to_string(input.soLuong) : "", currentRow == 1, 10);
-        displayField(x + 94, y + 8, input.VAT > 0 ? to_string(input.VAT) : "", currentRow == 2, 3);
-        displayField(x + 94, y + 10, input.donGia > 0 ? to_string(input.donGia) : "", currentRow == 3, 10);
+        displayField(x + 94, y + 4, TENVT, false, 20);
+        displayField(x + 94, y + 6, input.MAVT, currentRow == 0, 10);
+        displayField(x + 94, y + 8, input.soLuong > 0 ? to_string(input.soLuong) + " " + DVT : "", currentRow == 1, 6);
+        displayField(x + 94, y + 10, input.VAT > 0 ? to_string(input.VAT) + "%" : "", currentRow == 2, 3);
+        displayField(x + 94, y + 12, input.donGia > 0 ? donGia + " VND" : "", currentRow == 3, 9);
 
         switch (currentRow)
         {
         case 0: // Nhập mã vật tư
-            result = inputString(x + 94, y + 4, input.MAVT, 10, "Ma vat tu", moveNext, false);
+            result = inputString(x + 94, y + 6, input.MAVT, 10, "Ma vat tu", moveNext, false);
             if (result == "ESC")
                 goto escButton;
             if (result == "F10")
@@ -1163,7 +1168,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
                     SetColor(WHITE);
                     gotoxy(0, 0);
                     cout << node->data_vt.MAVT << " " << node->data_vt.TENVT;
-                    fillAreaColor(x + 76, y, 41, 9, LIGHTGRAY);
+                    fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                     drawTableUpdateChiTietHoaDon(x, y);
                     found_vt = search(root, tempInput);
                     if (found_vt == nullptr)
@@ -1173,13 +1178,24 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
                     }
                 }
             }
+            else
+            {
+                TENVT = found_vt->data_vt.TENVT;
+                DVT = found_vt->data_vt.DVT;
+            }
 
             drawTableErrors("", false);
             input.MAVT = tempInput;
             break;
 
         case 1: // Nhập số lượng
-            numResult = inputNumber(x + 94, y + 6, input.soLuong, 10, "So luong", moveNext, false);
+            for (int i = x + 94; i < x + 116; i++)
+            {
+                SetBGColor(BLACK);
+                gotoxy(i, y + 8);
+                cout << " ";
+            }
+            numResult = inputNumber(x + 94, y + 8, input.soLuong, 6, "So luong", moveNext, false);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -10)
@@ -1208,7 +1224,13 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
             input.soLuong = numResult;
             break;
         case 2: // Nhập VAT
-            numResult = inputNumber(x + 94, y + 8, input.VAT, 3, "VAT", moveNext, false);
+            for (int i = x + 94; i < x + 116; i++)
+            {
+                SetBGColor(BLACK);
+                gotoxy(i, y + 10);
+                cout << " ";
+            }
+            numResult = inputNumber(x + 94, y + 10, input.VAT, 3, "VAT", moveNext, false);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -10)
@@ -1225,7 +1247,13 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
             input.VAT = numResult;
             break;
         case 3: // Nhập đơn giá
-            numResult = inputNumber(x + 94, y + 10, input.donGia, 10, "Don gia", moveNext, false);
+            for (int i = x + 94; i < x + 116; i++)
+            {
+                SetBGColor(BLACK);
+                gotoxy(i, y + 12);
+                cout << " ";
+            }
+            numResult = inputNumber(x + 94, y + 12, input.donGia, 9, "Don gia", moveNext, false);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -10)
@@ -1237,9 +1265,9 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
                 drawTableErrors(errorMessage, false);
                 continue;
             }
-
             drawTableErrors("", false);
             input.donGia = numResult;
+            donGia = formatMoney(input.donGia);
             break;
         escButton:
             isESC = true;
@@ -1305,7 +1333,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
 }
 
 // Hàm xóa chi tiết hóa đơn
-void xoaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &hd, string MAVT, bool &isESC, bool &isSaved)
+void xoaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &hd, string MAVT, int x, int y, bool &isESC, bool &isSaved)
 {
     if (hd == nullptr || hd->data_hd.firstCTHD == nullptr)
     {
@@ -1328,41 +1356,63 @@ void xoaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
         cout << "Khong tim thay chi tiet hoa don voi ma vat tu nay!" << endl;
         return;
     }
-
-    // Cập nhật số lượng tồn kho trước khi xóa
+    // string errorMessage;
+    // int currentRow = 1; // Bắt đầu từ số lượng (không cho sửa mã vật tư)
+    // bool hasError;
+    // double numResult;
+    // bool moveNext;
+    char key;
     treeVatTu vt = search(root, MAVT);
-    if (vt != nullptr)
-    {
-        if (hd->data_hd.loai == "N")
-        {
-            // Nếu là hóa đơn nhập, trừ số lượng tồn
-            vt->data_vt.soLuongTon -= current->data_cthd.soLuong;
-        }
-        else if (hd->data_hd.loai == "X")
-        {
-            // Nếu là hóa đơn xuất, cộng lại số lượng tồn
-            vt->data_vt.soLuongTon += current->data_cthd.soLuong;
-        }
-    }
 
-    // Xóa node khỏi danh sách
-    if (prev == nullptr)
+    displayField(x + 94, y + 4, vt->data_vt.TENVT, false, 10);
+    displayField(x + 94, y + 6, current->data_cthd.MAVT, false, 10);
+    displayField(x + 94, y + 8, to_string(current->data_cthd.soLuong), false, 10);
+    displayField(x + 94, y + 10, to_string(current->data_cthd.VAT), false, 3);
+    displayField(x + 94, y + 12, to_string(current->data_cthd.donGia), false, 10);
+    while (true)
     {
-        // Xóa node đầu
-        hd->data_hd.firstCTHD = current->next;
+        key = getch();
+        if (key == F10)
+        {
+            if (vt != nullptr)
+            {
+                if (hd->data_hd.loai == "N")
+                {
+                    // Nếu là hóa đơn nhập, trừ số lượng tồn
+                    vt->data_vt.soLuongTon -= current->data_cthd.soLuong;
+                }
+                else if (hd->data_hd.loai == "X")
+                {
+                    // Nếu là hóa đơn xuất, cộng lại số lượng tồn
+                    vt->data_vt.soLuongTon += current->data_cthd.soLuong;
+                }
+            }
+            if (prev == nullptr)
+            {
+                // Xóa node đầu
+                hd->data_hd.firstCTHD = current->next;
+            }
+            else
+            {
+                prev->next = current->next;
+            }
+            delete current;
+            isSaved = true;
+            return;
+        }
+        else if (key == ESC)
+        {
+            isESC = true;
+            return;
+        }
     }
-    else
-    {
-        prev->next = current->next;
-    }
-
-    delete current;
-    isSaved = true;
+    // Cập nhật số lượng tồn kho trước khi xóa
 }
 
 // Hàm sửa chi tiết hóa đơn
 void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &hd, string MAVT, int x, int y, bool &isESC, bool &isSaved)
 {
+    treeVatTu result = search(root, MAVT);
     if (hd == nullptr || hd->data_hd.firstCTHD == nullptr)
     {
         cout << "Hoa don khong ton tai hoac khong co chi tiet!" << endl;
@@ -1394,16 +1444,16 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
 
     while (true)
     {
-        // Hiển thị các trường thông tin
-        displayField(x + 94, y + 4, input.MAVT, false, 10); // Mã vật tư - readonly
-        displayField(x + 94, y + 6, input.soLuong > 0 ? to_string(input.soLuong) : "", currentRow == 1, 10);
-        displayField(x + 94, y + 8, input.VAT > 0 ? to_string(input.VAT) : "", currentRow == 2, 3);
-        displayField(x + 94, y + 10, input.donGia > 0 ? to_string(input.donGia) : "", currentRow == 3, 10);
+        displayField(x + 94, y + 4, result->data_vt.TENVT, false, 10);
+        displayField(x + 94, y + 6, input.MAVT, false, 10);
+        displayField(x + 94, y + 8, input.soLuong > 0 ? to_string(input.soLuong) : "", currentRow == 1, 10);
+        displayField(x + 94, y + 10, input.VAT > 0 ? to_string(input.VAT) : "", currentRow == 2, 3);
+        displayField(x + 94, y + 12, input.donGia > 0 ? to_string(input.donGia) : "", currentRow == 3, 10);
 
         switch (currentRow)
         {
         case 1: // Sửa số lượng
-            numResult = inputNumber(x + 94, y + 6, input.soLuong, 10, "So luong", moveNext, false);
+            numResult = inputNumber(x + 94, y + 8, input.soLuong, 10, "So luong", moveNext, false);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -10)
@@ -1435,7 +1485,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
             break;
 
         case 2: // Sửa VAT
-            numResult = inputNumber(x + 94, y + 8, input.VAT, 3, "VAT", moveNext, false);
+            numResult = inputNumber(x + 94, y + 10, input.VAT, 3, "VAT", moveNext, false);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -10)
@@ -1453,7 +1503,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
             break;
 
         case 3: // Sửa đơn giá
-            numResult = inputNumber(x + 94, y + 10, input.donGia, 10, "Don gia", moveNext, false);
+            numResult = inputNumber(x + 94, y + 12, input.donGia, 10, "Don gia", moveNext, false);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -10)
@@ -1471,9 +1521,8 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
             break;
 
         escButton:
-            isESC = false;
+            isESC = true;
             return;
-
         saveButton:
             ShowCur(false);
             if (!moveNext && input.soLuong > 0 && input.donGia > 0 && input.VAT >= 0)
@@ -1491,7 +1540,6 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
                         vt->data_vt.soLuongTon = vt->data_vt.soLuongTon + oldSoLuong - input.soLuong;
                     }
                 }
-
                 // Cập nhật thông tin chi tiết hóa đơn
                 current->data_cthd = input;
                 isSaved = true;
@@ -1499,8 +1547,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
             }
             else
             {
-                errorMessage = "Thieu thong tin. Chua cap nhat chi tiet hoa don";
-                drawTableErrors(errorMessage, false);
+                drawTableErrors("Thieu thong tin. Chua cap nhat chi tiet hoa don", false);
                 Sleep(1500);
                 drawTableErrors("", false);
             }
@@ -1545,13 +1592,13 @@ float tinhTriGiaHoaDon(ptr_DSCTHD ct)
     float totalValue = 0;
     while (ct)
     {
-        totalValue += ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 + ct->data_cthd.VAT / 100);
+        totalValue += ct->data_cthd.soLuong * (float)ct->data_cthd.donGia / 1000 * (1 + (float)ct->data_cthd.VAT / 100);
         ct = ct->next;
     }
-    return totalValue;
+    return totalValue * 1000;
 }
 
-void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int pageNumber, int selectedRow, int &totalPages, int x, int y, string &errorMessage, bool &isESC, bool &isSaved)
+void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int pageNumber, int selectedRow, int &totalPages, int x, int y, string &errorMessage, bool &isESC, bool &isSaved, bool &isEmpty)
 {
     string tempInput;
     string result;
@@ -1578,6 +1625,11 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
     nodeChiTietHoaDon *arrCTHD = new nodeChiTietHoaDon[n];
     nodeVatTu *arrVT = new nodeVatTu[n];
     ptr_DSCTHD current_cthd = found_hd->data_hd.firstCTHD;
+    if (current_cthd == nullptr)
+    {
+        isEmpty = true;
+        return;
+    }
     for (int i = 0; i < n && current_cthd != nullptr; i++)
     {
         arrCTHD[i].triGia = 0;
@@ -1586,17 +1638,16 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
         treeVatTu node = search(root, current_cthd->data_cthd.MAVT);
         if (node == nullptr)
         {
-            errorMessage = "Khong tim thay ma vat tu";
-            drawTableErrors(errorMessage, false);
+            drawTableErrors("Khong tim thay ma vat tu", false);
             break;
         }
         else
         {
             arrVT[i].TENVT = node->data_vt.TENVT;
             arrCTHD[i].soLuong = current_cthd->data_cthd.soLuong;
-            arrCTHD[i].donGia = current_cthd->data_cthd.donGia;
+            arrCTHD[i].donGia = (float)current_cthd->data_cthd.donGia / 1000;
             arrCTHD[i].VAT = current_cthd->data_cthd.VAT;
-            arrCTHD[i].triGia += arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + arrCTHD[i].VAT / 100);
+            arrCTHD[i].triGia = arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + (float)(arrCTHD[i].VAT) / 100);
         }
         current_cthd = current_cthd->next;
     }
@@ -1627,7 +1678,8 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
         currentRow++;
     }
     gotoxy(x + 18, y + 23);
-    cout << triGiaHD << " nghin dong";
+    string triGia = formatMoney(triGiaHD);
+    cout << triGia << " VND";
     totalPages = ceil((float)n / HDROWS);
     gotoxy(52, 26);
     cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
@@ -1751,9 +1803,9 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
         {
             arrVT[i].TENVT = node->data_vt.TENVT;
             arrCTHD[i].soLuong = current_cthd->data_cthd.soLuong;
-            arrCTHD[i].donGia = current_cthd->data_cthd.donGia;
+            arrCTHD[i].donGia = (float)current_cthd->data_cthd.donGia / 1000;
             arrCTHD[i].VAT = current_cthd->data_cthd.VAT;
-            arrCTHD[i].triGia += arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + arrCTHD[i].VAT / 100);
+            arrCTHD[i].triGia += arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + (float)arrCTHD[i].VAT / 100);
         }
         current_cthd = current_cthd->next;
     }
@@ -1784,7 +1836,8 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
         currentRow++;
     }
     gotoxy(x + 18, y + 23);
-    cout << triGiaHD << " nghin dong";
+    string triGia = formatMoney(triGiaHD);
+    cout << triGia << " VND";
     totalPages = ceil((float)n / HDROWS);
     gotoxy(6, 26);
     cout << "TAB: Di chuyen den trang can tim";

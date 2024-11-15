@@ -491,3 +491,47 @@ bool timeConflict(int day1, int month1, int year1, int day2, int month2, int yea
     }
     return false;
 }
+void layNgayThangNam(int &ngay, int &thang, int &nam)
+{
+    time_t t = time(nullptr);
+    tm *now = localtime(&t);
+
+    ngay = now->tm_mday;
+    thang = now->tm_mon + 1;   // Tháng bắt đầu từ 0 nên cần cộng 1
+    nam = now->tm_year + 1900; // Năm tính từ 1900 nên cộng thêm 1900
+}
+
+string formatMoney(int amount)
+{
+    stringstream ss;
+
+    if (amount < 1000)
+    {
+        ss << amount;
+    }
+    else
+    {
+        int billions = amount / 1000000000;
+        int millions = (amount / 1000000) % 1000;
+        int thousands = (amount / 1000) % 1000;
+        int hundreds = amount % 1000;
+
+        if (billions > 0)
+        {
+            ss << billions << "." << setw(3) << setfill('0') << millions << "." << setw(3) << setfill('0') << thousands << "." << setw(3) << setfill('0') << hundreds;
+        }
+        else if (millions > 0)
+        {
+            ss << millions << "." << setw(3) << setfill('0') << thousands << "." << setw(3) << setfill('0') << hundreds;
+        }
+        else if (thousands > 0)
+        {
+            ss << thousands << "." << setw(3) << setfill('0') << hundreds;
+        }
+        else
+        {
+            ss << hundreds;
+        }
+    }
+    return ss.str();
+}

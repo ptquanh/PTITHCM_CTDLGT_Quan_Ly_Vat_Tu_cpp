@@ -1,7 +1,7 @@
 Nv7|Phan Tuan Quoc 12345678|Anh|Nam
 -Hd1|123|121|2024|X
 +Vt001|10|0010|10
-+Vt002|5|1|500
++Vt002|5|1|500000000
 +Vt003|2|1|10
 +Vt004|5|10|500
 +Vt005|2|1|10
@@ -20,11 +20,11 @@ Nv17|Nguyen Van|An|Nam
 \
 Nv1|Le Van|Dai|Nam
 -Hd2|1|5|2024|X
-+Vt002|5|1|500
++Vt002|5|1|50000
 \
 Nv1|Du Hoang|Phi|Nam
 -Hd3|1|12|2024|N
-+Vt030|5|10|500
++Vt030|5|10|50000
 \
 Nv8|Tran Van|Hung|Nam
 \

@@ -73,8 +73,8 @@ struct nodeChiTietHoaDon
 {
     string MAVT;
     int soLuong;
-    float donGia;
-    float VAT;
+    int donGia;
+    int VAT;
     float triGia;
 };
 struct dsChiTietHoaDon
@@ -129,5 +129,6 @@ time_t to_time_t(int day, int month, int year)
 struct doanhThuVatTu
 {
     string MAVT;
+    string TENVT;
     float doanhThu;
 };
