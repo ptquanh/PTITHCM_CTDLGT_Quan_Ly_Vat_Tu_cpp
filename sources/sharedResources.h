@@ -535,3 +535,121 @@ string formatMoney(int amount)
     }
     return ss.str();
 }
+// Hàm kiểm tra xem một ký tự có tồn tại trong chuỗi (không phân biệt hoa/thường)
+bool hasCharacter(const string &searchStr, const string &targetStr)
+{
+    if (searchStr.empty() || targetStr.empty())
+        return false;
+
+    string searchLower, targetLower;
+
+    // Chuyển cả 2 chuỗi về chữ thường để so sánh
+    for (char c : searchStr)
+        searchLower += tolower(c);
+    for (char c : targetStr)
+        targetLower += tolower(c);
+
+    // Kiểm tra từng ký tự
+    if (searchStr.length() == 1)
+    {
+        for (char c : targetLower)
+        {
+            if (c == searchLower[0])
+                return true;
+        }
+    }
+    // Kiểm tra chuỗi con
+    else
+    {
+        int n = targetLower.length();
+        int m = searchLower.length();
+
+        for (int i = 0; i <= n - m; i++)
+        {
+            bool found = true;
+            for (int j = 0; j < m; j++)
+            {
+                if (targetLower[i + j] != searchLower[j])
+                {
+                    found = false;
+                    break;
+                }
+            }
+            if (found)
+                return true;
+        }
+    }
+    return false;
+}
+// Hàm đánh dấu ký tự tìm thấy trong chuỗi
+void printHighlightedText(const string &text, const string &searchStr)
+{
+    if (text.empty() || searchStr.empty())
+        return;
+
+    string textLower = text;
+    string searchLower = searchStr;
+
+    // Chuyển về chữ thường để so sánh
+    for (int i = 0; i < text.length(); i++)
+        textLower[i] = tolower(textLower[i]);
+    for (int i = 0; i < searchStr.length(); i++)
+        searchLower[i] = tolower(searchLower[i]);
+
+    for (int i = 0; i < text.length(); i++)
+    {
+        bool isMatch = false;
+        if (searchStr.length() == 1)
+        {
+            // Tìm ký tự đơn
+            if (textLower[i] == searchLower[0])
+            {
+                isMatch = true;
+            }
+        }
+        else
+        {
+            // Tìm chuỗi
+            if (i <= textLower.length() - searchLower.length())
+            {
+                bool found = true;
+                for (int j = 0; j < searchLower.length(); j++)
+                {
+                    if (textLower[i + j] != searchLower[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    isMatch = true;
+                }
+            }
+        }
+
+        if (isMatch)
+        {
+            SetBGColor(BROWN); // Đặt nền màu xanh
+            if (searchStr.length() == 1)
+            {
+                cout << text[i];
+                SetBGColor(LIGHTGRAY); // Reset về nền đen
+            }
+            else
+            {
+                // In cả chuỗi tìm thấy với nền xanh
+                for (int j = 0; j < searchStr.length(); j++)
+                {
+                    cout << text[i + j];
+                }
+                i += searchStr.length() - 1;
+                SetBGColor(LIGHTGRAY); // Reset về nền đen
+            }
+        }
+        else
+        {
+            cout << text[i];
+        }
+    }
+}

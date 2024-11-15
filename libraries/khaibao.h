@@ -114,7 +114,7 @@ struct nhanVien
 struct dsNhanVien
 {
     nhanVien *nodes[MaxNhanVien];
-    int CountNV = 0;
+    int countNV = 0;
 };
 // ================== khac ======================
 time_t to_time_t(int day, int month, int year)

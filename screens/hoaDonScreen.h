@@ -282,7 +282,7 @@ void drawTablePrintHoaDon(int x, int y, int w, int h)
 
 void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, string &currentMANV, int x, int y, bool &isSuccess)
 {
-    int n = dsnv.CountNV;
+    int n = dsnv.countNV;
     string errorMessage;
     int totalPages = ceil((float)n / ROWS);
     int currentPage = 1;
@@ -393,7 +393,7 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_
             }
             if (isSaved)
             {
-                n = dsnv.CountNV;
+                n = dsnv.countNV;
                 totalPages = ceil((float)n / ROWS);
                 if (currentPage > totalPages)
                 {
@@ -428,7 +428,7 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_
 
 void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, int x, int y, bool &isAdding)
 {
-    int n = dsnv.CountNV;
+    int n = dsnv.countNV;
     int totalPages = ceil((float)n / HDROWS);
     int currentPage = 1;
     int selectedRow = 0;
@@ -455,7 +455,7 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
     }
     if (isSaved)
     {
-        n = dsnv.CountNV;
+        n = dsnv.countNV;
         totalPages = ceil((float)n / HDROWS);
         if (currentPage > totalPages)
         {
@@ -588,7 +588,7 @@ void handleNavigationUpdateChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_
             }
             if (isSaved)
             {
-                n = dsnv.CountNV;
+                n = dsnv.countNV;
                 totalPages = ceil((float)n / HDROWS);
                 if (currentPage > totalPages)
                 {
@@ -729,7 +729,7 @@ void handleNavigationDeleteChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_
             }
             if (isSaved)
             {
-                n = dsnv.CountNV;
+                n = dsnv.countNV;
                 totalPages = ceil((float)n / HDROWS);
                 if (currentPage > totalPages)
                 {
@@ -832,7 +832,7 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
 
 void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
 {
-    int n = dsnv.CountNV;
+    int n = dsnv.countNV;
     int totalPages = ceil((float)n / ROWS);
     int currentPage = 1;
     string errorMessage;

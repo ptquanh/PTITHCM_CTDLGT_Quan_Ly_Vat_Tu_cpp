@@ -120,7 +120,128 @@ void drawTablePrintNhanVien(int x, int y, int w, int h)
     gotoxy(x + 54, y + 1);
     cout << "PHAI";
 }
+void drawTableSearchTenNhanVien(int x, int y)
+{
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 69, y, 41, 9);
+    drawHCN(x + 85, y + 6, 9, 2);
+    drawHCN(x + 97, y + 6, 11, 2);
+    SetColor(BLACK);
+    gotoxy(x + 86, y + 7);
+    cout << "ESC: Huy";
+    gotoxy(x + 98, y + 7);
+    cout << "ENTER: Tim";
+    SetColor(GREEN);
+    gotoxy(x + 71, y + 5);
+    cout << "Toi da 20 ki tu";
+    SetColor(BLACK);
+    gotoxy(x + 82, y + 2);
+    cout << "TIM KIEM NHAN VIEN";
+    gotoxy(x + 71, y + 4);
+    cout << "TEN NHAN VIEN  :";
+    // to mau trang
+    for (int i = x + 87; i < x + 109; i++)
+    {
+        SetBGColor(BLACK);
+        gotoxy(i, y + 4);
+        cout << " ";
+    }
+}
 
+void handleNavigationSearchNhanVien(dsNhanVien &dsnv, int x, int y)
+{
+   nhanVien *result;
+    drawTableSearchTenNhanVien(x, y);
+    drawTablePrintNhanVien(x, y, 15, 23);
+    bool isESC = false, isSaved = false;
+    timKiemTenNhanVien(dsnv, x, y, result, isESC);
+    ShowCur(false);
+    if (isESC)
+    {
+
+        drawTableErrors("Dang thoat chuong trinh...", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        clearTablePrint(x);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        return;
+    }
+    else
+    {
+        drawTableErrors("F4 sua, DEL xoa", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        char key;
+        while (true)
+        {
+            key = _getch();
+            switch (key)
+            {
+            case F4:
+                drawTableErrors("Dang den trang sua vat tu", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                drawTableUpdateVatTu(x, y);
+                // suaVatTu(root, result->data_vt.MAVT, x, y, isESC, isSaved);
+                ShowCur(false);
+                if (isESC)
+                {
+                    drawTableErrors("Dang thoat chuong trinh...", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    clearTablePrint(x);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    return;
+                }
+                if (isSaved)
+                {
+                    drawTableErrors("Sua vat tu thanh cong", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    clearTablePrint(x);
+                    return;
+                }
+                break;
+            case DEL:
+                drawTableErrors("Dang den trang xoa vat tu", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                drawTableUpdateVatTu(x, y);
+                // xoaVatTu(root, result->data_vt.MAVT, x, y, isESC, isSaved);
+                ShowCur(false);
+                if (isESC)
+                {
+                    drawTableErrors("Dang thoat chuong trinh...", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    clearTablePrint(x);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    return;
+                }
+                if (isSaved)
+                {
+                    drawTableErrors("Xoa vat tu thanh cong", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    clearTablePrint(x);
+                    return;
+                }
+                break;
+            case ESC:
+                drawTableErrors("Dang thoat chuong trinh...", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                clearTablePrint(x);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                return;
+            }
+        }
+    }
+}
 void handleNavigationAddNhanVien(dsNhanVien &dsnv, int x, int y)
 {
     drawTableUpdateNhanVien(x, y);
@@ -130,7 +251,7 @@ void handleNavigationAddNhanVien(dsNhanVien &dsnv, int x, int y)
 
 void handleNavigationUpdateNhanVien(dsNhanVien &dsnv, int x, int y)
 {
-    int n = dsnv.CountNV;
+    int n = dsnv.countNV;
     string errorMessage;
     string currentMANV;
     int totalPages = ceil((float)n / ROWS);
@@ -215,7 +336,7 @@ void handleNavigationUpdateNhanVien(dsNhanVien &dsnv, int x, int y)
             }
             if (isSaved)
             {
-                n = dsnv.CountNV;
+                n = dsnv.countNV;
                 totalPages = ceil((float)n / ROWS);
                 if (currentPage > totalPages)
                 {
@@ -250,7 +371,7 @@ void handleNavigationUpdateNhanVien(dsNhanVien &dsnv, int x, int y)
 
 void handleNavigationDeleteNhanVien(dsNhanVien &dsnv, int x, int y)
 {
-    int n = dsnv.CountNV;
+    int n = dsnv.countNV;
     string errorMessage;
     string currentMANV;
     int totalPages = ceil((float)n / ROWS);
@@ -336,7 +457,7 @@ void handleNavigationDeleteNhanVien(dsNhanVien &dsnv, int x, int y)
             }
             if (isSaved)
             {
-                n = dsnv.CountNV;
+                n = dsnv.countNV;
                 totalPages = ceil((float)n / ROWS);
                 if (currentPage > totalPages)
                 {
@@ -372,7 +493,7 @@ void handleNavigationDeleteNhanVien(dsNhanVien &dsnv, int x, int y)
 void handleNavigationListNhanVien(dsNhanVien dsnv, int x, int y)
 {
     string errorMessage;
-    int n = dsnv.CountNV;
+    int n = dsnv.countNV;
     int totalPages = ceil((float)n / ROWS);
     int currentPage = 1;
     int selectedRow = -1;
@@ -416,7 +537,7 @@ void handleNavigationListNhanVien(dsNhanVien dsnv, int x, int y)
 
 void menuNhanVien(dsNhanVien &dsnv, int x, int y)
 {
-    int n = dsnv.CountNV;
+    int n = dsnv.countNV;
     int totalPages = ceil((float)n / ROWS);
     int currentPage = 1;
     string errorMessage;
@@ -457,8 +578,7 @@ void menuNhanVien(dsNhanVien &dsnv, int x, int y)
             handleNavigationDeleteNhanVien(dsnv, x, y);
             break;
         case F5:
-            gotoxy(0, 0);
-            cout << "F5";
+            handleNavigationSearchNhanVien(dsnv,x,y);
             break;
         case ESC:
             errorMessage = "Dang thoat chuong trinh...";

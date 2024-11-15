@@ -8,11 +8,11 @@ void clearTablePrintChiTietHoaDon(int x);
 
 bool nhanVienEmpty(dsNhanVien &list)
 {
-    return list.CountNV == 0;
+    return list.countNV == 0;
 }
 bool isMANV(dsNhanVien &list, string maso)
 {
-    for (int i = 0; i < list.CountNV; i++)
+    for (int i = 0; i < list.countNV; i++)
     {
         if (list.nodes[i]->MANV == maso)
         {
@@ -116,7 +116,7 @@ bool isMANV(dsNhanVien &list, string maso)
 
 int searchNhanVien(dsNhanVien &list, string manv)
 {
-    for (int i = 0; i < list.CountNV; i++)
+    for (int i = 0; i < list.countNV; i++)
     {
         if (list.nodes[i]->MANV == manv)
         {
@@ -129,7 +129,7 @@ int searchNhanVien(dsNhanVien &list, string manv)
 int TimViTriChen(dsNhanVien &list, nhanVien *nhanvienmoi)
 {
     int low = 0;                 // Vị trí đầu danh sách
-    int high = list.CountNV - 1; // Vị trí cuối danh sách
+    int high = list.countNV - 1; // Vị trí cuối danh sách
     while (low <= high)
     {
         int mid = (low + high) / 2;                  // Tìm trung điểm
@@ -154,7 +154,7 @@ int TimViTriChen(dsNhanVien &list, nhanVien *nhanvienmoi)
 
 void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
 {
-    if (list.CountNV >= MaxNhanVien)
+    if (list.countNV >= MaxNhanVien)
     {
         cout << "Loi: So luong nhan vien da dat toi da. Khong the them nhan vien moi!" << endl;
         return;
@@ -162,12 +162,12 @@ void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
 
     // int pos = TimViTriChen(list, nhanvienmoi);
     int pos = 0;
-    while (pos < list.CountNV && (nhanvienmoi->TEN > list.nodes[pos]->TEN ||
+    while (pos < list.countNV && (nhanvienmoi->TEN > list.nodes[pos]->TEN ||
                                   (nhanvienmoi->TEN == list.nodes[pos]->TEN && nhanvienmoi->HO >= list.nodes[pos]->HO)))
     {
         pos++;
     }
-    for (int i = list.CountNV; i > pos; i--)
+    for (int i = list.countNV; i > pos; i--)
     {
         list.nodes[i] = list.nodes[i - 1];
     }
@@ -215,11 +215,11 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
             return;
         case F10:
             delete list.nodes[pos];
-            for (int i = pos; i < list.CountNV - 1; i++)
+            for (int i = pos; i < list.countNV - 1; i++)
             {
                 list.nodes[i] = list.nodes[i + 1];
             }
-            list.CountNV--;
+            list.countNV--;
             isSaved = true;
             return;
         }
@@ -228,7 +228,7 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
 
 void nhapNhanVien(dsNhanVien &list, int x, int y)
 {
-    if (list.CountNV >= MaxNhanVien)
+    if (list.countNV >= MaxNhanVien)
     {
         string errorMessage = "So luong nhan vien da dat toi da!";
         drawTableErrors(errorMessage, true);
@@ -361,15 +361,15 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
                 !input.TEN.empty() && !input.PHAI.empty())
             {
                 nhanVien *nv = new nhanVien(input);
-                if (list.CountNV == 0)
+                if (list.countNV == 0)
                 {
-                    list.nodes[list.CountNV] = nv;
+                    list.nodes[list.countNV] = nv;
                 }
                 else
                 {
                     chenNhanVien(list, nv);
                 }
-                list.CountNV++;
+                list.countNV++;
 
                 errorMessage = "Them nhan vien thanh cong";
                 drawTableErrors(errorMessage, true);
@@ -524,15 +524,15 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
                     currentNode->PHAI = input.PHAI;
 
                     // Xóa node khỏi vị trí hiện tại
-                    for (int i = pos; i < list.CountNV - 1; i++)
+                    for (int i = pos; i < list.countNV - 1; i++)
                     {
                         list.nodes[i] = list.nodes[i + 1];
                     }
-                    list.CountNV--;
+                    list.countNV--;
 
                     // Chèn lại vào vị trí mới theo thứ tự
                     chenNhanVien(list, currentNode);
-                    list.CountNV++;
+                    list.countNV++;
                 }
                 else
                 {
@@ -559,12 +559,12 @@ void xoaDSNV(dsNhanVien &list) // goi khi ket thuc
     if (nhanVienEmpty(list))
         return;
 
-    for (int i = 0; i < list.CountNV; i++)
+    for (int i = 0; i < list.countNV; i++)
     {
         delete list.nodes[i];
         list.nodes[i] = NULL;
     }
-    list.CountNV = 0;
+    list.countNV = 0;
 }
 
 void Write_CTHoaDon(ofstream &file, nodeChiTietHoaDon &cthd)
@@ -612,7 +612,7 @@ void writeFile_dsNhanVien(dsNhanVien &dsNV)
         return;
     }
 
-    for (int i = 0; i < dsNV.CountNV; ++i)
+    for (int i = 0; i < dsNV.countNV; ++i)
     {
         Write_NhanVien(fileout, *dsNV.nodes[i]);
     }
@@ -765,24 +765,24 @@ void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
     filein.close();
 
     // Reset danh sách nhân viên hiện tại
-    dsNV.CountNV = 0;
+    dsNV.countNV = 0;
 
     // Chèn từng nhân viên vào danh sách chính theo thứ tự
     for (int i = 0; i < tempCount; i++)
     {
-        if (dsNV.CountNV >= MaxNhanVien)
+        if (dsNV.countNV >= MaxNhanVien)
         {
             cout << "Danh sach nhan vien da day!" << endl;
             break;
         }
         chenNhanVien(dsNV, tempNodes[i]);
-        dsNV.CountNV++;
+        dsNV.countNV++;
     }
 }
 // ==============================================
 void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x, string &errorMessage)
 {
-    int n = list.CountNV;
+    int n = list.countNV;
     if (n == 0)
     {
         errorMessage = "Khong co du lieu vat tu";
@@ -822,10 +822,337 @@ void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x
     gotoxy(52, 26);
     cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
 }
+int countSearchResults(dsNhanVien &ds, const string &kyTu)
+{
+    int count = 0;
+    for (int i = 0; i < ds.countNV; i++)
+    {
+        if (hasCharacter(kyTu, ds.nodes[i]->HO + " " + ds.nodes[i]->TEN))
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+// Hàm lưu kết quả tìm kiếm vào mảng
+void storeSearchResults(dsNhanVien &ds, const string &kyTu, nhanVien *results[], int &index)
+{
+    index = 0;
+    for (int i = 0; i < ds.countNV; i++)
+    {
+        if (hasCharacter(kyTu, ds.nodes[i]->HO + " " + ds.nodes[i]->TEN))
+        {
+            results[index++] = ds.nodes[i];
+        }
+    }
+}
+void displaySearchResults(nhanVien *results[], int n, int pageNumber, int selectedRow, int x, const string &searchStr)
+{
+    bool hasError;
+    setColorByRequest(LIGHTGRAY, BLACK);
+    int currentRow = 5;
+    int startIndex = (pageNumber - 1) * ROWS;
+    int endIndex = min(startIndex + ROWS, n);
+
+    for (int i = startIndex; i < endIndex; i++)
+    {
+        gotoxy(x + 3, currentRow);
+        if (selectedRow == -1)
+            cout << results[i]->MANV;
+        else if (i - startIndex == selectedRow)
+        {
+            Highlight(LIGHTBLUE);
+            cout << results[i]->MANV;
+            setColorByRequest(LIGHTGRAY, BLACK);
+        }
+        else
+        {
+            cout << results[i]->MANV;
+        }
+
+        setColorByRequest(LIGHTGRAY, BLACK);
+        gotoxy(x + 18, currentRow);
+        string hoTen = results[i]->HO + " " + results[i]->TEN;
+        string normalizedSearch = normalizeString(searchStr, hasError);
+        if (!hasError)
+        {
+            printHighlightedText(hoTen, normalizedSearch);
+        }
+        else
+        {
+            cout << hoTen;
+        }
+
+        gotoxy(x + 43, currentRow);
+        cout << results[i]->PHAI;
+        currentRow++;
+    }
+
+    int totalPages = ceil((float)n / ROWS);
+    gotoxy(52, 26);
+    cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
+    setColorByRequest(LIGHTGRAY, BLACK);
+}
+void timKiemTenNhanVien(dsNhanVien &ds, int x, int y, nhanVien *&selectedResult, bool &isESC)
+{
+    static string searchHistory[10];
+    static int historyCount = 0;
+    static int historyIndex = -1;
+    static string searchStr = "";
+    string currentInput = searchStr;
+    int cursorPos = currentInput.length();
+    bool hasError;
+    bool isSearching = true;
+    int selectedRow = -1;
+    bool isViewingResults = false;
+    nhanVien **results = new nhanVien *[ds.countNV];
+    int resultCount = 0;
+    int currentPage = 1;
+
+    while (isSearching)
+    {
+        int totalPages = ceil((float)resultCount / ROWS);
+        int startIndex = (currentPage - 1) * ROWS;
+        int itemsOnPage = min(ROWS, resultCount - startIndex);
+
+        ShowCur(true);
+        setColorByRequest(BLACK, WHITE);
+        gotoxy(x + 88, y + 4);
+        cout << string(20, ' ');
+        gotoxy(x + 88, y + 4);
+        cout << currentInput;
+        gotoxy(x + 88 + cursorPos, y + 4);
+
+        int key = _getch();
+        if (key == 224 || key == 0)
+        {
+            key = _getch();
+            switch (key)
+            {
+            case LEFT:
+                if (!isViewingResults && cursorPos > 0)
+                    cursorPos--;
+                else if (isViewingResults && currentPage > 1)
+                {
+                    currentPage--;
+                    selectedRow = 0;
+                    clearTablePrint(x);
+                }
+                break;
+
+            case RIGHT:
+                if (!isViewingResults && cursorPos < currentInput.length())
+                    cursorPos++;
+                else if (isViewingResults && currentPage < totalPages)
+                {
+                    currentPage++;
+                    selectedRow = 0;
+                    clearTablePrint(x);
+                }
+                break;
+
+            case UP:
+                if (isViewingResults && resultCount > 0)
+                {
+                    if (selectedRow > 0)
+                        selectedRow--;
+                    else if (selectedRow <= 0)
+                        selectedRow = itemsOnPage - 1;
+                }
+                else if (!isViewingResults && historyCount > 0)
+                {
+                    if (historyIndex < historyCount - 1)
+                    {
+                        historyIndex++;
+                        currentInput = searchHistory[historyIndex];
+                        cursorPos = currentInput.length();
+                        searchStr = currentInput;
+                    }
+                }
+                break;
+
+            case DOWN:
+                if (isViewingResults && resultCount > 0)
+                {
+                    if (selectedRow < itemsOnPage - 1)
+                        selectedRow++;
+                    else if (selectedRow >= itemsOnPage - 1)
+                        selectedRow = 0;
+                }
+                else if (!isViewingResults && historyCount > 0)
+                {
+                    if (historyIndex > 0)
+                    {
+                        historyIndex--;
+                        currentInput = searchHistory[historyIndex];
+                        cursorPos = currentInput.length();
+                        searchStr = currentInput;
+                    }
+                    else if (historyIndex == 0)
+                    {
+                        historyIndex = -1;
+                        currentInput = "";
+                        cursorPos = 0;
+                        searchStr = "";
+                    }
+                }
+                break;
+
+            case HOME:
+                if (!isViewingResults)
+                    cursorPos = 0;
+                break;
+
+            case END:
+                if (!isViewingResults)
+                    cursorPos = currentInput.length();
+                break;
+
+            case DEL:
+                if (!isViewingResults && cursorPos < currentInput.length())
+                {
+                    currentInput.erase(cursorPos, 1);
+                    searchStr = currentInput;
+                }
+                break;
+            }
+
+            if (isViewingResults)
+            {
+                displaySearchResults(results, resultCount, currentPage, selectedRow, x, currentInput);
+            }
+            continue;
+        }
+
+        switch (key)
+        {
+        case ENTER:
+            if (isViewingResults && resultCount > 0)
+            {
+                int actualIndex = (currentPage - 1) * ROWS + selectedRow;
+                if (actualIndex < resultCount)
+                {
+                    selectedResult = results[actualIndex];
+                    delete[] results;
+                    return;
+                }
+            }
+            else if (!currentInput.empty())
+            {
+                bool isDuplicate = false;
+                selectedRow = 0;
+                for (int i = 0; i < historyCount; i++)
+                {
+                    if (searchHistory[i] == currentInput)
+                    {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!isDuplicate)
+                {
+                    for (int i = historyCount; i > 0; i--)
+                    {
+                        if (i < 10)
+                        {
+                            searchHistory[i] = searchHistory[i - 1];
+                        }
+                    }
+                    searchHistory[0] = currentInput;
+                    if (historyCount < 10)
+                        historyCount++;
+                }
+                historyIndex = -1;
+                isViewingResults = true;
+            }
+            break;
+
+        case ESC:
+            if (isViewingResults)
+            {
+                isViewingResults = false;
+                selectedRow = -1;
+                ShowCur(false);
+                drawTableErrors("Dang thoat che do xem...", true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                ShowCur(true);
+            }
+            else
+            {
+                delete[] results;
+                isESC = true;
+                return;
+            }
+            break;
+
+        case BACKSPACE:
+            if (!isViewingResults && cursorPos > 0)
+            {
+                currentInput.erase(cursorPos - 1, 1);
+                cursorPos--;
+                searchStr = currentInput;
+            }
+            break;
+
+        case TAB:
+            if (resultCount > 0)
+            {
+                isViewingResults = !isViewingResults;
+                if (!isViewingResults)
+                    selectedRow = 0;
+            }
+            break;
+
+        default:
+            if (!isViewingResults && currentInput.length() < 20 && isValidChar(key))
+            {
+                if (cursorPos == currentInput.length())
+                {
+                    currentInput += (char)key;
+                }
+                else
+                {
+                    currentInput.insert(cursorPos, 1, (char)key);
+                }
+                cursorPos++;
+                searchStr = currentInput;
+            }
+        }
+
+        clearTablePrint(x);
+
+        string tempInput = normalizeString(searchStr, hasError);
+        if (hasError)
+        {
+            drawTableErrors("Du lieu nhap khong hop le", true);
+            continue;
+        }
+        drawTableErrors("", true);
+
+        if (!searchStr.empty())
+        {
+            resultCount = countSearchResults(ds, tempInput);
+
+            if (resultCount == 0)
+            {
+                drawTableErrors("Khong tim thay '" + searchStr + "'", true);
+                continue;
+            }
+
+            storeSearchResults(ds, tempInput, results, resultCount);
+            // Có thể thêm hàm sắp xếp ở đây nếu cần
+            displaySearchResults(results, resultCount, currentPage, selectedRow, x, currentInput);
+        }
+    }
+    delete[] results;
+}
 //======================HOA DON===================================
 nhanVien *layMANV(dsNhanVien &ds_nv, treeVatTu &root, string MANV, int x, int y, bool &isESC, bool &isSaved)
 {
-    for (int i = 0; i < ds_nv.CountNV; ++i)
+    for (int i = 0; i < ds_nv.countNV; ++i)
     {
         if (ds_nv.nodes[i]->MANV == MANV)
         {
@@ -837,7 +1164,7 @@ nhanVien *layMANV(dsNhanVien &ds_nv, treeVatTu &root, string MANV, int x, int y,
 
 // int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
 // {
-//     for (int i = 0; i < ds_nv.CountNV; ++i)
+//     for (int i = 0; i < ds_nv.countNV; ++i)
 //     {
 //         if (ds_nv.nodes[i] != nullptr)
 //         {
@@ -860,7 +1187,7 @@ nhanVien *layMANV(dsNhanVien &ds_nv, treeVatTu &root, string MANV, int x, int y,
 
 ptr_DSHD searchHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD &found_hd)
 {
-    for (int i = 0; i < ds_nv.CountNV; ++i)
+    for (int i = 0; i < ds_nv.countNV; ++i)
     {
         if (ds_nv.nodes[i] != nullptr)
         {
@@ -1566,7 +1893,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
 
 // int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
 // {
-//     for (int i = 0; i < ds_nv.CountNV; ++i)
+//     for (int i = 0; i < ds_nv.countNV; ++i)
 //     {
 //         if (ds_nv.nodes[i] != nullptr)
 //         {
@@ -1731,7 +2058,7 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
     }
     nhanVien *nv = nullptr;
     ptr_DSHD found_hd = nullptr;
-    for (int i = 0; i < ds_nv.CountNV; ++i)
+    for (int i = 0; i < ds_nv.countNV; ++i)
     {
         if (ds_nv.nodes[i] != nullptr)
         {
@@ -1933,7 +2260,7 @@ void tinhToanDoanhThu(ptr_DSCTHD ct, doanhThuVatTu doanhThu[], int &countVatTu, 
 
 void layDoanhThu(dsNhanVien &dsnv, doanhThuVatTu doanhThu[], int &countVatTu, time_t start, time_t end)
 {
-    for (int i = 0; i < dsnv.CountNV; ++i)
+    for (int i = 0; i < dsnv.countNV; ++i)
     {
         ptr_DSHD p = dsnv.nodes[i]->firstDSHD;
         while (p != nullptr)
@@ -1987,7 +2314,7 @@ void inThongKeHoaDon(dsNhanVien &dsnv)
     cout << "Danh sach cac hoa don tu " << day1 << "/" << month1 << "/" << year1
          << " den " << day2 << "/" << month2 << "/" << year2 << ":\n";
 
-    for (int i = 0; i < dsnv.CountNV; ++i)
+    for (int i = 0; i < dsnv.countNV; ++i)
     {
         ptr_DSHD p = dsnv.nodes[i]->firstDSHD;
         while (p != nullptr)
@@ -2029,7 +2356,7 @@ void inDoanhThuNam(dsNhanVien danhSach)
     char key;
     cin >> year;
     float doanhThuThang[12] = {0};
-    for (int i = 0; i < danhSach.CountNV; i++)
+    for (int i = 0; i < danhSach.countNV; i++)
     {
         ptr_DSHD hoaDon = danhSach.nodes[i]->firstDSHD;
         while (hoaDon != nullptr)
