@@ -2304,6 +2304,17 @@ void layDoanhThu(dsNhanVien &dsnv, doanhThuVatTu doanhThu[], int &countVatTu, ti
     }
 }
 
+void HelpTable(int x, int y)
+{
+    setColorByRequest(LIGHTGRAY, BLACK);
+    // Vẽ hình
+    drawHCN(x, y, 16, 2);
+
+    // Vẽ layer chữ
+    gotoxy(x + 2, y + 1);
+    cout << "THOAT: ESCAPE";
+}
+
 void DrawTop10Table(int x, int y, doanhThuVatTu doanhthu[], int day1, int month1, int year1, int day2, int month2, int year2)
 {
     system("cls");
@@ -2376,7 +2387,7 @@ void DrawTop10Table(int x, int y, doanhThuVatTu doanhthu[], int day1, int month1
     cout << "MAVT";
     gotoxy(x + 23, y + 4);
     cout << "TEN VAT TU";
-    gotoxy(40, 4);
+    gotoxy(x + 40, y + 4);
     cout << "SO LUONG";
     gotoxy(x + 52, y + 4);
     cout << "DOANH THU";
@@ -2399,7 +2410,7 @@ void DrawTop10Table(int x, int y, doanhThuVatTu doanhthu[], int day1, int month1
             cout << fixed << setprecision(2) << doanhthu[i].doanhThu;
         }
     }
-
+    HelpTable(5, 2);
     char key;
     while (true)
     {
@@ -2523,6 +2534,8 @@ void DrawDoanhThuNam(int x, int y, int year, float doanhthuthang[12])
         gotoxy(x + 17, y + 5 + i);
         cout << doanhthuthang[i];
     }
+
+    HelpTable(5, 2);
 
     char key;
     while (true)
