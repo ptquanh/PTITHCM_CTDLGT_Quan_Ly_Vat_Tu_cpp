@@ -867,7 +867,7 @@ void storeSearchResults(dsNhanVien &ds, const string &kyTu, nhanVien *results[],
     index = 0;
     for (int i = 0; i < ds.countNV; i++)
     {
-        if (hasCharacter(kyTu, ds.nodes[i]->HO + " " + ds.nodes[i]->TEN))
+        if (hasCharacter(kyTu, ds.nodes[i]->TEN))
         {
             results[index++] = ds.nodes[i];
         }
@@ -899,18 +899,19 @@ void displaySearchResults(nhanVien *results[], int n, int pageNumber, int select
 
         setColorByRequest(LIGHTGRAY, BLACK);
         gotoxy(x + 18, currentRow);
-        string hoTen = results[i]->HO + " " + results[i]->TEN;
+        cout << results[i]->HO;
+        gotoxy(x + 43, currentRow);
         string normalizedSearch = normalizeString(searchStr, hasError);
         if (!hasError)
         {
-            printHighlightedText(hoTen, normalizedSearch);
+            printHighlightedText(results[i]->TEN, normalizedSearch);
         }
         else
         {
-            cout << hoTen;
+            cout << results[i]->TEN;
         }
 
-        gotoxy(x + 43, currentRow);
+        gotoxy(x + 54, currentRow);
         cout << results[i]->PHAI;
         currentRow++;
     }
