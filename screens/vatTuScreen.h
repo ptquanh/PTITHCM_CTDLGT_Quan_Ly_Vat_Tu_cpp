@@ -2,35 +2,34 @@
 #include "../sources/vatTu.h"
 void drawKeysGuideVatTu(int x, int y)
 {
-    int space = 8;
+    int space = 4;
     setColorByRequest(LIGHTGRAY, BROWN);
-    drawHCN(x, y + 25, 12, 2);
+    drawHCN(x, y + 25, 8, 2);
     setColorByRequest(LIGHTGRAY, DARKGRAY);
-    drawHCN(x + 12 + space, y + 25, 12, 2);
-    drawHCN(x + 24 + 2 * space, y + 25, 11, 2);
-    drawHCN(x + 35 + 3 * space, y + 25, 11, 2);
-    drawHCN(x + 46 + 4 * space, y + 25, 15, 2);
+    drawHCN(x + 8 + space, y + 25, 12, 2);
+    drawHCN(x + 20 + 2 * space, y + 25, 11, 2);
+    drawHCN(x + 31 + 3 * space, y + 25, 12, 2);
+    drawHCN(x + 43 + 4 * space, y + 25, 15, 2);
+    drawHCN(x + 58 + 5 * space, y + 25, 14, 2);
     drawHCN(x + 99, y + 25, 11, 2);
     setColorByRequest(BROWN, BLACK);
     gotoxy(x + 1, y + 26);
-    cout << "MENU VAT TU";
+    cout << "MENU VT";
     setColorByRequest(LIGHTGRAY, BLACK);
-    gotoxy(x + 12 + space + 1, y + 26);
+    gotoxy(x + 8 + space + 1, y + 26);
     cout << "F3: Nhap VT";
-    gotoxy(x + 24 + 2 * space + 1, y + 26);
+    gotoxy(x + 20 + 2 * space + 1, y + 26);
     cout << "F4: Sua VT";
-    gotoxy(x + 35 + 3 * space + 1, y + 26);
+    gotoxy(x + 31 + 3 * space + 1, y + 26);
     cout << "DEL: Xoa VT";
-    gotoxy(x + 46 + 4 * space + 1, y + 26);
+    gotoxy(x + 43 + 4 * space + 1, y + 26);
     cout << "F5: Tim ten VT";
+    gotoxy(x + 58 + 5 * space + 1, y + 26);
+    cout << "F10: Luu file";
     gotoxy(x + 100, y + 26);
     cout << "ESC: Thoat";
 }
-void drawTableSuggestVatTu(int x, int y)
-{
-    //dung trong cthd, tim kiem real-time
-    fillAreaColor(x + 87, y + 6, 22, 5, LIGHTGRAY);
-}
+
 void drawTableSearchTenVatTu(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -63,12 +62,12 @@ void drawTableAddVatTuInCTHD(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x + 69, y, 41, 13);
-    drawHCN(x + 100, y + 10, 8, 2);
-    drawHCN(x + 88, y + 10, 9, 2);
+    drawHCN(x + 87, y + 10, 9, 2);
+    drawHCN(x + 99, y + 10, 9, 2);
     SetColor(BLACK);
-    gotoxy(x + 89, y + 11);
+    gotoxy(x + 88, y + 11);
     cout << "ESC: Huy";
-    gotoxy(x + 101, y + 11);
+    gotoxy(x + 100, y + 11);
     cout << "F10: Luu";
     SetColor(GREEN);
     gotoxy(x + 71, y + 5);
@@ -103,12 +102,12 @@ void drawTableUpdateVatTu(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x + 69, y, 41, 15);
-    drawHCN(x + 100, y + 12, 8, 2);
-    drawHCN(x + 88, y + 12, 9, 2);
+    drawHCN(x + 87, y + 12, 9, 2);
+    drawHCN(x + 99, y + 12, 9, 2);
     SetColor(BLACK);
-    gotoxy(x + 89, y + 13);
+    gotoxy(x + 88, y + 13);
     cout << "ESC: Huy";
-    gotoxy(x + 101, y + 13);
+    gotoxy(x + 100, y + 13);
     cout << "F10: Luu";
     SetColor(GREEN);
     gotoxy(x + 71, y + 5);
@@ -200,7 +199,7 @@ void handleNavigationAddVatTu(treeVatTu &root, int x, int y)
     clearTablePrint(x);
 }
 
-void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y)
+void handleNavigationUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
 {
     int n = countNodes(root);
     treeVatTu *arr = new treeVatTu[n];
@@ -210,7 +209,7 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y)
     string errorMessage;
     string currentMAVT;
     int totalPages = ceil((float)n / ROWS);
-    int currentPage = 1;
+    currentPage = 1;
     int selectedRow = 0;
     char key;
     int currentChoice = -1;
@@ -332,7 +331,7 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int x, int y)
     }
 }
 
-void handleNavigationDeleteVatTu(treeVatTu &root, int x, int y)
+void handleNavigationDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
 {
     int n = countNodes(root);
     treeVatTu *arr = new treeVatTu[n];
@@ -342,7 +341,7 @@ void handleNavigationDeleteVatTu(treeVatTu &root, int x, int y)
     string errorMessage;
     string currentMAVT;
     int totalPages = ceil((float)n / ROWS);
-    int currentPage = 1;
+    currentPage = 1;
     int selectedRow = 0;
     char key;
     int currentChoice = -1;
@@ -652,13 +651,16 @@ void menuVatTu(treeVatTu &root, int x, int y)
             handleNavigationAddVatTu(root, x, y);
             break;
         case F4:
-            handleNavigationUpdateVatTu(root, x, y);
+            handleNavigationUpdateVatTu(root, currentPage, x, y);
             break;
         case DEL:
-            handleNavigationDeleteVatTu(root, x, y);
+            handleNavigationDeleteVatTu(root, currentPage, x, y);
             break;
         case F5:
             handleNavigationSearchVatTu(root, x, y);
+            break;
+        case F10:
+            writeFile_dsVatTu(root);
             break;
         case ESC:
             errorMessage = "Dang thoat chuong trinh...";

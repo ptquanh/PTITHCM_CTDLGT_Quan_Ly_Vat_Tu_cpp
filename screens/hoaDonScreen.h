@@ -148,12 +148,12 @@ void drawTableUpdateHoaDon(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x + 76, y, 41, 17);
-    drawHCN(x + 107, y + 14, 8, 2);
-    drawHCN(x + 95, y + 14, 9, 2);
+    drawHCN(x + 94, y + 14, 9, 2);
+    drawHCN(x + 106, y + 14, 9, 2);
     SetColor(BLACK);
-    gotoxy(x + 96, y + 15);
+    gotoxy(x + 95, y + 15);
     cout << "ESC: Huy";
-    gotoxy(x + 108, y + 15);
+    gotoxy(x + 107, y + 15);
     cout << "F10: Luu";
     SetColor(GREEN);
     gotoxy(x + 78, y + 5);
