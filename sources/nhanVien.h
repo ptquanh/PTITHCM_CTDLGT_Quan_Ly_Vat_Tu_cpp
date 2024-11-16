@@ -4,7 +4,7 @@
 #include "../screens/hoaDonScreen.h"
 void drawTableUpdateChiTietHoaDon(int x, int y);
 void clearTablePrintChiTietHoaDon(int x);
-#define MAX_VATTU 1000
+// #define MAX_VATTU 1000
 
 bool nhanVienEmpty(dsNhanVien &list)
 {
@@ -606,9 +606,17 @@ void writeFile_dsNhanVien(dsNhanVien &dsNV)
 {
     ofstream fileout;
     fileout.open(filePath_NV, ios_base::out);
+    int n = dsNV.countNV;
+    if (n == 0)
+    {
+        drawTableErrors("Khong co du lieu nhan vien", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        return;
+    }
     if (!fileout.is_open())
     {
-        cerr << "Khong the mo file ghi!" << endl;
+        cerr << "Khong the mo file ghi" << endl;
         return;
     }
 
@@ -617,7 +625,9 @@ void writeFile_dsNhanVien(dsNhanVien &dsNV)
         Write_NhanVien(fileout, *dsNV.nodes[i]);
     }
     fileout.close();
-    xoaDSNV(dsNV);
+    drawTableErrors("Luu nhan vien vao file thanh cong", true);
+    Sleep(1500);
+    drawTableErrors("", true);
 }
 
 void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
@@ -635,6 +645,12 @@ void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
     nhanVien *tempNodes[MaxNhanVien];
     int tempCount = 0;
     string line;
+
+    // Khởi tạo mảng tạm với nullptr
+    for (int i = 0; i < MaxNhanVien; i++)
+    {
+        tempNodes[i] = nullptr;
+    }
 
     while (getline(filein, line))
     {
@@ -773,10 +789,20 @@ void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
         if (dsNV.countNV >= MaxNhanVien)
         {
             cout << "Danh sach nhan vien da day!" << endl;
+            // Giải phóng những node chưa được chèn
+            for (int j = i; j < tempCount; j++)
+            {
+                if (tempNodes[j] != nullptr)
+                {
+                    delete tempNodes[j];
+                    tempNodes[j] = nullptr;
+                }
+            }
             break;
         }
         chenNhanVien(dsNV, tempNodes[i]);
         dsNV.countNV++;
+        tempNodes[i] = nullptr; // Tránh double free vì node đã được chuyển sang dsNV
     }
 }
 // ==============================================
@@ -785,7 +811,7 @@ void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x
     int n = list.countNV;
     if (n == 0)
     {
-        errorMessage = "Khong co du lieu vat tu";
+        errorMessage = "Khong co du lieu nhan vien";
         drawTableErrors(errorMessage, true);
         return;
     }
@@ -2277,7 +2303,9 @@ void layDoanhThu(dsNhanVien &dsnv, doanhThuVatTu doanhThu[], int &countVatTu, ti
 
 void inTop10DTVT(dsNhanVien &dsnv)
 {
-    doanhThuVatTu doanhThu[MAX_VATTU];
+    treeVatTu root;
+    int maxVT = countNodes(root);
+    doanhThuVatTu doanhThu[maxVT];
     int countVatTu = 0;
     char key;
     int day1, month1, year1, day2, month2, year2;

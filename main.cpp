@@ -24,9 +24,6 @@ int main()
         drawTableErrors(errorMessage, true);
         return 0;
     }
-    // fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    // drawTableUpdateVatTu(smallX, smallY);
-    // drawTableSuggestVatTu(smallX, smallY);
     while (true)
     {
         mainMenu = menuChinhDong(MenuChinh);

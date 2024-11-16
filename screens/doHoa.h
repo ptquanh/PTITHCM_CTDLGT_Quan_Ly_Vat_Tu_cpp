@@ -50,6 +50,8 @@ const char cross = 206;
 #define HOME 71
 #define END 79
 #define DEL 83
+#define PAGEUP 73
+#define PAGEDOWN 81
 //==========tien khai bao==========
 void Normal();
 void Highlight(int Color);
@@ -155,7 +157,7 @@ void horizontalLine(int x, int y, int w)
 }
 void drawTableErrors(string errorMessage, bool isSmallErrorTable)
 {
-    int x,y;
+    int x, y;
     if (isSmallErrorTable)
     {
         x = 5;
@@ -165,6 +167,11 @@ void drawTableErrors(string errorMessage, bool isSmallErrorTable)
     {
         x = 8;
         y = 2;
+    }
+    if (errorMessage == "")
+    {
+        fillAreaColor(x + 69, y + 17, 41, 6, LIGHTGRAY);
+        return;
     }
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x + 69, y + 17, 41, 6);
@@ -182,7 +189,6 @@ void drawTableErrors(string errorMessage, bool isSmallErrorTable)
     gotoxy(x + 72, y + 21);
     cout << errorMessage;
     setColorByRequest(LIGHTGRAY, BLACK);
-    
 }
 
 void clearTablePrint(int x)

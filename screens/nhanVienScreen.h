@@ -2,27 +2,30 @@
 #include "../sources/nhanVien.h"
 void drawKeysGuideNhanVien(int x, int y)
 {
-    int space = 8;
+    int space = 4;
     setColorByRequest(LIGHTGRAY, BROWN);
-    drawHCN(x, y + 25, 15, 2);
+    drawHCN(x, y + 25, 8, 2);
     setColorByRequest(LIGHTGRAY, DARKGRAY);
-    drawHCN(x + 12 + space, y + 25, 12, 2);
-    drawHCN(x + 24 + 2 * space, y + 25, 11, 2);
-    drawHCN(x + 35 + 3 * space, y + 25, 11, 2);
-    drawHCN(x + 46 + 4 * space, y + 25, 15, 2);
+    drawHCN(x + 8 + space, y + 25, 12, 2);
+    drawHCN(x + 20 + 2 * space, y + 25, 11, 2);
+    drawHCN(x + 31 + 3 * space, y + 25, 12, 2);
+    drawHCN(x + 43 + 4 * space, y + 25, 15, 2);
+    drawHCN(x + 58 + 5 * space, y + 25, 14, 2);
     drawHCN(x + 99, y + 25, 11, 2);
     setColorByRequest(BROWN, BLACK);
     gotoxy(x + 1, y + 26);
-    cout << "MENU NHAN VIEN";
+    cout << "MENU NV";
     setColorByRequest(LIGHTGRAY, BLACK);
-    gotoxy(x + 12 + space + 1, y + 26);
+    gotoxy(x + 8 + space + 1, y + 26);
     cout << "F3: Nhap NV";
-    gotoxy(x + 24 + 2 * space + 1, y + 26);
+    gotoxy(x + 20 + 2 * space + 1, y + 26);
     cout << "F4: Sua NV";
-    gotoxy(x + 35 + 3 * space + 1, y + 26);
+    gotoxy(x + 31 + 3 * space + 1, y + 26);
     cout << "DEL: Xoa NV";
-    gotoxy(x + 46 + 4 * space + 1, y + 26);
+    gotoxy(x + 43 + 4 * space + 1, y + 26);
     cout << "F5: Tim ten NV";
+    gotoxy(x + 58 + 5 * space + 1, y + 26);
+    cout << "F10: Luu file";
     gotoxy(x + 100, y + 26);
     cout << "ESC: Thoat";
 }
@@ -31,12 +34,12 @@ void drawTableUpdateNhanVien(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x + 69, y, 41, 15);
-    drawHCN(x + 100, y + 12, 8, 2);
-    drawHCN(x + 88, y + 12, 9, 2);
+    drawHCN(x + 87, y + 12, 9, 2);
+    drawHCN(x + 99, y + 12, 9, 2);
     SetColor(BLACK);
-    gotoxy(x + 89, y + 13);
+    gotoxy(x + 88, y + 13);
     cout << "ESC: Huy";
-    gotoxy(x + 101, y + 13);
+    gotoxy(x + 100, y + 13);
     cout << "F10: Luu";
     SetColor(GREEN);
     gotoxy(x + 71, y + 5);
@@ -150,7 +153,7 @@ void drawTableSearchTenNhanVien(int x, int y)
 
 void handleNavigationSearchNhanVien(dsNhanVien &dsnv, int x, int y)
 {
-   nhanVien *result;
+    nhanVien *result;
     drawTableSearchTenNhanVien(x, y);
     drawTablePrintNhanVien(x, y, 15, 23);
     bool isESC = false, isSaved = false;
@@ -249,13 +252,13 @@ void handleNavigationAddNhanVien(dsNhanVien &dsnv, int x, int y)
     clearTablePrint(x);
 }
 
-void handleNavigationUpdateNhanVien(dsNhanVien &dsnv, int x, int y)
+void handleNavigationUpdateNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y)
 {
     int n = dsnv.countNV;
     string errorMessage;
     string currentMANV;
     int totalPages = ceil((float)n / ROWS);
-    int currentPage = 1;
+    currentPage = 1;
     int selectedRow = 0;
     char key;
     int currentChoice = -1;
@@ -369,13 +372,13 @@ void handleNavigationUpdateNhanVien(dsNhanVien &dsnv, int x, int y)
     }
 }
 
-void handleNavigationDeleteNhanVien(dsNhanVien &dsnv, int x, int y)
+void handleNavigationDeleteNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y)
 {
     int n = dsnv.countNV;
     string errorMessage;
     string currentMANV;
     int totalPages = ceil((float)n / ROWS);
-    int currentPage = 1;
+    currentPage = 1;
     int selectedRow = 0;
     char key;
     int currentChoice = -1;
@@ -572,13 +575,16 @@ void menuNhanVien(dsNhanVien &dsnv, int x, int y)
             handleNavigationAddNhanVien(dsnv, x, y);
             break;
         case F4:
-            handleNavigationUpdateNhanVien(dsnv, x, y);
+            handleNavigationUpdateNhanVien(dsnv, currentPage, x, y);
             break;
         case DEL:
-            handleNavigationDeleteNhanVien(dsnv, x, y);
+            handleNavigationDeleteNhanVien(dsnv, currentPage, x, y);
             break;
         case F5:
-            handleNavigationSearchNhanVien(dsnv,x,y);
+            handleNavigationSearchNhanVien(dsnv, x, y);
+            break;
+        case F10:
+            writeFile_dsNhanVien(dsnv);
             break;
         case ESC:
             errorMessage = "Dang thoat chuong trinh...";

@@ -1,60 +1,60 @@
-Vt001|Xi Mang|kg|500
-Vt002|Gach Men|vien|1200
-Vt003|Sat Tron|kg|750
-Vt004|Son Chong Tham|lit|300
-Vt005|Cat Xay Dung|m3|950
-Vt006|Da 1x2|m3|400
-Vt007|Thep Cay D10|cay|600
-Vt008|Xi Mang Roi|kg|200
-Vt009|Son Nuoc|lit|150
-Vt010|Keo Dan Gach|kg|100
-Vt011|Tam Tran Thach Cao|tam|220
-Vt012|Tam Xi Mang|tam|180
-Vt013|Dinh Thep|kg|550
-Vt014|Day Dien 2m5|cuon|75
-Vt015|Go Cong Nghiep|m3|60
-Vt016|Bot Ba Tuong|kg|250
-Vt017|Tam Chong Chay|m2|90
-Vt018|Ong Nhua PVC|met|1200
-Vt019|Cua Nhua Loi Thep|cai|50
-Vt020|Ong Dong|kg|35
-Vt021|Bu Long|cai|300
-Vt022|Oc Vit|cai|200
-Vt023|Be Tong|m3|450
-Vt024|Thep Tam|kg|120
-Vt025|Gach Bong Kinh|vien|600
-Vt026|Cap Dien 3 Pha|cuon|100
-Vt027|Son Epoxy|lit|80
-Vt028|Van Cong|cai|40
-Vt029|Day Keo Noi|cuon|500
-Vt030|Thung Phuy Nhua|cai|20
-Vt031|Hop Cap|hop|150
-Vt032|Hop Kim Loai|kg|75
-Vt033|Gach Lat Nen|vien|350
-Vt034|Kinh Cuong Luc|tam|90
-Vt035|Tam Nhua PVC|tam|140
-Vt036|Thung Carton|cai|60
-Vt037|Keo Silic|chai|85
-Vt038|Bat Nhua|met|400
-Vt039|Dong Tam|kg|120
-Vt040|Keo Epoxy|kg|70
-Vt041|Coc Thep|cai|55
-Vt042|Vien Gach Lo|vien|250
-Vt043|Hop Chia Dien|cai|95
-Vt044|Den LED|cai|150
-Vt045|Ban Le Cua|cai|130
-Vt046|May Phat Dien|cai|5
-Vt047|Van Bi|cai|110
-Vt048|Hop Nhua Dung|cai|200
-Vt049|Vach Ngan|tam|30
-Vt050|Ong Gang|met|60
-Vt051|Khoan Bosch|cai|15
-Vt052|Son Tuong|lit|300
-Vt053|Thung Nhua|cai|40
-Vt054|May Cat Sat|cai|10
-Vt055|Dinh Vit|kg|500
-Vt056|Gioang Cao Su|met|220
-Vt057|Tam Chiu Luc|tam|180
-Vt058|Son Trang Tri|lit|75
-Vt059|Bo Xa Dung|cai|85
-Vt060|Nap Cong|cai|35
+VT001|Xi Mang|Kg|500
+VT002|Gach Men|Vien|1200
+VT003|Sat Tron|Kg|750
+VT004|Son Chong Tham|Lit|300
+VT005|Cat Xay Dung|M3|950
+VT006|Da 1x2|M3|400
+VT007|Thep Cay D10|Cay|600
+VT008|Xi Mang Roi|Kg|200
+VT009|Son Nuoc|Lit|150
+VT010|Keo Dan Gach|Kg|100
+VT011|Tam Tran Thach Cao|Tam|220
+VT012|Tam Xi Mang|Tam|180
+VT013|Dinh Thep|Kg|550
+VT014|Day Dien 2m5|Cuon|75
+VT015|Go Cong Nghiep|M3|60
+VT016|Bot Ba Tuong|Kg|250
+VT017|Tam Chong Chay|M2|90
+VT018|Ong Nhua Pvc|Met|1200
+VT019|Cua Nhua Loi Thep|Cai|50
+VT020|Ong Dong|Kg|35
+VT021|Bu Long|Cai|300
+VT022|Oc Vit|Cai|200
+VT023|Be Tong|M3|450
+VT024|Thep Tam|Kg|120
+VT025|Gach Bong Kinh|Vien|600
+VT026|Cap Dien 3 Pha|Cuon|100
+VT027|Son Epoxy|Lit|80
+VT028|Van Cong|Cai|40
+VT029|Day Keo Noi|Cuon|500
+VT030|Thung Phuy Nhua|Cai|20
+VT031|Hop Cap|Hop|150
+VT032|Hop Kim Loai|Kg|75
+VT033|Gach Lat Nen|Vien|350
+VT034|Kinh Cuong Luc|Tam|90
+VT035|Tam Nhua Pvc|Tam|140
+VT036|Thung Carton|Cai|60
+VT037|Keo Silic|Chai|85
+VT038|Bat Nhua|Met|400
+VT039|Dong Tam|Kg|120
+VT040|Keo Epoxy|Kg|70
+VT041|Coc Thep|Cai|55
+VT042|Vien Gach Lo|Vien|250
+VT043|Hop Chia Dien|Cai|95
+VT044|Den Led|Cai|150
+VT045|Ban Le Cua|Cai|130
+VT046|May Phat Dien|Cai|5
+VT047|Van Bi|Cai|110
+VT048|Hop Nhua Dung|Cai|200
+VT049|Vach Ngan|Tam|30
+VT050|Ong Gang|Met|60
+VT051|Khoan Bosch|Cai|15
+VT052|Son Tuong|Lit|300
+VT053|Thung Nhua|Cai|40
+VT054|May Cat Sat|Cai|10
+VT055|Dinh Vit|Kg|500
+VT056|Gioang Cao Su|Met|220
+VT057|Tam Chiu Luc|Tam|180
+VT058|Son Trang Tri|Lit|75
+VT059|Bo Xa Dung|Cai|85
+VT060|Nap Cong|Cai|35
