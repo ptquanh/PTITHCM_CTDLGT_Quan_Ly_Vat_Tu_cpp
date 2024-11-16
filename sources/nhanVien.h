@@ -2411,9 +2411,7 @@ void DrawTop10Table(int x, int y, doanhThuVatTu doanhthu[], int day1, int month1
 
 void inTop10DTVT(dsNhanVien &dsnv)
 {
-    treeVatTu root;
-    int maxVT = countNodes(root);
-    doanhThuVatTu doanhThu[maxVT];
+    doanhThuVatTu doanhThu[1000];
     int countVatTu = 0;
     char key;
     int day1, month1, year1, day2, month2, year2;

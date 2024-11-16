@@ -24,6 +24,7 @@ int main()
         drawTableErrors(errorMessage, true);
         return 0;
     }
+    // inTop10DTVT(dsnv);
     while (true)
     {
         mainMenu = menuChinhDong(MenuChinh);
