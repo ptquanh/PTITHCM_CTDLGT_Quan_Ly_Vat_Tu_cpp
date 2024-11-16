@@ -130,5 +130,6 @@ struct doanhThuVatTu
 {
     string MAVT;
     string TENVT;
+    int soluong;
     float doanhThu;
 };
