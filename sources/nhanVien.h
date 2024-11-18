@@ -2378,11 +2378,11 @@ void inDoanhThuNam(dsNhanVien danhSach, int x, int y, int year)
         {
             if (hoaDon->data_hd.year == year)
             {
-                float triGiaHoaDon = 0;
-                triGiaHoaDon = tinhTriGiaHoaDon(hoaDon->data_hd.firstCTHD);
+                // float triGiaHoaDon = 0;
+                // triGiaHoaDon = tinhTriGiaHoaDon(hoaDon->data_hd.firstCTHD);
                 if (hoaDon->data_hd.loai == "X")
                 {
-                    doanhThuThang[hoaDon->data_hd.month - 1] += triGiaHoaDon;
+                    doanhThuThang[hoaDon->data_hd.month - 1] += hoaDon->data_hd.firstCTHD->data_cthd.soLuong * (float)hoaDon->data_hd.firstCTHD->data_cthd.donGia / 1000 * (1 + (float)hoaDon->data_hd.firstCTHD->data_cthd.VAT / 100);
                 }
             }
             hoaDon = hoaDon->next;
@@ -2402,7 +2402,7 @@ void inDoanhThuNam(dsNhanVien danhSach, int x, int y, int year)
             gotoxy(x + 4, y + 5 + i);
             cout << i + 1;
         }
-        string doanhThu = formatMoney(doanhThuThang[i]);
+        string doanhThu = formatMoney(doanhThuThang[i] * 1000);
         gotoxy(x + 13, y + 5 + i);
         cout << doanhThu;
     }
