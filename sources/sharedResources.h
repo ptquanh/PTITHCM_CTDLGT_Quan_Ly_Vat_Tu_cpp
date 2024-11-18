@@ -166,7 +166,7 @@ string inputString(int x, int y, string current, int maxLength, string fieldName
             case ENTER:
                 if (currentInput.empty())
                 {
-                    errorMessage = fieldName + " khong duoc de trong!";
+                    errorMessage = fieldName + " khong duoc de trong";
                     drawTableErrors(errorMessage, isSmallErrorTable);
                     continue;
                 }
@@ -266,7 +266,7 @@ int inputNumber(int x, int y, int current, int maxLength, string fieldName, bool
         case ENTER:
             if (currentInput.empty())
             {
-                errorMessage = fieldName + " khong duoc de trong!";
+                errorMessage = fieldName + " khong duoc de trong";
                 drawTableErrors(errorMessage, isSmallErrorTable);
                 continue;
             }
@@ -345,7 +345,7 @@ void formatInputNV(string &MANV, string &HO, string &TEN, string &PHAI)
         PHAI = PHAI.substr(0, 6);
     }
 }
-void formatInputHD(string &SoHD, string &day, string &month, string &year,string &loai)
+void formatInputHD(string &SoHD, string &day, string &month, string &year, string &loai)
 {
     if (SoHD.length() > 20)
     {
@@ -491,7 +491,8 @@ bool timeConflict(int day1, int month1, int year1, int day2, int month2, int yea
     }
     return false;
 }
-void layNgayThangNam(int &ngay, int &thang, int &nam)
+
+void layThoiGianHienTai(int &ngay, int &thang, int &nam)
 {
     time_t t = time(nullptr);
     tm *now = localtime(&t);
@@ -499,6 +500,26 @@ void layNgayThangNam(int &ngay, int &thang, int &nam)
     ngay = now->tm_mday;
     thang = now->tm_mon + 1;   // Tháng bắt đầu từ 0 nên cần cộng 1
     nam = now->tm_year + 1900; // Năm tính từ 1900 nên cộng thêm 1900
+}
+
+void layNgayTuongLai(int &ngay, int &thang, int &nam, int soNgay = 0, int soThang = 0, int soNam = 0)
+{
+    // Lấy thời gian hiện tại
+    layThoiGianHienTai(ngay, thang, nam);
+
+    // Tạo cấu trúc tm để xử lý thời gian
+    tm timeStruct = {};
+    timeStruct.tm_mday = ngay + soNgay;      // Tăng thêm số ngày người dùng yêu cầu
+    timeStruct.tm_mon = thang - 1 + soThang; // Tăng thêm số tháng người dùng yêu cầu
+    timeStruct.tm_year = nam - 1900 + soNam; // Tăng thêm số năm người dùng yêu cầu
+
+    // Điều chỉnh thời gian
+    mktime(&timeStruct);
+
+    // Cập nhật lại ngày, tháng, năm vào tham chiếu
+    ngay = timeStruct.tm_mday;
+    thang = timeStruct.tm_mon + 1;   // Chuẩn hóa tháng
+    nam = timeStruct.tm_year + 1900; // Chuẩn hóa năm
 }
 
 string formatMoney(int amount)

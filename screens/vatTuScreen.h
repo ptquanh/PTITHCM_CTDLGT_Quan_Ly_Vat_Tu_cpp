@@ -29,7 +29,23 @@ void drawKeysGuideVatTu(int x, int y)
     gotoxy(x + 100, y + 26);
     cout << "ESC: Thoat";
 }
-
+void drawKeysGuideListVatTu(int x, int y)
+{
+    int space = 4;
+    setColorByRequest(LIGHTGRAY, BROWN);
+    drawHCN(x, y + 25, 8, 2);
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 58 + 5 * space, y + 25, 14, 2);
+    drawHCN(x + 99, y + 25, 11, 2);
+    setColorByRequest(BROWN, BLACK);
+    gotoxy(x + 1, y + 26);
+    cout << "MENU VT";
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 58 + 5 * space + 1, y + 26);
+    cout << "F10: Luu file";
+    gotoxy(x + 100, y + 26);
+    cout << "ESC: Thoat";
+}
 void drawTableSearchTenVatTu(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -472,13 +488,13 @@ void handleNavigationListVatTu(treeVatTu root, int x, int y)
     int index = 0;
     storeInorder(root, arr, &index);
     quickSortVatTu(arr, 0, n - 1);
-
     int totalPages = ceil((float)n / ROWS);
     int currentPage = 1;
     int selectedRow = -1;
     char key;
     int currentChoice = -1;
     drawTablePrintVatTu(x, y, 15, 23);
+    drawKeysGuideListVatTu(x, y);
     while (true)
     {
         setColorByRequest(LIGHTGRAY, BLACK);

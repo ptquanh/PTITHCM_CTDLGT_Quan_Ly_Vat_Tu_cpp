@@ -230,25 +230,6 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
             break;
         }
-        // case 3:
-        // {
-        //     numResult = inputNumber(x + 87, y + 10, input.soLuongTon, 6, "So luong ton", moveNext, true);
-        //     if (numResult == -1)
-        //         goto escButton;
-        //     if (numResult == -10)
-        //         goto saveButton;
-        //     if (numResult == 0)
-        //     {
-        //         errorMessage = "So luong ton lon hon 0";
-        //         drawTableErrors(errorMessage, true);
-
-        //         continue;
-        //     }
-        //     drawTableErrors("", true);
-        //     input.soLuongTon = numResult;
-        //     formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
-        //     break;
-        // }
         escButton:
         {
             isESC = true;
@@ -317,15 +298,15 @@ void nhapVatTu(treeVatTu &root, int x, int y, string mavt, int soLuong, bool isS
                     drawTableErrors("Ma vat tu chua ky tu khong hop le", isSmallScreen);
                     continue;
                 }
-                if (search(root, tempInput) != NULL)
-                {
-                    drawTableErrors("Ma vat tu da ton tai", isSmallScreen);
-                    continue;
-                }
                 for (char &c : tempInput)
                 {
                     c = std::toupper(c);
                 }
+                if (search(root, tempInput) != NULL)
+                {
+                    drawTableErrors("Ma vat tu da ton tai", isSmallScreen);
+                    continue;
+                }                
                 drawTableErrors("", isSmallScreen);
                 input.MAVT = tempInput;
                 formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);

@@ -9,10 +9,10 @@ void drawKeysGuideChiTietHoaDon(int x, int y)
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x + 10 + space, y + 26, 12, 2);
     drawHCN(x + 22 + 2 * space, y + 26, 11, 2);
-    drawHCN(x + 33 + 3 * space, y + 26, 11, 2);
-    drawHCN(x + 44 + 4 * space, y + 26, 15, 2);
-    drawHCN(x + 59 + 5 * space, y + 26, 11, 2);
-    drawHCN(x + 106, y + 26, 11, 2);
+    drawHCN(x + 33 + 3 * space, y + 26, 12, 2);
+    drawHCN(x + 45 + 4 * space, y + 26, 15, 2);
+    drawHCN(x + 60 + 5 * space, y + 26, 11, 2);
+    drawHCN(x + 107, y + 26, 11, 2);
     setColorByRequest(BROWN, BLACK);
     gotoxy(x + 1, y + 27);
     cout << "MENU CTHD";
@@ -23,11 +23,11 @@ void drawKeysGuideChiTietHoaDon(int x, int y)
     cout << "F4: Sua CT";
     gotoxy(x + 33 + 3 * space + 1, y + 27);
     cout << "DEL: Xoa CT";
-    gotoxy(x + 44 + 4 * space + 1, y + 27);
+    gotoxy(x + 45 + 4 * space + 1, y + 27);
     cout << "F5: Tim ten VT";
-    gotoxy(x + 59 + 5 * space + 1, y + 27);
+    gotoxy(x + 60 + 5 * space + 1, y + 27);
     cout << "F6: Luu HD";
-    gotoxy(x + 107, y + 27);
+    gotoxy(x + 108, y + 27);
     cout << "ESC: Thoat";
 }
 

@@ -4,7 +4,6 @@
 #include "../screens/hoaDonScreen.h"
 void drawTableUpdateChiTietHoaDon(int x, int y);
 void clearTablePrintChiTietHoaDon(int x);
-// #define MAX_VATTU 1000
 
 bool nhanVienEmpty(dsNhanVien &list)
 {
@@ -28,7 +27,7 @@ bool isMANV(dsNhanVien &list, string maso)
 //     {
 //         if (value.empty())
 //         {
-//             cout << "Loi: Ma nhan vien khong duoc rong!" << endl;
+//             cout << "Loi: Ma nhan vien khong duoc rong" << endl;
 //             return true;
 //         }
 
@@ -45,13 +44,13 @@ bool isMANV(dsNhanVien &list, string maso)
 
 //         if (value.length() > 10)
 //         {
-//             cout << "Loi: Ma nhan vien khong duoc qua 10 ky tu!" << endl;
+//             cout << "Loi: Ma nhan vien khong duoc qua 10 ky tu" << endl;
 //             return true;
 //         }
 
 //         if (isMANV(list, value))
 //         {
-//             cout << "Loi: Ma nhan vien da ton tai!" << endl;
+//             cout << "Loi: Ma nhan vien da ton tai" << endl;
 //             return true;
 //         }
 
@@ -61,7 +60,7 @@ bool isMANV(dsNhanVien &list, string maso)
 //     {
 //         if (value.empty())
 //         {
-//             cout << "Loi: Ho nhan vien khong duoc rong!" << endl;
+//             cout << "Loi: Ho nhan vien khong duoc rong" << endl;
 //             return true;
 //         }
 
@@ -78,7 +77,7 @@ bool isMANV(dsNhanVien &list, string maso)
 //     {
 //         if (value.empty())
 //         {
-//             cout << "Loi: Ten nhan vien khong duoc rong!" << endl;
+//             cout << "Loi: Ten nhan vien khong duoc rong" << endl;
 //             return true;
 //         }
 
@@ -93,7 +92,7 @@ bool isMANV(dsNhanVien &list, string maso)
 //         {
 //             if (c == ' ')
 //             {
-//                 cout << "Loi: Ten nhan vien khong duoc chua khoang trang!" << endl;
+//                 cout << "Loi: Ten nhan vien khong duoc chua khoang trang" << endl;
 //                 return true;
 //             }
 //         }
@@ -104,7 +103,7 @@ bool isMANV(dsNhanVien &list, string maso)
 //     {
 //         if (value.empty() || (value != "Nam" && value != "Nu"))
 //         {
-//             cout << "Loi: Gioi tinh khong hop le!" << endl;
+//             cout << "Loi: Gioi tinh khong hop le" << endl;
 //             return true;
 //         }
 
@@ -123,7 +122,6 @@ int searchNhanVien(dsNhanVien &list, string manv)
             return i;
         }
     }
-    cout << "Khong tim thay nhan vien!" << endl;
     return -1;
 }
 int TimViTriChen(dsNhanVien &list, nhanVien *nhanvienmoi)
@@ -156,7 +154,7 @@ void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
 {
     if (list.countNV >= MaxNhanVien)
     {
-        cout << "Loi: So luong nhan vien da dat toi da. Khong the them nhan vien moi!" << endl;
+        cout << "So luong nhan vien da dat toi da" << endl;
         return;
     }
 
@@ -186,7 +184,7 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
     isSaved = false;
     if (nhanVienEmpty(list))
     {
-        cout << "Danh sach nhan vien rong!";
+        cout << "Danh sach nhan vien rong";
         return;
     }
     int pos = searchNhanVien(list, MANV);
@@ -230,7 +228,7 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
 {
     if (list.countNV >= MaxNhanVien)
     {
-        string errorMessage = "So luong nhan vien da dat toi da!";
+        string errorMessage = "So luong nhan vien da dat toi da";
         drawTableErrors(errorMessage, true);
         Sleep(1500);
         return;
@@ -272,15 +270,15 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
                 drawTableErrors(errorMessage, true);
                 continue;
             }
+            for (char &c : tempInput)
+            {
+                c = std::toupper(c);
+            }
             if (searchNhanVien(list, tempInput) != -1)
             {
                 errorMessage = "Ma nhan vien da ton tai";
                 drawTableErrors(errorMessage, true);
                 continue;
-            }
-            for (char &c : tempInput)
-            {
-                c = std::toupper(c);
             }
             drawTableErrors("", true);
             input.MANV = tempInput;
@@ -402,7 +400,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
 {
     if (nhanVienEmpty(list))
     {
-        string errorMessage = "Danh sach nhan vien trong!";
+        string errorMessage = "Danh sach nhan vien trong";
         drawTableErrors(errorMessage, true);
         Sleep(1500);
         return;
@@ -491,7 +489,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
             tempInput = normalizeString(result, hasError);
             if (hasError || (tempInput != "Nam" && tempInput != "Nu"))
             {
-                errorMessage = "Gioi tinh khong hop le (Nam/Nu)!";
+                errorMessage = "Gioi tinh khong hop le (Nam/Nu)";
                 drawTableErrors(errorMessage, true);
                 continue;
             }
@@ -788,7 +786,7 @@ void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
     {
         if (dsNV.countNV >= MaxNhanVien)
         {
-            cout << "Danh sach nhan vien da day!" << endl;
+            cout << "Danh sach nhan vien da day" << endl;
             // Giải phóng những node chưa được chèn
             for (int j = i; j < tempCount; j++)
             {
@@ -1236,7 +1234,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
 {
     if (nv == nullptr)
     {
-        cout << "Ma nhan vien khong ton tai!" << endl;
+        cout << "Ma nhan vien khong ton tai" << endl;
         return;
     }
 
@@ -1256,7 +1254,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
     new_hd = new dsHoaDon;
     new_hd->data_hd.firstCTHD = nullptr;
     new_hd->next = nullptr;
-    layNgayThangNam(input.day, input.month, input.year);
+    layThoiGianHienTai(input.day, input.month, input.year);
     while (true)
     {
         displayField(x + 94, y + 4, input.SoHD, currentRow == 0, 20);
@@ -1421,7 +1419,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
 {
     if (hd == nullptr)
     {
-        cout << "Hoa don khong ton tai!" << endl;
+        cout << "Hoa don khong ton tai" << endl;
         return;
     }
 
@@ -1691,7 +1689,7 @@ void xoaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
 {
     if (hd == nullptr || hd->data_hd.firstCTHD == nullptr)
     {
-        cout << "Hoa don khong ton tai hoac khong co chi tiet!" << endl;
+        cout << "Hoa don khong ton tai hoac khong co chi tiet" << endl;
         return;
     }
 
@@ -1707,7 +1705,7 @@ void xoaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
 
     if (current == nullptr)
     {
-        cout << "Khong tim thay chi tiet hoa don voi ma vat tu nay!" << endl;
+        cout << "Khong tim thay chi tiet hoa don voi ma vat tu nay" << endl;
         return;
     }
     // string errorMessage;
@@ -1769,7 +1767,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
     treeVatTu result = search(root, MAVT);
     if (hd == nullptr || hd->data_hd.firstCTHD == nullptr)
     {
-        cout << "Hoa don khong ton tai hoac khong co chi tiet!" << endl;
+        cout << "Hoa don khong ton tai hoac khong co chi tiet" << endl;
         return;
     }
 
@@ -1782,7 +1780,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
 
     if (current == nullptr)
     {
-        cout << "Khong tim thay chi tiet hoa don voi ma vat tu nay!" << endl;
+        cout << "Khong tim thay chi tiet hoa don voi ma vat tu nay" << endl;
         return;
     }
 
@@ -2218,38 +2216,9 @@ float tinhToanChiPhiCuaHoaDon(ptr_DSCTHD ct)
     return price;
 }
 
-void inputTime(int &day1, int &month1, int &year1, int &day2, int &month2, int &year2)
+void tinhToanDoanhThu(ptr_DSCTHD ct, doanhThuVatTu doanhThu[], int &countVatTu, string loai, int maxVatTu)
 {
-    do
-    {
-        cout << "Nhap thoi gian bat dau (dd mm yy): ";
-        cin >> day1 >> month1 >> year1;
-
-        if (!isValidTime(day1, month1, year1))
-        {
-            cout << "Thoi gian khong hop le" << endl;
-        }
-    } while (!isValidTime(day1, month1, year1));
-
-    do
-    {
-        cout << "Nhap thoi gian ket thuc (dd mm yy): ";
-        cin >> day2 >> month2 >> year2;
-
-        if (!isValidTime(day2, month2, year2))
-        {
-            cout << "Thoi gian khong hop le" << endl;
-        }
-        if (timeConflict(day1, month1, year1, day2, month2, year2))
-        {
-            cout << "Thoi gian khong hop le" << endl;
-        }
-    } while (!isValidTime(day2, month2, year2) || timeConflict(day1, month1, year1, day2, month2, year2));
-}
-
-void tinhToanDoanhThu(ptr_DSCTHD ct, doanhThuVatTu doanhThu[], int &countVatTu, string loai)
-{
-    while (ct != nullptr)
+    while (ct != nullptr && countVatTu < maxVatTu)
     {
         bool found = false;
         for (int j = 0; j < countVatTu; ++j)
@@ -2258,37 +2227,25 @@ void tinhToanDoanhThu(ptr_DSCTHD ct, doanhThuVatTu doanhThu[], int &countVatTu, 
             {
                 if (loai == "X")
                 {
-                    doanhThu[j].doanhThu += ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 + ct->data_cthd.VAT / 100);
+                    doanhThu[j].doanhThu += ct->data_cthd.soLuong * (float)ct->data_cthd.donGia / 1000 * (1 + (float)ct->data_cthd.VAT / 100);
                     doanhThu[j].soluong += ct->data_cthd.soLuong;
                 }
-                // else if (loai == "N")
-                // {
-                //     doanhThu[j].doanhThu -= ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 + ct->data_cthd.VAT / 100);
-                // }
                 found = true;
                 break;
             }
         }
-        if (!found && loai == "X")
+        if (!found && loai == "X" && countVatTu < maxVatTu)
         {
             doanhThu[countVatTu].MAVT = ct->data_cthd.MAVT;
-            doanhThu[countVatTu].doanhThu = ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 + ct->data_cthd.VAT / 100);
+            doanhThu[countVatTu].doanhThu = ct->data_cthd.soLuong * (float)ct->data_cthd.donGia / 1000 * (1 + (float)ct->data_cthd.VAT / 100);
             doanhThu[countVatTu].soluong = ct->data_cthd.soLuong;
-            // if (loai == "X")
-            // {
-            //     doanhThu[countVatTu].doanhThu = ct->data_cthd.soLuong * ct->data_cthd.donGia * (1 + ct->data_cthd.VAT / 100);
-            // }
-            // else if (loai == "N")
-            // {
-            //     doanhThu[countVatTu].doanhThu = -(ct->data_cthd.soLuong * ct->data_cthd.donGia) * (1 + ct->data_cthd.VAT / 100);
-            // }
-            // countVatTu++;
+            countVatTu++;
         }
         ct = ct->next;
     }
 }
 
-void layDoanhThu(dsNhanVien &dsnv, doanhThuVatTu doanhThu[], int &countVatTu, time_t start, time_t end)
+void layDoanhThu(dsNhanVien &dsnv, doanhThuVatTu doanhThu[], int &countVatTu, time_t start, time_t end, int maxVatTu)
 {
     for (int i = 0; i < dsnv.countNV; ++i)
     {
@@ -2298,165 +2255,84 @@ void layDoanhThu(dsNhanVien &dsnv, doanhThuVatTu doanhThu[], int &countVatTu, ti
             time_t hdTime = to_time_t(p->data_hd.day, p->data_hd.month, p->data_hd.year);
             if (hdTime >= start && hdTime <= end)
             {
-                tinhToanDoanhThu(p->data_hd.firstCTHD, doanhThu, countVatTu, p->data_hd.loai);
+                tinhToanDoanhThu(p->data_hd.firstCTHD, doanhThu, countVatTu, p->data_hd.loai, maxVatTu);
             }
             p = p->next;
         }
     }
 }
 
-void HelpTable(int x, int y)
+void inTop10DTVT(dsNhanVien &dsnv, treeVatTu root, int x, int y, int day1, int month1, int year1, int day2, int month2, int year2)
 {
-    setColorByRequest(LIGHTGRAY, BLACK);
-    // Vẽ hình
-    drawHCN(x, y, 16, 2);
+    int maxVatTu = countNodes(root);
+    doanhThuVatTu *doanhThu = new doanhThuVatTu[maxVatTu];
+    int countVatTu = 0;
+    char key;
 
-    // Vẽ layer chữ
-    gotoxy(x + 2, y + 1);
-    cout << "THOAT: ESCAPE";
-}
+    time_t start = to_time_t(day1, month1, year1);
+    time_t end = to_time_t(day2, month2, year2);
+    layDoanhThu(dsnv, doanhThu, countVatTu, start, end, maxVatTu);
 
-void DrawTop10Table(int x, int y, doanhThuVatTu doanhthu[], int day1, int month1, int year1, int day2, int month2, int year2)
-{
-    system("cls");
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    setColorByRequest(LIGHTGRAY, BLACK);
-    // Vẽ đường và hình
-    drawHCN(x, y, 62, 16);
-    horizontalLine(x, y + 3, 62);
-    horizontalLine(x, y + 5, 62);
-    verticalLine(x + 6, y + 3, 13);
-    verticalLine(x + 17, y + 3, 13);
-    verticalLine(x + 38, y + 3, 13);
-    verticalLine(x + 50, y + 3, 13);
-
-    // Vẽ góc ở cạnh
-    gotoxy(x, y + 3);
-    cout << tRight;
-    gotoxy(x, y + 5);
-    cout << tRight;
-
-    gotoxy(x + 6, y + 16);
-    cout << tUp;
-    gotoxy(x + 17, y + 16);
-    cout << tUp;
-    gotoxy(x + 38, y + 16);
-    cout << tUp;
-    gotoxy(x + 50, y + 16);
-    cout << tUp;
-
-    gotoxy(x + 62, y + 3);
-    cout << tLeft;
-    gotoxy(x + 62, y + 5);
-    cout << tLeft;
-
-    gotoxy(x + 6, y + 3);
-    cout << tDown;
-    gotoxy(x + 17, y + 3);
-    cout << tDown;
-    gotoxy(x + 38, y + 3);
-    cout << tDown;
-    gotoxy(x + 50, y + 3);
-    cout << tDown;
-
-    gotoxy(x + 6, y + 5);
-    cout << cross;
-    gotoxy(x + 17, y + 5);
-    cout << cross;
-    gotoxy(x + 38, y + 5);
-    cout << cross;
-    gotoxy(x + 50, y + 5);
-    cout << cross;
-
-    // Vẽ layer Header
-    setColorByRequest(LIGHTGRAY, RED);
-    gotoxy(x + 25, y + 1);
-    cout << "TOP 10 VAT TU";
-    gotoxy(x + 17, y + 2);
-    cout << "FROM ";
-    cout << setfill('0') << setw(2) << day1 << "/";
-    cout << setfill('0') << setw(2) << month1 << "/";
-    cout << setfill('0') << setw(4) << year1;
-    cout << " TO ";
-    cout << setfill('0') << setw(2) << day2 << "/";
-    cout << setfill('0') << setw(2) << month2 << "/";
-    cout << setfill('0') << setw(4) << year2;
-
-    gotoxy(x + 2, y + 4);
-    cout << "TOP";
-    gotoxy(x + 10, y + 4);
-    cout << "MAVT";
-    gotoxy(x + 23, y + 4);
-    cout << "TEN VAT TU";
-    gotoxy(x + 40, y + 4);
-    cout << "SO LUONG";
-    gotoxy(x + 52, y + 4);
-    cout << "DOANH THU";
-
-    // Vẽ layer Top 10 vật tư
-    setColorByRequest(LIGHTGRAY, BLACK);
-    for (int i = 0; i < 10; i++)
+    if (countVatTu > 0)
     {
-        gotoxy(x + 3, y + 6 + i);
-        cout << i + 1;
-        if (doanhthu[i].doanhThu > 0)
+        quickSortDoanhThu(doanhThu, 0, countVatTu - 1);
+    }
+    setColorByRequest(LIGHTGRAY, RED);
+    gotoxy(x + 17, y + 2);
+    cout << "Tu ngay ";
+    gotoxy(x + 35, y + 2);
+    cout << " Den ngay";
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 25, y + 2);
+    cout << day1 << "/" << month1 << "/" << year1;
+    gotoxy(x + 45, y + 2);
+    cout << day2 << "/" << month2 << "/" << year2;
+    for (int i = 0; i < 10 && i < countVatTu; i++)
+    {
+        if (i < 9)
         {
-            gotoxy(x + 7, y + 6 + i);
-            cout << doanhthu[i].MAVT;
-            gotoxy(x + 18, y + 6 + i);
-            cout << doanhthu[i].TENVT;
-            gotoxy(x + 39, y + 6 + i);
-            cout << doanhthu[i].soluong;
-            gotoxy(x + 51, y + 6 + i);
-            cout << fixed << setprecision(2) << doanhthu[i].doanhThu;
+            string str = "0" + to_string(i + 1);
+            gotoxy(x + 3, y + 6 + i);
+            cout << str;
+        }
+        else
+        {
+            gotoxy(x + 3, y + 6 + i);
+            cout << 10;
+        }
+        if (doanhThu[i].doanhThu > 0)
+        {
+            gotoxy(x + 10, y + 6 + i);
+            cout << doanhThu[i].MAVT;
+            treeVatTu node = search(root, doanhThu[i].MAVT);
+            gotoxy(x + 25, y + 6 + i);
+            cout << node->data_vt.TENVT;
+            gotoxy(x + 50, y + 6 + i);
+            cout << doanhThu[i].soluong;
+            gotoxy(x + 61, y + 6 + i);
+            cout << node->data_vt.DVT;
+            gotoxy(x + 72, y + 6 + i);
+            string doanhThuVT = formatMoney(doanhThu[i].doanhThu);
+            cout << doanhThuVT;
         }
     }
-    HelpTable(5, 2);
-    char key;
     while (true)
     {
         key = getch();
         if (key == ESC)
-            return;
+        {
+            gotoxy(0, 0);
+            cout << "ESC";
+        }
     }
-}
-
-void inTop10DTVT(dsNhanVien &dsnv)
-{
-    doanhThuVatTu doanhThu[1000];
-    int countVatTu = 0;
-    char key;
-    int day1, month1, year1, day2, month2, year2;
-    inputTime(day1, month1, year1, day2, month2, year2);
-    time_t start = to_time_t(day1, month1, year1);
-    time_t end = to_time_t(day2, month2, year2);
-
-    // Đặt doanh thu ban đầu trở lại 0;
-    // for (int i = 0; i < MAX_VATTU; i++)
-    // {
-    //     doanhThu[i].doanhThu = 0;
-    //     doanhThu[i].soluong = 0;
-    // }
-
-    layDoanhThu(dsnv, doanhThu, countVatTu, start, end);
-
-    quickSortDoanhThu(doanhThu, 0, countVatTu - 1);
-
-    DrawTop10Table(29, 7, doanhThu, day1, month1, year1, day2, month2, year2);
-
-    while (1)
-    {
-        key = getch();
-        if (key == ESC)
-            return;
-    }
+    delete[] doanhThu;
 }
 
 void inThongKeHoaDon(dsNhanVien &dsnv)
 {
     int day1, month1, year1, day2, month2, year2;
     char key;
-    inputTime(day1, month1, year1, day2, month2, year2);
+    // inputTime(day1, month1, year1, day2, month2, year2);
     time_t start = to_time_t(day1, month1, year1);
     time_t end = to_time_t(day2, month2, year2);
 
@@ -2489,68 +2365,11 @@ void inThongKeHoaDon(dsNhanVien &dsnv)
     }
 }
 
-void DrawDoanhThuNam(int x, int y, int year, float doanhthuthang[12])
+void inDoanhThuNam(dsNhanVien danhSach, int x, int y, int year)
 {
-    system("cls");
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-
-    setColorByRequest(LIGHTGRAY, BLACK);
-    drawHCN(x, y, 35, 17);
-    horizontalLine(x, y + 2, 35);
-    horizontalLine(x, y + 4, 35);
-    verticalLine(x + 14, y + 2, 15);
-
-    gotoxy(x, y + 2);
-    cout << tRight;
-    gotoxy(x, y + 4);
-    cout << tRight;
-
-    gotoxy(x + 35, y + 2);
-    cout << tLeft;
-    gotoxy(x + 35, y + 4);
-    cout << tLeft;
-
-    gotoxy(x + 14, y + 2);
-    cout << tDown;
-
-    gotoxy(x + 14, y + 17);
-    cout << tUp;
-
-    gotoxy(x + 14, y + 4);
-    cout << cross;
-
-    setColorByRequest(LIGHTGRAY, RED);
-    gotoxy(x + 2, y + 1);
-    cout << "BANG THONG KE DOANH THU NAM " << setfill('0') << setw(4) << year;
-    gotoxy(x + 5, y + 3);
-    cout << "THANG";
-    gotoxy(x + 20, y + 3);
-    cout << "DOANH THU";
-
-    setColorByRequest(LIGHTGRAY, BLACK);
-    for (int i = 0; i < 12; i++)
-    {
-        gotoxy(x + 7, y + 5 + i);
-        cout << i + 1;
-        gotoxy(x + 17, y + 5 + i);
-        cout << doanhthuthang[i];
-    }
-
-    HelpTable(5, 2);
-
-    char key;
-    while (true)
-    {
-        key = getch();
-        if (key == ESC)
-            return;
-    }
-}
-
-void inDoanhThuNam(dsNhanVien danhSach)
-{
-    int year;
     cin >> year;
+    gotoxy(x + 30, y + 1);
+    cout << year;
     float doanhThuThang[12] = {0};
     for (int i = 0; i < danhSach.countNV; i++)
     {
@@ -2559,11 +2378,8 @@ void inDoanhThuNam(dsNhanVien danhSach)
         {
             if (hoaDon->data_hd.year == year)
             {
-                float triGiaHoaDon = tinhTriGiaHoaDon(hoaDon->data_hd.firstCTHD);
-                // if (hoaDon->data_hd.loai == "N")
-                // {
-                //     doanhThuThang[hoaDon->data_hd.month - 1] -= triGiaHoaDon;
-                // }
+                float triGiaHoaDon = 0;
+                triGiaHoaDon = tinhTriGiaHoaDon(hoaDon->data_hd.firstCTHD);
                 if (hoaDon->data_hd.loai == "X")
                 {
                     doanhThuThang[hoaDon->data_hd.month - 1] += triGiaHoaDon;
@@ -2572,5 +2388,22 @@ void inDoanhThuNam(dsNhanVien danhSach)
             hoaDon = hoaDon->next;
         }
     }
-    DrawDoanhThuNam(43, 6, year, doanhThuThang);
+    setColorByRequest(LIGHTGRAY, BLACK);
+    for (int i = 0; i < 12; i++)
+    {
+        if (i < 9)
+        {
+            string str = "0" + to_string(i + 1);
+            gotoxy(x + 4, y + 5 + i);
+            cout << str;
+        }
+        else
+        {
+            gotoxy(x + 4, y + 5 + i);
+            cout << i + 1;
+        }
+        string doanhThu = formatMoney(doanhThuThang[i]);
+        gotoxy(x + 13, y + 5 + i);
+        cout << doanhThu;
+    }
 }

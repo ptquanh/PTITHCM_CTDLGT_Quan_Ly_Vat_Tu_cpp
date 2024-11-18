@@ -29,7 +29,23 @@ void drawKeysGuideNhanVien(int x, int y)
     gotoxy(x + 100, y + 26);
     cout << "ESC: Thoat";
 }
-
+void drawKeysGuideListNhanVien(int x, int y)
+{
+    int space = 4;
+    setColorByRequest(LIGHTGRAY, BROWN);
+    drawHCN(x, y + 25, 8, 2);
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 58 + 5 * space, y + 25, 14, 2);
+    drawHCN(x + 99, y + 25, 11, 2);
+    setColorByRequest(BROWN, BLACK);
+    gotoxy(x + 1, y + 26);
+    cout << "MENU NV";
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 58 + 5 * space + 1, y + 26);
+    cout << "F10: Luu file";
+    gotoxy(x + 100, y + 26);
+    cout << "ESC: Thoat";
+}
 void drawTableUpdateNhanVien(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -49,7 +65,7 @@ void drawTableUpdateNhanVien(int x, int y)
     gotoxy(x + 71, y + 9);
     cout << "Toi da 6 ki tu";
     gotoxy(x + 71, y + 11);
-    cout << "0: Nam - 1: Nu";
+    cout << "Nam / Nu";
     SetColor(BLACK);
     gotoxy(x + 82, y + 2);
     cout << "CAP NHAT NHAN VIEN";
@@ -503,6 +519,7 @@ void handleNavigationListNhanVien(dsNhanVien dsnv, int x, int y)
     char key;
     int currentChoice = -1;
     drawTablePrintNhanVien(x, y, 15, 23);
+    drawKeysGuideListNhanVien(x,y);
     while (true)
     {
         setColorByRequest(LIGHTGRAY, BLACK);
