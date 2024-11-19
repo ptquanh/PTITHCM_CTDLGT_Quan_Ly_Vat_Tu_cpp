@@ -1,7 +1,5 @@
 #pragma once
 #include "doHoa.h"
-#include "hoaDonScreen.h"
-#include "vatTuScreen.h"
 
 int menuChinhDong(char menuchinh[YeuCauChinh][100])
 {

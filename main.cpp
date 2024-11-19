@@ -1,4 +1,7 @@
 #include "./screens/mainScreen.h"
+#include "./screens/hoaDonScreen.h"
+#include "./screens/vatTuScreen.h"
+#include "./screens/thongKeScreen.h"
 
 int main()
 {
@@ -80,13 +83,13 @@ int main()
             switch (contentMenu)
             {
             case 0:
-                inThongKeHoaDon(dsnv);
+                menuThongKeHoaDon(dsnv, smallX, smallY);
                 break;
             case 1:
-                inTop10DTVT(dsnv);
+                menuThongKeTop10(dsnv, root, smallX, smallY);
                 break;
             case 2:
-                inDoanhThuNam(dsnv);
+                menuThongKeDoanhThuNam(dsnv, smallX, smallY);
                 break;
             }
             break;
