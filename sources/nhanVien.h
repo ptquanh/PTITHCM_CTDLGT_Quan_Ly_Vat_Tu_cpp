@@ -141,6 +141,8 @@ int TimViTriChen(dsNhanVien &list, nhanVien *nhanvienmoi)
                 high = mid - 1;
             else if (nhanvienmoi->HO > list.nodes[mid]->HO) // Nếu vị trí chèn lệch trái
                 low = mid + 1;
+            else // Nếu tên trùng và họ trùng
+                return mid;
         }
         else // Nếu vị trí cần chèn lớn hơn trung điểm
         {
@@ -191,6 +193,10 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
     if (pos == -1)
     {
         cout << "Khong tim thay ma nhan vien " << MANV << endl;
+        return;
+    }
+    if (list.nodes[pos]->firstDSHD != nullptr)
+    {
         return;
     }
     input.MANV = list.nodes[pos]->MANV;
@@ -551,18 +557,63 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
         }
     }
 }
-
-void xoaDSNV(dsNhanVien &list) // goi khi ket thuc
+void deleteChiTietHoaDon(ptr_DSCTHD &first)
 {
-    if (nhanVienEmpty(list))
-        return;
-
-    for (int i = 0; i < list.countNV; i++)
+    while (first != nullptr) // xóa đi node chi tiết hóa đơn
     {
-        delete list.nodes[i];
-        list.nodes[i] = NULL;
+        ptr_DSCTHD temp = first;
+        first = first->next;
+        delete temp;
     }
-    list.countNV = 0;
+}
+void deleteHoaDon(ptr_DSHD &first)
+{
+    while (first != nullptr)
+    {
+
+        deleteChiTietHoaDon(first->data_hd.firstCTHD); // xóa đi node chi tiết hóa đơn của hóa đơn
+
+        ptr_DSHD temp = first;
+        first = first->next;
+        delete temp;
+    }
+}
+void deleteDanhsachNhanVien(dsNhanVien &dsNV)
+{
+    if (nhanVienEmpty(dsNV) == true)
+        return;
+    for (int i = 0; i < dsNV.countNV; ++i)
+    {
+        deleteHoaDon(dsNV.nodes[i]->firstDSHD); // Xóa đi danh sách hóa đơn của nhân viên đó
+        delete dsNV.nodes[i];                   // Xóa nhân viên
+    }
+    dsNV.countNV = 0; // Đặt lại số lượng nhân viên của danh sách
+}
+
+// Thoát khẩn cấp bằng nút "X" hay close trên terminal
+dsNhanVien *globalDsNVPtr = nullptr; // biến tĩnh
+
+void signalHandler(int signum)
+{
+    if (signum == SIGINT || signum == SIGTERM)
+    {
+        system("cls");
+        cout << "Interrupt signal (" << signum << ") received. Cleaning up resources..." << endl;
+
+        if (globalDsNVPtr != nullptr)
+        {
+            deleteDanhsachNhanVien(*globalDsNVPtr);
+        }
+
+        exit(signum);
+    }
+}
+
+void setupSignalHandler(dsNhanVien *dsNVPtr)
+{
+    globalDsNVPtr = dsNVPtr;
+    signal(SIGINT, signalHandler);  // Handle Ctrl+C
+    signal(SIGTERM, signalHandler); // Handle termination request
 }
 
 void Write_CTHoaDon(ofstream &file, nodeChiTietHoaDon &cthd)

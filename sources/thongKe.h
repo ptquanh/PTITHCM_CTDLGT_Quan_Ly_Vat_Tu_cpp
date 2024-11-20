@@ -29,7 +29,7 @@ void tinhToanDoanhThu(ptr_DSCTHD ct, doanhThuVatTu doanhThu[], int &countVatTu, 
                 break;
             }
         }
-        if (!found && loai == "X" && countVatTu < maxVatTu)
+        if (!found && loai == "X" && countVatTu < maxVatTu) // nếu chưa tìm thấy
         {
             doanhThu[countVatTu].MAVT = ct->data_cthd.MAVT;
             doanhThu[countVatTu].doanhThu = ct->data_cthd.soLuong * (float)ct->data_cthd.donGia / 1000 * (1 + (float)ct->data_cthd.VAT / 100);
