@@ -8,6 +8,7 @@ int main()
 {
     ShowCur(false);
     dsNhanVien dsnv;
+    setupSignalHandler(&dsnv);
     treeVatTu root = nullptr;
     string errorMessage;
     bool isVTOpened = true, isNVOpened = true;

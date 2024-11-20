@@ -8,6 +8,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
+#include <csignal>
 #include <math.h>
 using namespace std;
 #define filePath_VT "./databases/ds_VatTu.txt"
@@ -55,15 +56,15 @@ char MenuThongKe[YeuCauThongKe][100] = {
 // ======= cay nhi phan tim kiem can bang ===========
 struct nodeVatTu
 {
+    int soLuongTon;
     string MAVT; // max C10
     string TENVT;
     string DVT;
-    int soLuongTon;
 };
 struct dsVatTu
 {
-    nodeVatTu data_vt;
     int height;
+    nodeVatTu data_vt;
     dsVatTu *left, *right;
 };
 typedef dsVatTu *treeVatTu;
@@ -71,11 +72,11 @@ typedef dsVatTu *treeVatTu;
 // ============= danh sach lien ket don ===============
 struct nodeChiTietHoaDon
 {
-    string MAVT;
+    float triGia;
     int soLuong;
     int donGia;
     int VAT;
-    float triGia;
+    string MAVT;
 };
 struct dsChiTietHoaDon
 {
@@ -89,9 +90,9 @@ typedef dsChiTietHoaDon *ptr_DSCTHD;
 struct nodeHoaDon
 {
 
+    int day, month, year;
     string SoHD; // max C20
     string loai; // N or X
-    int day, month, year;
     ptr_DSCTHD firstCTHD = nullptr;
 };
 struct dsHoaDon
@@ -128,8 +129,8 @@ time_t to_time_t(int day, int month, int year)
 
 struct doanhThuVatTu
 {
+    float doanhThu;
+    int soluong;
     string MAVT;
     string TENVT;
-    int soluong;
-    float doanhThu;
 };
