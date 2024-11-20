@@ -1,5 +1,7 @@
 #pragma once
 #include "nhanVien.h"
+#include "hoaDon.h"
+#include "vatTu.h"
 float tinhToanChiPhiCuaHoaDon(ptr_DSCTHD ct)
 {
     float price = 0;
@@ -116,8 +118,7 @@ void inTop10DTVT(dsNhanVien &dsnv, treeVatTu root, int x, int y, int day1, int m
         key = getch();
         if (key == ESC)
         {
-            gotoxy(0, 0);
-            cout << "ESC";
+            return;
         }
     }
     delete[] doanhThu;
@@ -165,7 +166,46 @@ void inThongKeHoaDon(nodeHoaDon *arrHoaDon, string *employeeNames, float *triGia
         drawTableErrors(errorMessage, true);
         return;
     }
+    int *indices = new int[totalInvoices];
+    for (int i = 0; i < totalInvoices; i++)
+    {
+        indices[i] = i;
+    }
 
+    // Sắp xếp mảng chỉ số theo thời gian tăng dần
+    for (int i = 0; i < totalInvoices - 1; i++)
+    {
+        for (int j = 0; j < totalInvoices - i - 1; j++)
+        {
+            // So sánh thời gian
+            bool shouldSwap = false;
+            if (arrHoaDon[indices[j]].year > arrHoaDon[indices[j + 1]].year)
+            {
+                shouldSwap = true;
+            }
+            else if (arrHoaDon[indices[j]].year == arrHoaDon[indices[j + 1]].year)
+            {
+                if (arrHoaDon[indices[j]].month > arrHoaDon[indices[j + 1]].month)
+                {
+                    shouldSwap = true;
+                }
+                else if (arrHoaDon[indices[j]].month == arrHoaDon[indices[j + 1]].month)
+                {
+                    if (arrHoaDon[indices[j]].day > arrHoaDon[indices[j + 1]].day)
+                    {
+                        shouldSwap = true;
+                    }
+                }
+            }
+
+            if (shouldSwap)
+            {
+                int temp = indices[j];
+                indices[j] = indices[j + 1];
+                indices[j + 1] = temp;
+            }
+        }
+    }
     int startIndex = (pageNumber - 1) * (HDROWS - 1);
     int endIndex = min(startIndex + HDROWS - 1, totalInvoices);
     int currentRow = 7;
@@ -173,34 +213,35 @@ void inThongKeHoaDon(nodeHoaDon *arrHoaDon, string *employeeNames, float *triGia
     // In dữ liệu trang hiện tại
     for (int i = startIndex; i < endIndex; i++)
     {
+        int idx = indices[i];
         gotoxy(x + 3, currentRow);
         if (i - startIndex == selectedRow)
         {
             Highlight(LIGHTBLUE);
-            cout << arrHoaDon[i].SoHD;
+            cout << arrHoaDon[idx].SoHD;
             setColorByRequest(LIGHTGRAY, BLACK);
         }
         else
         {
-            cout << arrHoaDon[i].SoHD;
+            cout << arrHoaDon[idx].SoHD;
         }
 
         gotoxy(x + 28, currentRow);
-        cout << arrHoaDon[i].day << "/" << arrHoaDon[i].month << "/" << arrHoaDon[i].year;
+        cout << arrHoaDon[idx].day << "/" << arrHoaDon[idx].month << "/" << arrHoaDon[idx].year;
 
         gotoxy(x + 43, currentRow);
-        arrHoaDon[i].loai == "X" ? cout << "Xuat" : cout << "Nhap";
+        arrHoaDon[idx].loai == "X" ? cout << "Xuat" : cout << "Nhap";
 
         gotoxy(x + 56, currentRow);
-        cout << employeeNames[i];
+        cout << employeeNames[idx];
 
         gotoxy(x + 87, currentRow);
-        string str = formatMoney(triGiaHoaDon[i] * 1000);
+        string str = formatMoney(triGiaHoaDon[idx] * 1000);
         cout << str;
 
         currentRow++;
     }
-
+    delete[] indices;
     // In số trang
     int totalPages = ceil((float)totalInvoices / (HDROWS - 1));
     gotoxy(6, 18);
@@ -248,5 +289,12 @@ void inDoanhThuNam(dsNhanVien danhSach, int x, int y, int year)
         string doanhThu = formatMoney(doanhThuThang[i] * 1000);
         gotoxy(x + 13, y + 5 + i);
         cout << doanhThu;
+    }
+    char key;
+    while (true)
+    {
+        key = getch();
+        if (key == ESC)
+            return;
     }
 }

@@ -74,46 +74,6 @@ void drawTableSearchTenVatTu(int x, int y)
     }
 }
 
-void drawTableAddVatTuInCTHD(int x, int y)
-{
-    setColorByRequest(LIGHTGRAY, DARKGRAY);
-    drawHCN(x + 69, y, 41, 13);
-    drawHCN(x + 87, y + 10, 9, 2);
-    drawHCN(x + 99, y + 10, 9, 2);
-    SetColor(BLACK);
-    gotoxy(x + 88, y + 11);
-    cout << "ESC: Huy";
-    gotoxy(x + 100, y + 11);
-    cout << "F10: Luu";
-    SetColor(GREEN);
-    gotoxy(x + 71, y + 5);
-    cout << "Toi da 10 ki tu";
-    gotoxy(x + 71, y + 7);
-    cout << "Toi da 20 ki tu";
-    gotoxy(x + 71, y + 9);
-    cout << "Toi da 6 ki tu";
-    SetColor(BLACK);
-    gotoxy(x + 82, y + 2);
-    cout << "THEM VAT TU";
-    gotoxy(x + 71, y + 4);
-    cout << "MA VAT TU      :";
-    gotoxy(x + 71, y + 6);
-    cout << "TEN VAT TU     :";
-    gotoxy(x + 71, y + 8);
-    cout << "DON VI TINH    :";
-    // to mau trang
-    for (int i = x + 87; i < x + 109; i++)
-    {
-        SetBGColor(BLACK);
-        gotoxy(i, y + 4);
-        cout << " ";
-        gotoxy(i, y + 6);
-        cout << " ";
-        gotoxy(i, y + 8);
-        cout << " ";
-    }
-}
-
 void drawTableUpdateVatTu(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);

@@ -1,5 +1,5 @@
 #pragma once
-#include "../sources/nhanVien.h"
+#include "../sources/hoaDon.h"
 #include "./nhanVienScreen.h"
 void drawKeysGuideChiTietHoaDon(int x, int y)
 {
@@ -30,7 +30,45 @@ void drawKeysGuideChiTietHoaDon(int x, int y)
     gotoxy(x + 108, y + 27);
     cout << "ESC: Thoat";
 }
-
+void drawTableAddVatTuInCTHD(int x, int y)
+{
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 69, y, 41, 13);
+    drawHCN(x + 87, y + 10, 9, 2);
+    drawHCN(x + 99, y + 10, 9, 2);
+    SetColor(BLACK);
+    gotoxy(x + 88, y + 11);
+    cout << "ESC: Huy";
+    gotoxy(x + 100, y + 11);
+    cout << "F10: Luu";
+    SetColor(GREEN);
+    gotoxy(x + 71, y + 5);
+    cout << "Toi da 10 ki tu";
+    gotoxy(x + 71, y + 7);
+    cout << "Toi da 20 ki tu";
+    gotoxy(x + 71, y + 9);
+    cout << "Toi da 6 ki tu";
+    SetColor(BLACK);
+    gotoxy(x + 82, y + 2);
+    cout << "THEM VAT TU";
+    gotoxy(x + 71, y + 4);
+    cout << "MA VAT TU      :";
+    gotoxy(x + 71, y + 6);
+    cout << "TEN VAT TU     :";
+    gotoxy(x + 71, y + 8);
+    cout << "DON VI TINH    :";
+    // to mau trang
+    for (int i = x + 87; i < x + 109; i++)
+    {
+        SetBGColor(BLACK);
+        gotoxy(i, y + 4);
+        cout << " ";
+        gotoxy(i, y + 6);
+        cout << " ";
+        gotoxy(i, y + 8);
+        cout << " ";
+    }
+}
 void clearTablePrintChiTietHoaDon(int x)
 {
     SetBGColor(LIGHTGRAY);
@@ -901,6 +939,58 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
                     gotoxy(x + 36, y + 7);
                     cout << new_hd->data_hd.year;
                     ShowCur(false);
+                }
+                break;
+            case F10:
+                if (new_hd->data_hd.firstCTHD != nullptr)
+                {
+                    ptr_DSHD found_hd = nullptr;
+                    // Nếu hóa đơn đã tồn tại thì cập nhật
+                    found_hd = searchHoaDon(dsnv, new_hd->data_hd.SoHD, found_hd);
+
+                    if (found_hd == nullptr)
+                    {
+                        // Thêm hóa đơn mới vào nhân viên hiện tại
+                        for (int i = 0; i < dsnv.countNV; i++)
+                        {
+                            if (dsnv.nodes[i]->MANV == currentMANV)
+                            {
+                                ptr_DSHD temp = dsnv.nodes[i]->firstDSHD;
+
+                                if (temp == nullptr)
+                                {
+                                    dsnv.nodes[i]->firstDSHD = new_hd;
+                                }
+                                else
+                                {
+                                    while (temp->next != nullptr)
+                                    {
+                                        temp = temp->next;
+                                    }
+                                    temp->next = new_hd;
+                                }
+
+                                new_hd->next = nullptr;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Nếu hóa đơn đã tồn tại thì cập nhật chi tiết
+                        found_hd->data_hd = new_hd->data_hd;
+                    }
+                    drawTableErrors("Luu va ghi hoa don thanh cong", false);
+                    Sleep(1500);
+                    drawTableErrors("", false);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    return;
+                }
+                else
+                {
+                    drawTableErrors("Hoa don rong", false);
+                    Sleep(1500);
+                    drawTableErrors("", false);
                 }
                 break;
             case ESC:

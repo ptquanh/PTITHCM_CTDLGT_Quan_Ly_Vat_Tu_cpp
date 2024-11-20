@@ -1,4 +1,4 @@
-// #pragma once
+#pragma once
 #include "../screens/hoaDonScreen.h"
 #include "../sources/thongKe.h"
 //===============================================================

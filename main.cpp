@@ -1,6 +1,7 @@
 #include "./screens/mainScreen.h"
-#include "./screens/hoaDonScreen.h"
 #include "./screens/vatTuScreen.h"
+#include "./screens/nhanVienScreen.h"
+#include "./screens/hoaDonScreen.h"
 #include "./screens/thongKeScreen.h"
 
 int main()

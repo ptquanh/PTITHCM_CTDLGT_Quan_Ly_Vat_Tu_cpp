@@ -1,6 +1,6 @@
-NV17|Nguyen Xuan|An|Nam
+NV211|Le Hoang|Anh|Nam
 \
-NV7|Phan Tuan Quoc 12345|Anh|Nam
+NV7|Phan Tuan Quoc|Anh|Nam
 -HD1|12|12|2024|X
 +VT001|10|1|1000000
 +VT002|15|1|500000000
@@ -24,7 +24,7 @@ NV12|Hoang Thien|Bao|Nam
 +VT004|5|10|50000000
 +VT005|2|1|1000000
 +VT006|5|10|50000000
-+VT007|2|1|1000000=
++VT007|2|1|1000000
 \
 NV20|Ly Van|Bien|Nam
 \
