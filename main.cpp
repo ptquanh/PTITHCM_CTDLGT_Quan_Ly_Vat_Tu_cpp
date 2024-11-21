@@ -7,6 +7,10 @@
 int main()
 {
     ShowCur(false);
+    // DisableCtrButton(true, true, true);
+    // SetWindowSize(300, 80);
+    SetConsoleTitleCustom("Chuong trinh quan ly vat tu");
+    // SetConsoleSize(1080,720);
     dsNhanVien dsnv;
     setupSignalHandler(&dsnv);
     treeVatTu root = nullptr;
@@ -29,7 +33,6 @@ int main()
         drawTableErrors(errorMessage, true);
         return 0;
     }
-    // inTop10DTVT(dsnv);
     while (true)
     {
         mainMenu = menuChinhDong(MenuChinh);

@@ -229,3 +229,61 @@ void fillConsoleWithColor(WORD color)
     FillConsoleOutputAttribute(hConsole, color, consoleSize, {0, 0}, &charsWritten);
     SetConsoleCursorPosition(hConsole, {0, 0});
 }
+void DisableCtrButton(bool Close, bool Min, bool Max)
+{
+    HWND hWnd = GetConsoleWindow();
+    HMENU hMenu = GetSystemMenu(hWnd, false);
+
+    if (Close == 1)
+    {
+        DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
+    }
+    if (Min == 1)
+    {
+        DeleteMenu(hMenu, SC_MINIMIZE, MF_BYCOMMAND);
+    }
+    if (Max == 1)
+    {
+        DeleteMenu(hMenu, SC_MAXIMIZE, MF_BYCOMMAND);
+    }
+}
+void SetWindowSize(SHORT width, SHORT height)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SMALL_RECT WindowSize;
+    WindowSize.Top = 0;
+    WindowSize.Left = 0;
+    WindowSize.Right = width;
+    WindowSize.Bottom = height;
+
+    SetConsoleWindowInfo(hStdout, 1, &WindowSize);
+}
+
+void SetConsoleTitleCustom(const std::string &title)
+{
+    // Dùng hàm SetConsoleTitle để thiết lập tiêu đề
+    if (!SetConsoleTitleA(title.c_str()))
+    { // Dùng SetConsoleTitleA để đảm bảo kiểu dữ liệu phù hợp (ANSI)
+        std::cerr << "Không thể thay đổi tiêu đề cửa sổ console!" << std::endl;
+    }
+}
+void SetConsoleSize(int width, int height)
+{
+    // Lấy handle của console
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Thay đổi kích thước bộ đệm của console
+    COORD bufferSize;
+    bufferSize.X = width;
+    bufferSize.Y = height;
+    SetConsoleScreenBufferSize(hConsole, bufferSize);
+
+    // Thay đổi kích thước cửa sổ hiển thị
+    SMALL_RECT windowSize;
+    windowSize.Left = 0;
+    windowSize.Top = 0;
+    windowSize.Right = width - 1;   // Chỉnh độ rộng cửa sổ (trừ 1 vì chỉ số bắt đầu từ 0)
+    windowSize.Bottom = height - 1; // Chỉnh chiều cao cửa sổ (trừ 1 vì chỉ số bắt đầu từ 0)
+    SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+}
