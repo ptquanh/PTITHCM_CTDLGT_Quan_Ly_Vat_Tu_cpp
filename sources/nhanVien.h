@@ -156,13 +156,13 @@ void chenNhanVien(dsNhanVien &list, nhanVien *nhanvienmoi)
         return;
     }
 
-    // int pos = TimViTriChen(list, nhanvienmoi);
-    int pos = 0;
-    while (pos < list.countNV && (nhanvienmoi->TEN > list.nodes[pos]->TEN ||
-                                  (nhanvienmoi->TEN == list.nodes[pos]->TEN && nhanvienmoi->HO >= list.nodes[pos]->HO)))
-    {
-        pos++;
-    }
+    int pos = TimViTriChen(list, nhanvienmoi);
+    // int pos = 0;
+    // while (pos < list.countNV && (nhanvienmoi->TEN > list.nodes[pos]->TEN ||
+    //                               (nhanvienmoi->TEN == list.nodes[pos]->TEN && nhanvienmoi->HO >= list.nodes[pos]->HO)))
+    // {
+    //     pos++;
+    // }
     for (int i = list.countNV; i > pos; i--)
     {
         list.nodes[i] = list.nodes[i - 1];
