@@ -553,35 +553,27 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
         }
     }
 }
-void deleteChiTietHoaDon(ptr_DSCTHD &first)
-{
-    while (first != nullptr) // xóa đi node chi tiết hóa đơn
-    {
-        ptr_DSCTHD temp = first;
-        first = first->next;
-        delete temp;
-    }
-}
-void deleteHoaDon(ptr_DSHD &first)
-{
-    while (first != nullptr)
-    {
 
-        deleteChiTietHoaDon(first->data_hd.firstCTHD); // xóa đi node chi tiết hóa đơn của hóa đơn
-
-        ptr_DSHD temp = first;
-        first = first->next;
-        delete temp;
-    }
-}
 void deleteDanhsachNhanVien(dsNhanVien &dsNV)
 {
     if (nhanVienEmpty(dsNV) == true)
         return;
     for (int i = 0; i < dsNV.countNV; ++i)
     {
-        deleteHoaDon(dsNV.nodes[i]->firstDSHD); // Xóa đi danh sách hóa đơn của nhân viên đó
-        delete dsNV.nodes[i];                   // Xóa nhân viên
+        // Xóa đi danh sách hóa đơn của nhân viên đó
+        while (dsNV.nodes[i]->firstDSHD != nullptr)
+        {
+            while (dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD)
+            {
+                ptr_DSCTHD temp = dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD;
+                dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD = dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD->next;
+                delete temp;
+            }
+            ptr_DSHD temp = dsNV.nodes[i]->firstDSHD;
+            dsNV.nodes[i]->firstDSHD = dsNV.nodes[i]->firstDSHD->next;
+            delete temp;
+        }
+        delete dsNV.nodes[i]; // Xóa nhân viên
     }
     dsNV.countNV = 0; // Đặt lại số lượng nhân viên của danh sách
 }
