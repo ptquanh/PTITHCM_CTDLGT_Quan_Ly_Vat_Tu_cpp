@@ -333,7 +333,7 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_
     {
         bool isESC, isSaved = false;
         isSuccess = false;
-        inDanhSachNhanVien(dsnv, currentPage, selectedRow, x + 4, errorMessage);
+        inDanhSachNhanVien(dsnv, currentPage, selectedRow, x + 4);
         key = getch();
         switch (key)
         {

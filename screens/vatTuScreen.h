@@ -242,6 +242,7 @@ void nhapMaVTFromUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 drawTableUpdateVatTu(x, y);
                 suaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+                ShowCur(false);
                 if (isESC)
                 {
                     errorMessage = "Dang thoat chuong trinh...";
@@ -532,6 +533,7 @@ void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
         }
     }
 }
+
 void searchVTFromUpdateVatTu(treeVatTu &root, int x, int y, int currentPage, string &currentMAVT)
 {
     treeVatTu result;
@@ -707,6 +709,7 @@ void nhapMaVTFromDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 drawTableUpdateVatTu(x, y);
                 xoaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+                ShowCur(false);
                 if (isESC)
                 {
                     errorMessage = "Dang thoat chuong trinh...";
@@ -912,7 +915,6 @@ void searchVTFromDeleteVatTu(treeVatTu &root, int x, int y, int currentPage, str
     bool isESC = false, isSaved = false;
     timKiemTenVatTu(root, x, y, result, isESC);
     ShowCur(false);
-
     if (isESC)
     {
         drawTableErrors("Dang thoat chuong trinh...", true);

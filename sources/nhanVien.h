@@ -837,13 +837,12 @@ void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
     }
 }
 // ==============================================
-void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x, string &errorMessage)
+void inDanhSachNhanVien(dsNhanVien &list, int pageNumber, int selectedRow, int x)
 {
     int n = list.countNV;
     if (n == 0)
     {
-        errorMessage = "Khong co du lieu nhan vien";
-        drawTableErrors(errorMessage, true);
+        drawTableErrors("Khong co du lieu nhan vien", true);
         return;
     }
     int startIndex = (pageNumber - 1) * ROWS;
