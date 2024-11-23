@@ -157,7 +157,98 @@ int countNodes(treeVatTu root)
         return 0;
     return 1 + countNodes(root->left) + countNodes(root->right);
 }
+// ghi tung node vao file ds_vattu
+void writeNodeToFile(treeVatTu node, ofstream &fileout)
+{
+    if (node == nullptr)
+        return;
+    writeNodeToFile(node->left, fileout);
+    fileout << node->data_vt.MAVT << "|"
+            << node->data_vt.TENVT << "|"
+            << node->data_vt.DVT << "|"
+            << node->data_vt.soLuongTon << endl;
+    writeNodeToFile(node->right, fileout);
+}
+// ghi file ds_vattu
+void writeFile_dsVatTu(treeVatTu root)
+{
+    ofstream fileout;
+    fileout.open(filePath_VT, ios_base::out);
+    int n = countNodes(root);
+    if (n == 0)
+    {
+        drawTableErrors("Khong co du lieu vat tu", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        return;
+    }
+    if (!fileout.is_open())
+    {
+        cout << "Khong the mo file de ghi ds_VatTu.txt" << endl;
+        return;
+    }
+    if (root == nullptr)
+    {
+        cout << "Cay nhap lieu rong, khong co du lieu de ghi." << endl;
+        return;
+    }
+    if (root != NULL)
+    {
+        cout << endl;
+    }
+    writeNodeToFile(root, fileout);
+    fileout.close();
+    drawTableErrors("Luu vat tu vao file thanh cong", true);
+    Sleep(1500);
+    drawTableErrors("", true);
+}
+void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
+{
+    bool hasError;
+    isOpened = true;
+    ifstream filein;
+    filein.open(filePath_VT, ios_base::in);
+    if (!filein.is_open())
+    {
+        isOpened = false;
+        return;
+    }
 
+    string line;
+    while (getline(filein, line))
+    {
+        // Bỏ qua dòng trống
+        if (line.empty() || line.find_first_not_of(" \t\n\v\f\r") == string::npos)
+            continue;
+
+        // Tạo stringstream để xử lý dòng dữ liệu
+        stringstream ss(line);
+        nodeVatTu data_vt;
+
+        // Đọc từng phần của dữ liệu
+        getline(ss, data_vt.MAVT, '|');
+        for (char &c : data_vt.MAVT)
+        {
+            c = std::toupper(c);
+        }
+        getline(ss, data_vt.TENVT, '|');
+        data_vt.TENVT = normalizeString(data_vt.TENVT, hasError);
+        getline(ss, data_vt.DVT, '|');
+        data_vt.DVT = normalizeString(data_vt.DVT, hasError);
+        ss >> data_vt.soLuongTon;
+        formatInputVT(data_vt.MAVT, data_vt.TENVT, data_vt.DVT, data_vt.soLuongTon);
+        // Kiểm tra xem đọc dữ liệu có thành công không
+        if (!ss.fail())
+        {
+            root = insert(root, data_vt);
+        }
+        else
+        {
+            cout << "Loi: Khong the doc du lieu tu dong: " << line << endl;
+        }
+    }
+    filein.close();
+}
 void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isSaved)
 {
     nodeVatTu input;
@@ -245,6 +336,7 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
                 node->data_vt.DVT = input.DVT;
                 node->data_vt.soLuongTon = input.soLuongTon;
                 isSaved = true;
+                writeFile_dsVatTu(root);
                 return;
             }
         }
@@ -381,6 +473,7 @@ void nhapVatTu(treeVatTu &root, int x, int y, string mavt, int soLuong, bool isS
                     !input.DVT.empty() && input.soLuongTon > 0)
                 {
                     root = insert(root, input);
+                    writeFile_dsVatTu(root);
                     drawTableErrors("Them vat tu thanh cong", isSmallScreen);
                     Sleep(1500);
                     drawTableErrors("", isSmallScreen);
@@ -582,6 +675,7 @@ void xoaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
             if (input.soLuongTon <= 0)
             {
                 root = deleteNode(root, MAVT);
+                writeFile_dsVatTu(root);
                 isSaved = true;
                 return;
             }
@@ -608,13 +702,14 @@ void storeInorder(treeVatTu root, treeVatTu arr[], int *index)
     storeInorder(root->right, arr, index);
 }
 
-void inDanhSachVatTu(treeVatTu root, int pageNumber, int selectedRow, int x, string &errorMessage)
+void inDanhSachVatTu(treeVatTu root, int pageNumber, int selectedRow, int x)
 {
     int n = countNodes(root);
     if (n == 0)
     {
-        errorMessage = "Khong co du lieu vat tu";
-        drawTableErrors(errorMessage, true);
+        drawTableErrors("Khong co du lieu vat tu", true);
+        Sleep(1500);
+        drawTableErrors("", true);
         return;
     }
     treeVatTu *arr = new treeVatTu[n];
@@ -1003,97 +1098,4 @@ void timKiemTenVatTu(treeVatTu root, int x, int y, treeVatTu &selectedResult, bo
         }
     }
     delete[] results;
-}
-//==============================================
-// ghi tung node vao file ds_vattu
-void writeNodeToFile(treeVatTu node, ofstream &fileout)
-{
-    if (node == nullptr)
-        return;
-    writeNodeToFile(node->left, fileout);
-    fileout << node->data_vt.MAVT << "|"
-            << node->data_vt.TENVT << "|"
-            << node->data_vt.DVT << "|"
-            << node->data_vt.soLuongTon << endl;
-    writeNodeToFile(node->right, fileout);
-}
-// ghi file ds_vattu
-void writeFile_dsVatTu(treeVatTu root)
-{
-    ofstream fileout;
-    fileout.open(filePath_VT, ios_base::out);
-    int n = countNodes(root);
-    if (n == 0)
-    {
-        drawTableErrors("Khong co du lieu vat tu", true);
-        Sleep(1500);
-        drawTableErrors("", true);
-        return;
-    }
-    if (!fileout.is_open())
-    {
-        cout << "Khong the mo file de ghi ds_VatTu.txt" << endl;
-        return;
-    }
-    if (root == nullptr)
-    {
-        cout << "Cay nhap lieu rong, khong co du lieu de ghi." << endl;
-        return;
-    }
-    if (root != NULL)
-    {
-        cout << endl;
-    }
-    writeNodeToFile(root, fileout);
-    fileout.close();
-    drawTableErrors("Luu vat tu vao file thanh cong", true);
-    Sleep(1500);
-    drawTableErrors("", true);
-}
-void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
-{
-    bool hasError;
-    isOpened = true;
-    ifstream filein;
-    filein.open(filePath_VT, ios_base::in);
-    if (!filein.is_open())
-    {
-        isOpened = false;
-        return;
-    }
-
-    string line;
-    while (getline(filein, line))
-    {
-        // Bỏ qua dòng trống
-        if (line.empty() || line.find_first_not_of(" \t\n\v\f\r") == string::npos)
-            continue;
-
-        // Tạo stringstream để xử lý dòng dữ liệu
-        stringstream ss(line);
-        nodeVatTu data_vt;
-
-        // Đọc từng phần của dữ liệu
-        getline(ss, data_vt.MAVT, '|');
-        for (char &c : data_vt.MAVT)
-        {
-            c = std::toupper(c);
-        }
-        getline(ss, data_vt.TENVT, '|');
-        data_vt.TENVT = normalizeString(data_vt.TENVT, hasError);
-        getline(ss, data_vt.DVT, '|');
-        data_vt.DVT = normalizeString(data_vt.DVT, hasError);
-        ss >> data_vt.soLuongTon;
-        formatInputVT(data_vt.MAVT, data_vt.TENVT, data_vt.DVT, data_vt.soLuongTon);
-        // Kiểm tra xem đọc dữ liệu có thành công không
-        if (!ss.fail())
-        {
-            root = insert(root, data_vt);
-        }
-        else
-        {
-            cout << "Loi: Khong the doc du lieu tu dong: " << line << endl;
-        }
-    }
-    filein.close();
 }

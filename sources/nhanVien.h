@@ -193,6 +193,8 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
     }
     if (list.nodes[pos]->firstDSHD != nullptr)
     {
+        cout << "Khong tim thay ma nhan vien " << MANV << endl;
+        drawTableErrors("",true);
         return;
     }
     input.MANV = list.nodes[pos]->MANV;
@@ -586,31 +588,23 @@ void deleteDanhsachNhanVien(dsNhanVien &dsNV)
     dsNV.countNV = 0; // Đặt lại số lượng nhân viên của danh sách
 }
 
-// Thoát khẩn cấp bằng nút "X" hay close trên terminal
-dsNhanVien *globalDsNVPtr = nullptr; // biến tĩnh
+// dsNhanVien *globalDsNVPtr = nullptr; // biến tĩnh
 
-void signalHandler(int signum)
-{
-    if (signum == SIGINT || signum == SIGTERM)
-    {
-        system("cls");
-        cout << "Interrupt signal (" << signum << ") received. Cleaning up resources..." << endl;
+// void signalHandler(int signum)
+// {
+//     if (signum == SIGINT || signum == SIGTERM)
+//     {
+//         system("cls");
+//         cout << "Interrupt signal (" << signum << ") received. Cleaning up resources..." << endl;
 
-        if (globalDsNVPtr != nullptr)
-        {
-            deleteDanhsachNhanVien(*globalDsNVPtr);
-        }
+//         if (globalDsNVPtr != nullptr)
+//         {
+//             deleteDanhsachNhanVien(*globalDsNVPtr);
+//         }
 
-        exit(signum);
-    }
-}
-
-void setupSignalHandler(dsNhanVien *dsNVPtr)
-{
-    globalDsNVPtr = dsNVPtr;
-    signal(SIGINT, signalHandler);  // Handle Ctrl+C
-    signal(SIGTERM, signalHandler); // Handle termination request
-}
+//         exit(signum);
+//     }
+// }
 
 void Write_CTHoaDon(ofstream &file, nodeChiTietHoaDon &cthd)
 {

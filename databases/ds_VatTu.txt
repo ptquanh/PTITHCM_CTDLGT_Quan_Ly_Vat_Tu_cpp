@@ -58,4 +58,5 @@ VT057|Tam Chiu Luc|Tam|180
 VT058|Son Trang Tri|Lit|75
 VT059|Bo Xa Dung|Cai|85
 VT060|Nap Cong|Cai|35
-VT211|Ao|Chiec|200
+VT123|Guong|Cai|10
+VT211|Banh|Chiec|200

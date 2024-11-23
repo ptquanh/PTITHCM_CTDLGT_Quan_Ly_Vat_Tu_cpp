@@ -41,8 +41,8 @@ void drawKeysGuideListVatTu(int x, int y)
     gotoxy(x + 1, y + 26);
     cout << "MENU VT";
     setColorByRequest(LIGHTGRAY, BLACK);
-    gotoxy(x + 58 + 5 * space + 1, y + 26);
-    cout << "F10: Luu file";
+    // gotoxy(x + 58 + 5 * space + 1, y + 26);
+    // cout << "F10: Luu file";
     gotoxy(x + 100, y + 26);
     cout << "ESC: Thoat";
 }
@@ -65,6 +65,34 @@ void drawTableSearchTenVatTu(int x, int y)
     cout << "TIM KIEM VAT TU";
     gotoxy(x + 71, y + 4);
     cout << "TEN VAT TU     :";
+    // to mau trang
+    for (int i = x + 87; i < x + 109; i++)
+    {
+        SetBGColor(BLACK);
+        gotoxy(i, y + 4);
+        cout << " ";
+    }
+}
+
+void drawTableInputVatTu(int x, int y)
+{
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 69, y, 41, 9);
+    drawHCN(x + 87, y + 6, 9, 2);
+    drawHCN(x + 99, y + 6, 9, 2);
+    SetColor(BLACK);
+    gotoxy(x + 88, y + 7);
+    cout << "ESC: Huy";
+    gotoxy(x + 100, y + 7);
+    cout << "F10: Luu";
+    SetColor(GREEN);
+    gotoxy(x + 71, y + 5);
+    cout << "Toi da 10 ki tu";
+    SetColor(BLACK);
+    gotoxy(x + 82, y + 2);
+    cout << "CAP NHAT VAT TU";
+    gotoxy(x + 71, y + 4);
+    cout << "NHAP MA VAT TU :";
     // to mau trang
     for (int i = x + 87; i < x + 109; i++)
     {
@@ -175,7 +203,93 @@ void handleNavigationAddVatTu(treeVatTu &root, int x, int y)
     clearTablePrint(x);
 }
 
-void handleNavigationUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
+void nhapMaVTFromUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
+{
+    int n = countNodes(root);
+    treeVatTu *arr = new treeVatTu[n];
+    int index = 0;
+    storeInorder(root, arr, &index);
+    quickSortVatTu(arr, 0, n - 1);
+    string errorMessage;
+    string currentMAVT;
+    bool moveNext = false;
+    bool isActive = true;
+    drawTableInputVatTu(x, y);
+    displayField(x + 87, y + 4, currentMAVT, isActive, 10);
+    while (true)
+    {
+        string result = inputString(x + 87, y + 4, currentMAVT, 10, "Ma vat tu", moveNext, true);
+        for (char &c : result)
+        {
+            c = std::toupper(c);
+        }
+        if (result == "ESC")
+        {
+            errorMessage = "Dang thoat chuong trinh...";
+            drawTableErrors(errorMessage, true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            delete[] arr;
+            return;
+        }
+        else if (result == "F10")
+        {
+            treeVatTu found = search(root, currentMAVT);
+            if (found != nullptr)
+            {
+                bool isESC = false, isSaved = false;
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                drawTableUpdateVatTu(x, y);
+                suaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+                if (isESC)
+                {
+                    errorMessage = "Dang thoat chuong trinh...";
+                    drawTableErrors(errorMessage, true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    delete[] arr;
+                    return;
+                }
+                if (isSaved)
+                {
+                    delete[] arr;
+                    n = countNodes(root);
+                    arr = new treeVatTu[n];
+                    index = 0;
+                    storeInorder(root, arr, &index);
+                    quickSortVatTu(arr, 0, n - 1);
+                    errorMessage = "Sua vat tu thanh cong";
+                    drawTableErrors(errorMessage, true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    clearTablePrint(x);
+                    delete[] arr;
+                    return;
+                }
+            }
+            else
+            {
+                errorMessage = "Khong tim thay ma vat tu";
+                drawTableErrors(errorMessage, true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                currentMAVT = "";
+                displayField(x + 87, y + 4, currentMAVT, isActive, 10);
+                continue;
+            }
+        }
+        else
+        {
+            currentMAVT = result;
+            displayField(x + 87, y + 4, currentMAVT, isActive, 10);
+        }
+    }
+}
+
+void chonMaVTFromUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
 {
     int n = countNodes(root);
     treeVatTu *arr = new treeVatTu[n];
@@ -189,11 +303,12 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y
     int selectedRow = 0;
     char key;
     int currentChoice = -1;
+    bool isESC, isSaved = false;
     drawTableUpdateVatTu(x, y);
     while (true)
     {
-        bool isESC, isSaved = false;
-        inDanhSachVatTu(root, currentPage, selectedRow, x, errorMessage);
+        inDanhSachVatTu(root, currentPage, selectedRow, x);
+        setColorByRequest(LIGHTGRAY, BLACK);
         key = getch();
         switch (key)
         {
@@ -307,190 +422,6 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y
     }
 }
 
-void handleNavigationDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
-{
-    int n = countNodes(root);
-    treeVatTu *arr = new treeVatTu[n];
-    int index = 0;
-    storeInorder(root, arr, &index);
-    quickSortVatTu(arr, 0, n - 1);
-    string errorMessage;
-    string currentMAVT;
-    int totalPages = ceil((float)n / ROWS);
-    currentPage = 1;
-    int selectedRow = 0;
-    char key;
-    int currentChoice = -1;
-    drawTableUpdateVatTu(x, y);
-    while (true)
-    {
-        bool isESC, isSaved = false;
-        inDanhSachVatTu(root, currentPage, selectedRow, x, errorMessage);
-        key = getch();
-        switch (key)
-        {
-        case LEFT:
-            if (currentPage > 1)
-            {
-                currentPage--;
-                selectedRow = 0;
-                clearTablePrint(x);
-            }
-            break;
-        case RIGHT:
-            if (currentPage < totalPages)
-            {
-                currentPage++;
-                selectedRow = 0;
-                clearTablePrint(x);
-            }
-            break;
-        case UP:
-            if (selectedRow > 0)
-            {
-                selectedRow--;
-            }
-            else
-            {
-                int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
-                selectedRow = itemsOnPage - 1;
-            }
-            break;
-        case DOWN:
-        {
-            int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
-            if (selectedRow < itemsOnPage - 1)
-            {
-                selectedRow++;
-            }
-            else
-            {
-                selectedRow = 0;
-            }
-        }
-        break;
-        case ENTER:
-            currentChoice = (currentPage - 1) * ROWS + selectedRow;
-            for (int i = x + 87; i < x + 109; i++)
-            {
-                SetBGColor(BLACK);
-                gotoxy(i, y + 4);
-                cout << " ";
-                gotoxy(i, y + 6);
-                cout << " ";
-                gotoxy(i, y + 8);
-                cout << " ";
-                gotoxy(i, y + 10);
-                cout << " ";
-            }
-            currentMAVT = arr[currentChoice]->data_vt.MAVT;
-            gotoxy(0, 3);
-            setColorByRequest(BLACK, WHITE);
-            xoaVatTu(root, currentMAVT, x, y, isESC, isSaved);
-            ShowCur(false);
-            if (isESC)
-            {
-                errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(errorMessage, true);
-                Sleep(1500);
-                drawTableErrors("", true);
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                delete[] arr;
-                return;
-            }
-            if (isSaved)
-            {
-                delete[] arr;
-                n = countNodes(root);
-                arr = new treeVatTu[n];
-                index = 0;
-                storeInorder(root, arr, &index);
-                quickSortVatTu(arr, 0, n - 1);
-                totalPages = ceil((float)n / ROWS);
-                if (currentPage > totalPages)
-                {
-                    currentPage = totalPages;
-                }
-                if (selectedRow >= min(ROWS, n - (currentPage - 1) * ROWS))
-                {
-                    selectedRow = min(ROWS, n - (currentPage - 1) * ROWS) - 1;
-                }
-                errorMessage = "Xoa vat tu thanh cong";
-                drawTableErrors(errorMessage, true);
-                Sleep(1500);
-                drawTableErrors("", true);
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                clearTablePrint(x);
-                delete[] arr;
-                return;
-            }
-            break;
-        case TAB:
-            currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
-            break;
-        case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-            delete[] arr;
-            return;
-        }
-    }
-}
-
-void handleNavigationListVatTu(treeVatTu root, int x, int y)
-{
-    string errorMessage;
-    int n = countNodes(root);
-    treeVatTu *arr = new treeVatTu[n];
-    int index = 0;
-    storeInorder(root, arr, &index);
-    quickSortVatTu(arr, 0, n - 1);
-    int totalPages = ceil((float)n / ROWS);
-    int currentPage = 1;
-    int selectedRow = -1;
-    char key;
-    int currentChoice = -1;
-    drawTablePrintVatTu(x, y, 15, 23);
-    drawKeysGuideListVatTu(x, y);
-    while (true)
-    {
-        setColorByRequest(LIGHTGRAY, BLACK);
-        inDanhSachVatTu(root, currentPage, selectedRow, x, errorMessage);
-        key = getch();
-        switch (key)
-        {
-        case LEFT:
-            if (currentPage > 1)
-            {
-                currentPage--;
-                clearTablePrint(x);
-            }
-            break;
-        case RIGHT:
-            if (currentPage < totalPages)
-            {
-                currentPage++;
-                clearTablePrint(x);
-            }
-            break;
-        case TAB:
-            currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
-            break;
-        case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-            delete[] arr;
-            return;
-        }
-    }
-}
-
 void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
 {
     treeVatTu result;
@@ -501,7 +432,6 @@ void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
     ShowCur(false);
     if (isESC)
     {
-
         drawTableErrors("Dang thoat chuong trinh...", true);
         Sleep(1500);
         drawTableErrors("", true);
@@ -511,9 +441,26 @@ void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
     }
     else
     {
-        drawTableErrors("F4 sua, DEL xoa", true);
-        Sleep(1500);
-        drawTableErrors("", true);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        drawTableUpdateVatTu(x, y);
+        fillAreaColor(x + 87, y + 12, 8, 2, LIGHTGRAY);
+        setColorByRequest(LIGHTGRAY, DARKGRAY);
+        drawHCN(x + 88, y + 12, 8, 2);
+        setColorByRequest(LIGHTGRAY, BLACK);
+        gotoxy(x + 89, y + 13);
+        cout << "F4: Sua";
+        gotoxy(x + 100, y + 13);
+        cout << "DEL: Xoa";
+        treeVatTu node = search(root, result->data_vt.MAVT);
+        setColorByRequest(BLACK, WHITE);
+        gotoxy(x + 88, y + 4);
+        cout << node->data_vt.TENVT;
+        gotoxy(x + 88, y + 6);
+        cout << node->data_vt.MAVT;
+        gotoxy(x + 88, y + 8);
+        cout << node->data_vt.DVT;
+        gotoxy(x + 88, y + 10);
+        cout << node->data_vt.soLuongTon;
         char key;
         while (true)
         {
@@ -585,6 +532,560 @@ void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
         }
     }
 }
+void searchVTFromUpdateVatTu(treeVatTu &root, int x, int y, int currentPage, string &currentMAVT)
+{
+    treeVatTu result;
+    int n = countNodes(root);
+    treeVatTu *arr = new treeVatTu[n];
+    int index = 0;
+    storeInorder(root, arr, &index);
+    quickSortVatTu(arr, 0, n - 1);
+    int totalPages = ceil((float)n / ROWS);
+    drawTableSearchTenVatTu(x, y);
+    drawTablePrintVatTu(x, y, 15, 23);
+    bool isESC = false, isSaved = false;
+    timKiemTenVatTu(root, x, y, result, isESC);
+    ShowCur(false);
+    if (isESC)
+    {
+        drawTableErrors("Dang thoat chuong trinh...", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        clearTablePrint(x);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        return;
+    }
+    else
+    {
+        currentMAVT = result->data_vt.MAVT;
+        drawTableErrors("Lay ma vat tu thanh cong", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        clearTablePrint(x);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        drawTableUpdateVatTu(x, y);
+        setColorByRequest(LIGHTGRAY, BLACK);
+        inDanhSachVatTu(root, currentPage, -1, x);
+        suaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+        if (isESC)
+        {
+            drawTableErrors("Dang thoat chuong trinh...", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            return;
+        }
+        if (isSaved)
+        {
+            drawTableErrors("Sua vat tu thanh cong", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            clearTablePrint(x);
+            return;
+        }
+    }
+}
+void handleNavigationUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
+{
+    int n = countNodes(root);
+    treeVatTu *arr = new treeVatTu[n];
+    int index = 0;
+    storeInorder(root, arr, &index);
+    quickSortVatTu(arr, 0, n - 1);
+    string errorMessage;
+    string currentMAVT;
+    int totalPages = ceil((float)n / ROWS);
+    currentPage = 1;
+    int selectedRow = 0;
+    char key;
+    int currentChoice = -1;
+    fillAreaColor(x, y + 25, 92, 2, LIGHTGRAY);
+    int space = 8;
+    setColorByRequest(LIGHTGRAY, BROWN);
+    drawHCN(x, y + 25, 7, 2);
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 8 + space, y + 25, 15, 2);
+    drawHCN(x + 23 + 2 * space, y + 25, 28, 2);
+    drawHCN(x + 51 + 3 * space, y + 25, 15, 2);
+    setColorByRequest(BROWN, BLACK);
+    gotoxy(x + 1, y + 26);
+    cout << "SUA VT";
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 8 + space + 1, y + 26);
+    cout << "F3: Nhap ma VT";
+    gotoxy(x + 23 + 2 * space + 1, y + 26);
+    cout << "F4: Chon ma VT tu danh sach";
+    gotoxy(x + 51 + 3 * space + 1, y + 26);
+    cout << "F5: Tim ten VT";
+    bool isESC = false, isSaved = false;
+    clearTablePrint(x);
+    while (true)
+    {
+        setColorByRequest(LIGHTGRAY, BLACK);
+        inDanhSachVatTu(root, currentPage, -1, x);
+        key = getch();
+        switch (key)
+        {
+        case F3:
+            nhapMaVTFromUpdateVatTu(root, currentPage, x, y);
+            break;
+        case F4:
+            chonMaVTFromUpdateVatTu(root, currentPage, x, y);
+            break;
+        case F5:
+            searchVTFromUpdateVatTu(root, x, y, currentPage, currentMAVT);
+            break;
+        case LEFT:
+            if (currentPage > 1)
+            {
+                currentPage--;
+                selectedRow = 0;
+                clearTablePrint(x);
+            }
+            break;
+        case RIGHT:
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                selectedRow = 0;
+                clearTablePrint(x);
+            }
+            break;
+        case TAB:
+            currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
+            break;
+        case ESC:
+            drawTableErrors("Dang thoat chuong trinh...", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            delete[] arr;
+            return;
+        }
+    }
+}
+
+void nhapMaVTFromDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
+{
+    int n = countNodes(root);
+    treeVatTu *arr = new treeVatTu[n];
+    int index = 0;
+    storeInorder(root, arr, &index);
+    quickSortVatTu(arr, 0, n - 1);
+    string errorMessage;
+    string currentMAVT;
+    bool moveNext = false;
+    bool isActive = true;
+    drawTableInputVatTu(x, y);
+    displayField(x + 87, y + 4, currentMAVT, isActive, 10);
+    while (true)
+    {
+        string result = inputString(x + 87, y + 4, currentMAVT, 10, "Ma vat tu", moveNext, true);
+        for (char &c : result)
+        {
+            c = std::toupper(c);
+        }
+        if (result == "ESC")
+        {
+            ShowCur(false);
+            errorMessage = "Dang thoat chuong trinh...";
+            drawTableErrors(errorMessage, true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            delete[] arr;
+            return;
+        }
+        else if (result == "F10")
+        {
+            ShowCur(false);
+            treeVatTu found = search(root, currentMAVT);
+            if (found != nullptr)
+            {
+                bool isESC = false, isSaved = false;
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                drawTableUpdateVatTu(x, y);
+                xoaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+                if (isESC)
+                {
+                    errorMessage = "Dang thoat chuong trinh...";
+                    drawTableErrors(errorMessage, true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    delete[] arr;
+                    return;
+                }
+                if (isSaved)
+                {
+                    delete[] arr;
+                    n = countNodes(root);
+                    arr = new treeVatTu[n];
+                    index = 0;
+                    storeInorder(root, arr, &index);
+                    quickSortVatTu(arr, 0, n - 1);
+                    errorMessage = "Xoa vat tu thanh cong";
+                    drawTableErrors(errorMessage, true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    clearTablePrint(x);
+                    delete[] arr;
+                    return;
+                }
+                else
+                {
+                    ShowCur(false);
+                    return;
+                }
+            }
+            else
+            {
+                errorMessage = "Khong tim thay ma vat tu";
+                drawTableErrors(errorMessage, true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                currentMAVT = "";
+                displayField(x + 87, y + 4, currentMAVT, isActive, 10);
+                continue;
+            }
+        }
+        else
+        {
+            currentMAVT = result;
+            displayField(x + 87, y + 4, currentMAVT, isActive, 10);
+        }
+    }
+}
+
+void chonMaVTFromDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
+{
+    int n = countNodes(root);
+    treeVatTu *arr = new treeVatTu[n];
+    int index = 0;
+    storeInorder(root, arr, &index);
+    quickSortVatTu(arr, 0, n - 1);
+    string errorMessage;
+    string currentMAVT;
+    int totalPages = ceil((float)n / ROWS);
+    currentPage = 1;
+    int selectedRow = 0;
+    char key;
+    int currentChoice = -1;
+    bool isESC, isSaved = false;
+    drawTableUpdateVatTu(x, y);
+
+    while (true)
+    {
+        inDanhSachVatTu(root, currentPage, selectedRow, x);
+        setColorByRequest(LIGHTGRAY, BLACK);
+        key = getch();
+        switch (key)
+        {
+        case LEFT:
+            if (currentPage > 1)
+            {
+                currentPage--;
+                selectedRow = 0;
+                clearTablePrint(x);
+            }
+            break;
+        case RIGHT:
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                selectedRow = 0;
+                clearTablePrint(x);
+            }
+            break;
+        case UP:
+            if (selectedRow > 0)
+            {
+                selectedRow--;
+            }
+            else
+            {
+                int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
+                selectedRow = itemsOnPage - 1;
+            }
+            break;
+        case DOWN:
+        {
+            int itemsOnPage = min(ROWS, n - (currentPage - 1) * ROWS);
+            if (selectedRow < itemsOnPage - 1)
+            {
+                selectedRow++;
+            }
+            else
+            {
+                selectedRow = 0;
+            }
+        }
+        break;
+        case ENTER:
+            currentChoice = (currentPage - 1) * ROWS + selectedRow;
+            for (int i = x + 87; i < x + 109; i++)
+            {
+                SetBGColor(BLACK);
+                gotoxy(i, y + 4);
+                cout << " ";
+                gotoxy(i, y + 6);
+                cout << " ";
+                gotoxy(i, y + 8);
+                cout << " ";
+                gotoxy(i, y + 10);
+                cout << " ";
+            }
+            setColorByRequest(BLACK, WHITE);
+            currentMAVT = arr[currentChoice]->data_vt.MAVT;
+            xoaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+            ShowCur(false);
+            if (isESC)
+            {
+                errorMessage = "Dang thoat chuong trinh...";
+                drawTableErrors(errorMessage, true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                delete[] arr;
+                return;
+            }
+            if (isSaved)
+            {
+                delete[] arr;
+                n = countNodes(root);
+                arr = new treeVatTu[n];
+                index = 0;
+                storeInorder(root, arr, &index);
+                quickSortVatTu(arr, 0, n - 1);
+                totalPages = ceil((float)n / ROWS);
+                if (currentPage > totalPages)
+                {
+                    currentPage = totalPages;
+                }
+                if (selectedRow >= min(ROWS, n - (currentPage - 1) * ROWS))
+                {
+                    selectedRow = min(ROWS, n - (currentPage - 1) * ROWS) - 1;
+                }
+                errorMessage = "Xoa vat tu thanh cong";
+                drawTableErrors(errorMessage, true);
+                Sleep(1500);
+                drawTableErrors("", true);
+                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                clearTablePrint(x);
+                delete[] arr;
+                return;
+            }
+            else
+            {
+                selectedRow = -1;
+                return;
+            }
+            break;
+        case TAB:
+            currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
+            break;
+        case ESC:
+            errorMessage = "Dang thoat chuong trinh...";
+            drawTableErrors(errorMessage, true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            delete[] arr;
+            return;
+        }
+    }
+}
+
+void searchVTFromDeleteVatTu(treeVatTu &root, int x, int y, int currentPage, string &currentMAVT)
+{
+    treeVatTu result;
+    int n = countNodes(root);
+    treeVatTu *arr = new treeVatTu[n];
+    int index = 0;
+    storeInorder(root, arr, &index);
+    quickSortVatTu(arr, 0, n - 1);
+    int totalPages = ceil((float)n / ROWS);
+    drawTableSearchTenVatTu(x, y);
+    drawTablePrintVatTu(x, y, 15, 23);
+    bool isESC = false, isSaved = false;
+    timKiemTenVatTu(root, x, y, result, isESC);
+    ShowCur(false);
+
+    if (isESC)
+    {
+        drawTableErrors("Dang thoat chuong trinh...", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        clearTablePrint(x);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        return;
+    }
+    else
+    {
+        currentMAVT = result->data_vt.MAVT;
+        drawTableErrors("Lay ma vat tu thanh cong", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        clearTablePrint(x);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        drawTableUpdateVatTu(x, y);
+        setColorByRequest(LIGHTGRAY, BLACK);
+        inDanhSachVatTu(root, currentPage, -1, x);
+        xoaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+        if (isESC)
+        {
+            drawTableErrors("Dang thoat chuong trinh...", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            return;
+        }
+        if (isSaved)
+        {
+            drawTableErrors("Xoa vat tu thanh cong", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            clearTablePrint(x);
+            return;
+        }
+    }
+}
+
+void handleNavigationDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
+{
+    int n = countNodes(root);
+    treeVatTu *arr = new treeVatTu[n];
+    int index = 0;
+    storeInorder(root, arr, &index);
+    quickSortVatTu(arr, 0, n - 1);
+    string errorMessage;
+    string currentMAVT;
+    int totalPages = ceil((float)n / ROWS);
+    currentPage = 1;
+    int selectedRow = 0;
+    char key;
+    int currentChoice = -1;
+
+    fillAreaColor(x, y + 25, 92, 2, LIGHTGRAY);
+    int space = 8;
+    setColorByRequest(LIGHTGRAY, BROWN);
+    drawHCN(x, y + 25, 7, 2);
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 8 + space, y + 25, 15, 2);
+    drawHCN(x + 23 + 2 * space, y + 25, 28, 2);
+    drawHCN(x + 51 + 3 * space, y + 25, 15, 2);
+
+    setColorByRequest(BROWN, BLACK);
+    gotoxy(x + 1, y + 26);
+    cout << "XOA VT";
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 8 + space + 1, y + 26);
+    cout << "F3: Nhap ma VT";
+    gotoxy(x + 23 + 2 * space + 1, y + 26);
+    cout << "F4: Chon ma VT tu danh sach";
+    gotoxy(x + 51 + 3 * space + 1, y + 26);
+    cout << "F5: Tim ten VT";
+    bool isESC = false, isSaved = false;
+    clearTablePrint(x);
+    while (true)
+    {
+        setColorByRequest(LIGHTGRAY, BLACK);
+        inDanhSachVatTu(root, currentPage, -1, x);
+        key = getch();
+        switch (key)
+        {
+        case F3:
+            nhapMaVTFromDeleteVatTu(root, currentPage, x, y);
+            break;
+        case F4:
+            chonMaVTFromDeleteVatTu(root, currentPage, x, y);
+            break;
+        case F5:
+            searchVTFromDeleteVatTu(root, x, y, currentPage, currentMAVT);
+            break;
+        case LEFT:
+            if (currentPage > 1)
+            {
+                currentPage--;
+                selectedRow = 0;
+                clearTablePrint(x);
+            }
+            break;
+        case RIGHT:
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                selectedRow = 0;
+                clearTablePrint(x);
+            }
+            break;
+        case TAB:
+            currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
+            break;
+        case ESC:
+            drawTableErrors("Dang thoat chuong trinh...", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            delete[] arr;
+            return;
+        }
+    }
+}
+
+void handleNavigationListVatTu(treeVatTu root, int x, int y)
+{
+    string errorMessage;
+    int n = countNodes(root);
+    treeVatTu *arr = new treeVatTu[n];
+    int index = 0;
+    storeInorder(root, arr, &index);
+    quickSortVatTu(arr, 0, n - 1);
+    int totalPages = ceil((float)n / ROWS);
+    int currentPage = 1;
+    int selectedRow = -1;
+    char key;
+    int currentChoice = -1;
+    drawTablePrintVatTu(x, y, 15, 23);
+    drawKeysGuideListVatTu(x, y);
+    while (true)
+    {
+        setColorByRequest(LIGHTGRAY, BLACK);
+        inDanhSachVatTu(root, currentPage, selectedRow, x);
+        key = getch();
+        switch (key)
+        {
+        case LEFT:
+            if (currentPage > 1)
+            {
+                currentPage--;
+                clearTablePrint(x);
+            }
+            break;
+        case RIGHT:
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                clearTablePrint(x);
+            }
+            break;
+        case TAB:
+            currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
+            break;
+        case ESC:
+            errorMessage = "Dang thoat chuong trinh...";
+            drawTableErrors(errorMessage, true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            delete[] arr;
+            return;
+        }
+    }
+}
 
 void menuVatTu(treeVatTu &root, int x, int y)
 {
@@ -602,7 +1103,7 @@ void menuVatTu(treeVatTu &root, int x, int y)
     while (true)
     {
         setColorByRequest(LIGHTGRAY, BLACK);
-        inDanhSachVatTu(root, currentPage, -1, x, errorMessage);
+        inDanhSachVatTu(root, currentPage, -1, x);
         key = getch();
         switch (key)
         {
@@ -628,9 +1129,13 @@ void menuVatTu(treeVatTu &root, int x, int y)
             break;
         case F4:
             handleNavigationUpdateVatTu(root, currentPage, x, y);
+            fillAreaColor(x, y + 25, 92, 2, LIGHTGRAY);
+            drawKeysGuideVatTu(x, y);
             break;
         case DEL:
             handleNavigationDeleteVatTu(root, currentPage, x, y);
+            fillAreaColor(x, y + 25, 92, 2, LIGHTGRAY);
+            drawKeysGuideVatTu(x, y);
             break;
         case F5:
             handleNavigationSearchVatTu(root, x, y);

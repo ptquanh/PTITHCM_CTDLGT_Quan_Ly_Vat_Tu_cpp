@@ -4,15 +4,20 @@
 #include "./screens/hoaDonScreen.h"
 #include "./screens/thongKeScreen.h"
 
+// void setupSignalHandler(dsNhanVien dsNVPtr, treeVatTu root)
+// {
+//     globalDsNVPtr = &dsNVPtr;
+//     signal(SIGINT, signalHandler);  // Handle Ctrl+C
+//     signal(SIGTERM, signalHandler); // Handle termination request
+//     writeFile_dsNhanVien(dsNVPtr);
+//     writeFile_dsVatTu(root);
+// }
+
 int main()
 {
     ShowCur(false);
-    // DisableCtrButton(true, true, true);
-    // SetWindowSize(300, 80);
     SetConsoleTitleCustom("Chuong trinh quan ly vat tu");
-    // SetConsoleSize(1080,720);
     dsNhanVien dsnv;
-    setupSignalHandler(&dsnv);
     treeVatTu root = nullptr;
     string errorMessage;
     bool isVTOpened = true, isNVOpened = true;
@@ -99,6 +104,7 @@ int main()
             }
             break;
         }
+        // setupSignalHandler(dsnv, root);
     };
     return 0;
 }
