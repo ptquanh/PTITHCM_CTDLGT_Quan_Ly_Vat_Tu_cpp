@@ -1,4 +1,11 @@
 NV211|Le Hoang|Anh|Nam
+-HD100|23|11|2024|N
++VT001|1|1|1
+-HD1000|24|11|2024|N
++VT001|1|1|1234
++VT002|1|1|12341235
+-HDQ|24|11|2024|N
++VTR111|2|1|10000
 \
 NV7|Phan Tuan Quoc|Anh|Nam
 -HD1|12|12|2024|X
@@ -122,9 +129,9 @@ NV21|Luong Chi|Vinh|Nam
 +VT012|5|10|50000000
 +VT020|5|10|20000
 \
-NV2|Nguyen Quoc|Vinh|Nam
-\
 NV10|Nguyen Quoc|Vinh|Nam
+\
+NV2|Nguyen Quoc|Vinh|Nam
 \
 NV24|Nguyen Thanh|Vinh|Nam
 \

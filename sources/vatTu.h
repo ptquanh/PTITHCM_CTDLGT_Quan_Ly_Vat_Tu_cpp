@@ -184,12 +184,12 @@ void writeFile_dsVatTu(treeVatTu root)
     }
     if (!fileout.is_open())
     {
-        cout << "Khong the mo file de ghi ds_VatTu.txt" << endl;
+        cout << "Khong the mo file ds_VatTu.txt" << endl;
         return;
     }
     if (root == nullptr)
     {
-        cout << "Cay nhap lieu rong, khong co du lieu de ghi." << endl;
+        cout << "Cay rong khong co du lieu de ghi" << endl;
         return;
     }
     if (root != NULL)

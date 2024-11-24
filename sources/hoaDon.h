@@ -4,19 +4,22 @@
 #include "../screens/hoaDonScreen.h"
 void drawTableUpdateChiTietHoaDon(int x, int y);
 void clearTablePrintChiTietHoaDon(int x);
+void drawTablePrintChiTietHoaDon(int x, int y, int w, int h);
 void drawTableAddVatTuInCTHD(int x, int y);
+void drawTablePrintHoaDon(int x, int y, int w, int h);
+void drawTableUpdateHoaDon(int x, int y);
 //======================HOA DON===================================
-nhanVien *layMANV(dsNhanVien &ds_nv, treeVatTu &root, string MANV, int x, int y, bool &isESC, bool &isSaved)
-{
-    for (int i = 0; i < ds_nv.countNV; ++i)
-    {
-        if (ds_nv.nodes[i]->MANV == MANV)
-        {
-            return ds_nv.nodes[i];
-        }
-    }
-    return nullptr;
-}
+// nhanVien *layMANV(dsNhanVien &ds_nv, string MANV)
+// {
+//     for (int i = 0; i < ds_nv.countNV; ++i)
+//     {
+//         if (ds_nv.nodes[i]->MANV == MANV)
+//         {
+//             return ds_nv.nodes[i];
+//         }
+//     }
+//     return nullptr;
+// }
 
 // int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
 // {
@@ -61,14 +64,17 @@ ptr_DSHD searchHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD &found_hd)
     }
     return nullptr; // Trả về nullptr nếu không tìm thấy hóa đơn
 }
-void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_hd, int x, int y, bool &isESC, bool &isSaved)
+void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int index, ptr_DSHD &new_hd, int x, int y, bool &isESC, bool &isSaved)
 {
-    if (nv == nullptr)
-    {
-        cout << "Ma nhan vien khong ton tai" << endl;
-        return;
-    }
-
+    fillAreaColor(x + 4, y, 62, 25, LIGHTGRAY);
+    int w = 15, h = 7;
+    drawTablePrintHoaDon(x, y, w, h);
+    drawTableUpdateHoaDon(x, y);
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 24, y + 3);
+    cout << ds_nv.nodes[index]->MANV;
+    gotoxy(x + 24, y + 5);
+    cout << ds_nv.nodes[index]->HO << " " << ds_nv.nodes[index]->TEN;
     nodeHoaDon input;
     input.SoHD = "";
     input.loai = "";
@@ -93,7 +99,6 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
         displayField(x + 94, y + 8, input.month > 0 ? to_string(input.month) : "", currentRow == 2, 2);
         displayField(x + 94, y + 10, input.year > 0 ? to_string(input.year) : "", currentRow == 3, 4);
         displayField(x + 94, y + 12, input.loai, currentRow == 4, 1);
-
         switch (currentRow)
         {
         case 0:
@@ -209,7 +214,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
             Sleep(1500);
             drawTableErrors("", false);
             fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
-
+            isESC = true;
             return;
         saveButton:
             ShowCur(false);
@@ -225,6 +230,19 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
                 Sleep(1500);
                 drawTableErrors("", false);
                 fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+                drawTablePrintChiTietHoaDon(x, y, 15, 23);
+                setColorByRequest(LIGHTGRAY, BLACK);
+                gotoxy(x + 15, y + 1);
+                cout << new_hd->data_hd.SoHD;
+                gotoxy(x + 42, y + 1);
+                cout << (new_hd->data_hd.loai == "N" ? "Nhap" : "Xuat");
+                gotoxy(x + 9, y + 7);
+                cout << new_hd->data_hd.day;
+                gotoxy(x + 24, y + 7);
+                cout << new_hd->data_hd.month;
+                gotoxy(x + 36, y + 7);
+                cout << new_hd->data_hd.year;
+                isSaved = true;
                 return;
             }
             else
@@ -246,7 +264,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &new_h
     }
 }
 
-void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD &hd, int x, int y, bool &isESC, bool &isSaved)
+void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &hd, const string &currentMAVT, int x, int y, bool &isESC, bool &isSaved)
 {
     if (hd == nullptr)
     {
@@ -255,21 +273,33 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
     }
 
     nodeChiTietHoaDon input;
-    input.MAVT = "";
     input.soLuong = 0;
     input.donGia = 0;
     input.VAT = 0;
     string TENVT;
     string DVT;
     string errorMessage;
-    int currentRow = 0;
+    int currentRow;
+    treeVatTu found_vt = search(root, currentMAVT);
+    if (found_vt != nullptr)
+    {
+        TENVT = found_vt->data_vt.TENVT;
+        DVT = found_vt->data_vt.DVT;
+        currentRow = 1;
+        input.MAVT = currentMAVT;
+    }
+    else
+    {
+        found_vt = nullptr;
+        currentRow = 0;
+        input.MAVT = "";
+    }
     bool hasError;
     string result;
     double numResult;
     bool moveNext;
     string tempInput;
     string donGia;
-    treeVatTu found_vt = nullptr;
     while (true)
     {
         displayField(x + 94, y + 4, TENVT, false, 20);
@@ -311,32 +341,19 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
                 else
                 {
                     drawTableErrors("Nhap so luong de tao vat tu...", false);
-                    Sleep(1500);
-                    drawTableErrors("", false);
+                    // Sleep(1500);
+                    // drawTableErrors("", false);
                     ShowCur(true);
-                    numResult = inputNumber(x + 94, y + 6, input.soLuong, 10, "So luong", moveNext, false);
+                    numResult = inputNumber(x + 94, y + 8, input.soLuong, 6, "So luong", moveNext, false);
                     if (numResult == -1)
                         goto escButton;
                     if (numResult == -10)
                         goto saveButton;
-
                     if (numResult <= 0)
                     {
                         errorMessage = "So luong phai lon hon 0";
                         drawTableErrors(errorMessage, false);
                         continue;
-                    }
-
-                    // Kiểm tra số lượng tồn kho nếu là hóa đơn xuất
-                    if (hd->data_hd.loai == "X")
-                    {
-                        treeVatTu vt = search(root, input.MAVT);
-                        if (vt->data_vt.soLuongTon < numResult)
-                        {
-                            errorMessage = "So luong ton kho hien tai: " + to_string(vt->data_vt.soLuongTon);
-                            drawTableErrors(errorMessage, false);
-                            continue;
-                        }
                     }
                     ShowCur(false);
                     drawTableErrors("", false);
@@ -344,15 +361,15 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
                     drawTableErrors("Dang den trang tao vat tu...", false);
                     Sleep(1500);
                     drawTableErrors("", false);
-                    fillAreaColor(x + 76, y, 41, 15, LIGHTGRAY);
+                    fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                     drawTableAddVatTuInCTHD(x + 7, y);
                     nhapVatTu(root, x + 7, y, tempInput, input.soLuong, false, true);
                     treeVatTu node = search(root, tempInput);
-                    SetColor(WHITE);
-                    gotoxy(0, 0);
-                    cout << node->data_vt.MAVT << " " << node->data_vt.TENVT;
                     fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                     drawTableUpdateChiTietHoaDon(x, y);
+                    SetColor(WHITE);
+                    TENVT = node->data_vt.TENVT;
+                    input.MAVT = node->data_vt.MAVT;
                     found_vt = search(root, tempInput);
                     if (found_vt == nullptr)
                     {
@@ -363,14 +380,28 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSH
             }
             else
             {
+                bool isExisted = false;
+                ptr_DSCTHD temp = hd->data_hd.firstCTHD;
+                while (temp != nullptr)
+                {
+                    if (temp->data_cthd.MAVT == tempInput)
+                    {
+                        isExisted = true;
+                    }
+                    temp = temp->next;
+                }
+                if (isExisted)
+                {
+                    errorMessage = "Ma vat tu da ton tai trong hoa don";
+                    drawTableErrors(errorMessage, false);
+                    continue;
+                }
                 TENVT = found_vt->data_vt.TENVT;
                 DVT = found_vt->data_vt.DVT;
             }
-
             drawTableErrors("", false);
             input.MAVT = tempInput;
             break;
-
         case 1: // Nhập số lượng
             for (int i = x + 94; i < x + 116; i++)
             {
@@ -781,7 +812,7 @@ float tinhTriGiaHoaDon(ptr_DSCTHD ct)
     return totalValue * 1000;
 }
 
-void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int pageNumber, int selectedRow, int &totalPages, int x, int y, string &errorMessage, bool &isESC, bool &isSaved, bool &isEmpty)
+void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int pageNumber, int selectedRow, int &totalPages, int x, int y, string &errorMessage, bool &isEmpty)
 {
     string tempInput;
     string result;
@@ -868,7 +899,6 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
     cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
     delete[] arrCTHD;
     delete[] arrVT;
-    isSaved = true;
 }
 
 void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRow, int &totalPages, int x, int y, string &errorMessage, bool &isESC, bool &isSaved, bool &isInputting)
@@ -945,6 +975,7 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
         drawTableErrors("", false);
         return;
     }
+    setColorByRequest(LIGHTGRAY, BLACK);
     float triGiaHD = tinhTriGiaHoaDon(found_hd->data_hd.firstCTHD);
     gotoxy(x + 15, y + 1);
     cout << found_hd->data_hd.SoHD;

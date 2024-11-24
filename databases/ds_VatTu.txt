@@ -1,3 +1,4 @@
+VG12|Laptop|Cai|2
 VT001|Xi Mang|Kg|500
 VT002|Gach Men|Vien|1200
 VT003|Sat Tron|Kg|750
@@ -58,5 +59,9 @@ VT057|Tam Chiu Luc|Tam|180
 VT058|Son Trang Tri|Lit|75
 VT059|Bo Xa Dung|Cai|85
 VT060|Nap Cong|Cai|35
+VT1000|Banh Xe|Chiec|20
 VT123|Guong|Cai|10
+VT1234|Banh Xe|Cai|4
+VT123412|Banh Xe|Cai|2
 VT211|Banh|Chiec|200
+VTR111|Ao Thun|Cai|4
