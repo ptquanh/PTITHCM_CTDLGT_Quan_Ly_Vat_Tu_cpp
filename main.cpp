@@ -4,15 +4,6 @@
 #include "./screens/hoaDonScreen.h"
 #include "./screens/thongKeScreen.h"
 
-// void setupSignalHandler(dsNhanVien dsNVPtr, treeVatTu root)
-// {
-//     globalDsNVPtr = &dsNVPtr;
-//     signal(SIGINT, signalHandler);  // Handle Ctrl+C
-//     signal(SIGTERM, signalHandler); // Handle termination request
-//     writeFile_dsNhanVien(dsNVPtr);
-//     writeFile_dsVatTu(root);
-// }
-
 int main()
 {
     ShowCur(false);

@@ -9,41 +9,6 @@ void drawTableAddVatTuInCTHD(int x, int y);
 void drawTablePrintHoaDon(int x, int y, int w, int h);
 void drawTableUpdateHoaDon(int x, int y);
 //======================HOA DON===================================
-// nhanVien *layMANV(dsNhanVien &ds_nv, string MANV)
-// {
-//     for (int i = 0; i < ds_nv.countNV; ++i)
-//     {
-//         if (ds_nv.nodes[i]->MANV == MANV)
-//         {
-//             return ds_nv.nodes[i];
-//         }
-//     }
-//     return nullptr;
-// }
-
-// int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
-// {
-//     for (int i = 0; i < ds_nv.countNV; ++i)
-//     {
-//         if (ds_nv.nodes[i] != nullptr)
-//         {
-//             ptr_DSHD current_hd = ds_nv.nodes[i]->firstDSHD;
-//             while (current_hd != nullptr)
-//             {
-//                 if (current_hd->data_hd.SoHD == so_hd)
-//                 {
-//                     found_hd = current_hd;
-//                     return i; // Trả về chỉ số của nhân viên
-//                 }
-//                 current_hd = current_hd->next;
-//             }
-//         }
-//     }
-
-//     found_hd = nullptr;
-//     return -1; // Không tìm thấy
-// }
-
 ptr_DSHD searchHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD &found_hd)
 {
     for (int i = 0; i < ds_nv.countNV; ++i)
@@ -183,7 +148,7 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int index, ptr_DSHD &new_hd, 
                 drawTableErrors(errorMessage, false);
                 continue;
             }
-            if (numResult < 1000 || numResult > 9999)
+            if (numResult < 1900 || numResult > 2100)
             {
                 errorMessage = "Nam khong hop le";
                 drawTableErrors(errorMessage, false);
@@ -220,30 +185,40 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int index, ptr_DSHD &new_hd, 
             ShowCur(false);
             if (!moveNext && !input.SoHD.empty() && !input.loai.empty() && input.day != 0 && input.month != 0 && input.year != 0)
             {
-                new_hd->data_hd.SoHD = input.SoHD;
-                new_hd->data_hd.day = input.day;
-                new_hd->data_hd.month = input.month;
-                new_hd->data_hd.year = input.year;
-                new_hd->data_hd.loai = input.loai;
-                errorMessage = "Them hoa don thanh cong";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
-                fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
-                drawTablePrintChiTietHoaDon(x, y, 15, 23);
-                setColorByRequest(LIGHTGRAY, BLACK);
-                gotoxy(x + 15, y + 1);
-                cout << new_hd->data_hd.SoHD;
-                gotoxy(x + 42, y + 1);
-                cout << (new_hd->data_hd.loai == "N" ? "Nhap" : "Xuat");
-                gotoxy(x + 9, y + 7);
-                cout << new_hd->data_hd.day;
-                gotoxy(x + 24, y + 7);
-                cout << new_hd->data_hd.month;
-                gotoxy(x + 36, y + 7);
-                cout << new_hd->data_hd.year;
-                isSaved = true;
-                return;
+                if (!isValidTime(input.day, input.month, input.year))
+                {
+                    errorMessage = "Ngay thang nam khong hop le";
+                    drawTableErrors(errorMessage, false);
+                    Sleep(1500);
+                    drawTableErrors("", false);
+                }
+                else
+                {
+                    new_hd->data_hd.SoHD = input.SoHD;
+                    new_hd->data_hd.day = input.day;
+                    new_hd->data_hd.month = input.month;
+                    new_hd->data_hd.year = input.year;
+                    new_hd->data_hd.loai = input.loai;
+                    errorMessage = "Them hoa don thanh cong";
+                    drawTableErrors(errorMessage, false);
+                    Sleep(1500);
+                    drawTableErrors("", false);
+                    fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+                    drawTablePrintChiTietHoaDon(x, y, 15, 23);
+                    setColorByRequest(LIGHTGRAY, BLACK);
+                    gotoxy(x + 15, y + 1);
+                    cout << new_hd->data_hd.SoHD;
+                    gotoxy(x + 42, y + 1);
+                    cout << (new_hd->data_hd.loai == "N" ? "Nhap" : "Xuat");
+                    gotoxy(x + 9, y + 7);
+                    cout << new_hd->data_hd.day;
+                    gotoxy(x + 24, y + 7);
+                    cout << new_hd->data_hd.month;
+                    gotoxy(x + 36, y + 7);
+                    cout << new_hd->data_hd.year;
+                    isSaved = true;
+                    return;
+                }
             }
             else
             {
@@ -777,29 +752,6 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
         }
     }
 }
-
-// int searchHoaDon(dsNhanVien &ds_nv, string so_hd, ptr_DSHD &found_hd)
-// {
-//     for (int i = 0; i < ds_nv.countNV; ++i)
-//     {
-//         if (ds_nv.nodes[i] != nullptr)
-//         {
-//             ptr_DSHD current_hd = ds_nv.nodes[i]->firstDSHD;
-//             while (current_hd != nullptr)
-//             {
-//                 if (current_hd->data_hd.SoHD == so_hd)
-//                 {
-//                     found_hd = current_hd;
-//                     return i; // Trả về chỉ số của nhân viên
-//                 }
-//                 current_hd = current_hd->next;
-//             }
-//         }
-//     }
-
-//     found_hd = nullptr;
-//     return -1; // Không tìm thấy
-// }
 
 float tinhTriGiaHoaDon(ptr_DSCTHD ct)
 {
