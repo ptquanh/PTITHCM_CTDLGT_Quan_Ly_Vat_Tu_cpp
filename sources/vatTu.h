@@ -398,7 +398,7 @@ void nhapVatTu(treeVatTu &root, int x, int y, string mavt, int soLuong, bool isS
                 {
                     drawTableErrors("Ma vat tu da ton tai", isSmallScreen);
                     continue;
-                }                
+                }
                 drawTableErrors("", isSmallScreen);
                 input.MAVT = tempInput;
                 formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
@@ -629,8 +629,34 @@ void nhapVatTu(treeVatTu &root, int x, int y, string mavt, int soLuong, bool isS
         }
     }
 }
+bool kiemTraVatTuTrongCTHD(dsNhanVien &ds_nv, string maVT)
+{
+    // Duyệt qua từng nhân viên
+    for (int i = 0; i < ds_nv.countNV; i++)
+    {
+        ptr_DSHD current_hd = ds_nv.nodes[i]->firstDSHD;
+
+        // Duyệt qua từng hóa đơn của nhân viên
+        while (current_hd != nullptr)
+        {
+            ptr_DSCTHD current_cthd = current_hd->data_hd.firstCTHD;
+
+            // Duyệt qua từng chi tiết hóa đơn
+            while (current_cthd != nullptr)
+            {
+                if (current_cthd->data_cthd.MAVT == maVT)
+                {
+                    return true; // Tìm thấy vật tư trong chi tiết hóa đơn
+                }
+                current_cthd = current_cthd->next;
+            }
+            current_hd = current_hd->next;
+        }
+    }
+    return false; // Không tìm thấy vật tư trong bất kỳ chi tiết hóa đơn nào
+}
 // xoa vt theo mavt
-void xoaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isSaved)
+void xoaVatTu(treeVatTu &root, dsNhanVien &ds_nv, string MAVT, int x, int y, bool &isESC, bool &isSaved)
 {
     nodeVatTu input;
     input.MAVT = "";
@@ -672,20 +698,31 @@ void xoaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
             isESC = true;
             return;
         case F10:
-            if (input.soLuongTon <= 0)
+            if (kiemTraVatTuTrongCTHD(ds_nv,MAVT))
             {
-                root = deleteNode(root, MAVT);
-                writeFile_dsVatTu(root);
-                isSaved = true;
-                return;
-            }
-            else
-            {
-                drawTableErrors("Khong the xoa vat tu so luong > 0", true);
+                drawTableErrors("Khong the xoa vat tu trong hoa don", true);
                 Sleep(1500);
                 drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
+            }
+            else
+            {
+                if (input.soLuongTon > 0)
+                {
+                    drawTableErrors("Khong the xoa vat tu so luong > 0", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    return;
+                }
+                else
+                {
+                    root = deleteNode(root, MAVT);
+                    writeFile_dsVatTu(root);
+                    isSaved = true;
+                    return;
+                }
             }
         }
     }

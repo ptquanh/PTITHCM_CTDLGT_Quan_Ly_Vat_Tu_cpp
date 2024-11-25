@@ -423,7 +423,7 @@ void chonMaVTFromUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
     }
 }
 
-void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
+void handleNavigationSearchVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y)
 {
     treeVatTu result;
     drawTableSearchTenVatTu(x, y);
@@ -494,6 +494,15 @@ void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
                     clearTablePrint(x);
                     return;
                 }
+                else
+                {
+                    drawTableErrors("Sua vat tu khong thanh cong", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    clearTablePrint(x);
+                    return;
+                }
                 break;
             case DEL:
                 drawTableErrors("Dang den trang xoa vat tu", true);
@@ -501,7 +510,7 @@ void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
                 drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 drawTableUpdateVatTu(x, y);
-                xoaVatTu(root, result->data_vt.MAVT, x, y, isESC, isSaved);
+                xoaVatTu(root, dsnv, result->data_vt.MAVT, x, y, isESC, isSaved);
                 ShowCur(false);
                 if (isESC)
                 {
@@ -515,6 +524,15 @@ void handleNavigationSearchVatTu(treeVatTu &root, int x, int y)
                 if (isSaved)
                 {
                     drawTableErrors("Xoa vat tu thanh cong", true);
+                    Sleep(1500);
+                    drawTableErrors("", true);
+                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                    clearTablePrint(x);
+                    return;
+                }
+                else
+                {
+                    drawTableErrors("Xoa vat tu khong thanh cong", true);
                     Sleep(1500);
                     drawTableErrors("", true);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
@@ -668,7 +686,7 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y
     }
 }
 
-void nhapMaVTFromDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
+void nhapMaVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int &currentPage, int x, int y)
 {
     int n = countNodes(root);
     treeVatTu *arr = new treeVatTu[n];
@@ -708,7 +726,7 @@ void nhapMaVTFromDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
                 bool isESC = false, isSaved = false;
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 drawTableUpdateVatTu(x, y);
-                xoaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+                xoaVatTu(root, dsnv, currentMAVT, x, y, isESC, isSaved);
                 ShowCur(false);
                 if (isESC)
                 {
@@ -762,7 +780,7 @@ void nhapMaVTFromDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
     }
 }
 
-void chonMaVTFromDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
+void chonMaVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int &currentPage, int x, int y)
 {
     int n = countNodes(root);
     treeVatTu *arr = new treeVatTu[n];
@@ -842,7 +860,7 @@ void chonMaVTFromDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
             }
             setColorByRequest(BLACK, WHITE);
             currentMAVT = arr[currentChoice]->data_vt.MAVT;
-            xoaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+            xoaVatTu(root, dsnv, currentMAVT, x, y, isESC, isSaved);
             ShowCur(false);
             if (isESC)
             {
@@ -901,7 +919,7 @@ void chonMaVTFromDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
     }
 }
 
-void searchVTFromDeleteVatTu(treeVatTu &root, int x, int y, int currentPage, string &currentMAVT)
+void searchVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y, int currentPage, string &currentMAVT)
 {
     treeVatTu result;
     int n = countNodes(root);
@@ -935,7 +953,7 @@ void searchVTFromDeleteVatTu(treeVatTu &root, int x, int y, int currentPage, str
         drawTableUpdateVatTu(x, y);
         setColorByRequest(LIGHTGRAY, BLACK);
         inDanhSachVatTu(root, currentPage, -1, x);
-        xoaVatTu(root, currentMAVT, x, y, isESC, isSaved);
+        xoaVatTu(root, dsnv, currentMAVT, x, y, isESC, isSaved);
         if (isESC)
         {
             drawTableErrors("Dang thoat chuong trinh...", true);
@@ -956,7 +974,7 @@ void searchVTFromDeleteVatTu(treeVatTu &root, int x, int y, int currentPage, str
     }
 }
 
-void handleNavigationDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y)
+void handleNavigationDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int &currentPage, int x, int y)
 {
     int n = countNodes(root);
     treeVatTu *arr = new treeVatTu[n];
@@ -1000,13 +1018,13 @@ void handleNavigationDeleteVatTu(treeVatTu &root, int &currentPage, int x, int y
         switch (key)
         {
         case F3:
-            nhapMaVTFromDeleteVatTu(root, currentPage, x, y);
+            nhapMaVTFromDeleteVatTu(root, dsnv, currentPage, x, y);
             break;
         case F4:
-            chonMaVTFromDeleteVatTu(root, currentPage, x, y);
+            chonMaVTFromDeleteVatTu(root, dsnv, currentPage, x, y);
             break;
         case F5:
-            searchVTFromDeleteVatTu(root, x, y, currentPage, currentMAVT);
+            searchVTFromDeleteVatTu(root, dsnv, x, y, currentPage, currentMAVT);
             break;
         case LEFT:
             if (currentPage > 1)
@@ -1089,7 +1107,7 @@ void handleNavigationListVatTu(treeVatTu root, int x, int y)
     }
 }
 
-void menuVatTu(treeVatTu &root, int x, int y)
+void menuVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y)
 {
     int n = countNodes(root);
     treeVatTu *arr = new treeVatTu[n];
@@ -1135,12 +1153,12 @@ void menuVatTu(treeVatTu &root, int x, int y)
             drawKeysGuideVatTu(x, y);
             break;
         case DEL:
-            handleNavigationDeleteVatTu(root, currentPage, x, y);
+            handleNavigationDeleteVatTu(root, dsnv, currentPage, x, y);
             fillAreaColor(x, y + 25, 92, 2, LIGHTGRAY);
             drawKeysGuideVatTu(x, y);
             break;
         case F5:
-            handleNavigationSearchVatTu(root, x, y);
+            handleNavigationSearchVatTu(root, dsnv, x, y);
             break;
         case F10:
             writeFile_dsVatTu(root);

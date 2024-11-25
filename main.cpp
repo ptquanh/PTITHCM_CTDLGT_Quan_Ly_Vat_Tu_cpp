@@ -42,7 +42,7 @@ int main()
             switch (contentMenu)
             {
             case 0:
-                menuVatTu(root, smallX, smallY);
+                menuVatTu(root, dsnv, smallX, smallY);
                 break;
             case 1:
                 handleNavigationListVatTu(root, smallX, smallY);

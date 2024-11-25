@@ -472,18 +472,17 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &hd, const s
 
                 // Cập nhật số lượng tồn kho
                 treeVatTu vt = search(root, input.MAVT);
-                if (hd->data_hd.loai == "N")
+                if (vt != nullptr)
                 {
-                    if (vt != nullptr)
+                    if (hd->data_hd.loai == "N")
                     {
                         vt->data_vt.soLuongTon += input.soLuong;
                     }
+                    else if (hd->data_hd.loai == "X")
+                    {
+                        vt->data_vt.soLuongTon -= input.soLuong;
+                    }
                 }
-                else if (hd->data_hd.loai == "X")
-                {
-                    vt->data_vt.soLuongTon -= input.soLuong;
-                }
-
                 // Thêm vào danh sách chi tiết hóa đơn
                 if (hd->data_hd.firstCTHD == nullptr)
                 {

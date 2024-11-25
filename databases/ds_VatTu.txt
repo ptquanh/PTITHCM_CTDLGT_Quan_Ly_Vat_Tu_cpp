@@ -64,4 +64,3 @@ VT123|Guong|Cai|10
 VT1234|Banh Xe|Cai|4
 VT123412|Banh Xe|Cai|2
 VT211|Banh|Chiec|200
-VTR111|Ao Thun|Cai|4
