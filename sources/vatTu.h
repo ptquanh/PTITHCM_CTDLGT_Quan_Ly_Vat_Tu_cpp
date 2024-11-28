@@ -512,30 +512,6 @@ void nhapVatTu(treeVatTu &root, int x, int y, string mavt, int soLuong, bool isS
 
             switch (currentRow)
             {
-            // case 0:
-            // {
-            //     // result = inputString(x + 87, y + 4, input.MAVT, 10, "Ma vat tu", moveNext, isSmallScreen);
-            //     // if (result == "ESC")
-            //     //     goto escButton;
-            //     // if (result == "F10")
-            //     //     goto saveButton;
-            //     tempInput = normalizeString(mavt, hasError);
-            //     if (hasError)
-            //     {
-            //         drawTableErrors("Ma vat tu chua ky tu khong hop le", isSmallScreen);
-            //         continue;
-            //     }
-
-            //     if (search(root, tempInput) != NULL)
-            //     {
-            //         drawTableErrors("Ma vat tu da ton tai", isSmallScreen);
-            //         continue;
-            //     }
-            //     drawTableErrors("", isSmallScreen);
-            //     input.MAVT = tempInput;
-            //     formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
-            //     break;
-            // }
             case 1:
             {
                 result = inputString(x + 87, y + 6, input.TENVT, 20, "Ten vat tu", moveNext, isSmallScreen);
@@ -572,23 +548,6 @@ void nhapVatTu(treeVatTu &root, int x, int y, string mavt, int soLuong, bool isS
                 formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
                 break;
             }
-            // case 3:
-            // {
-            //     // numResult = inputNumber(x + 87, y + 10, input.soLuongTon, 6, "So luong ton", moveNext, isSmallScreen);
-            //     if (numResult == -1)
-            //         goto escButton;
-            //     if (numResult == -10)
-            //         goto saveButton;
-            //     if (numResult == 0)
-            //     {
-            //         drawTableErrors("So luong ton lon hon 0", isSmallScreen);
-            //         continue;
-            //     }
-            //     drawTableErrors("", isSmallScreen);
-            //     input.soLuongTon = numResult;
-            //     formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
-            //     break;
-            // }
             escButton2:
             {
                 ShowCur(false);
@@ -674,7 +633,7 @@ void xoaVatTu(treeVatTu &root, dsNhanVien &ds_nv, string MAVT, int x, int y, boo
     treeVatTu node = search(root, MAVT);
     if (node == NULL)
     {
-        cout << "Khong tim thay ma vt" << MAVT << endl;
+        cout << "Khong tim thay ma vat tu " << MAVT << endl;
         return;
     }
 
@@ -687,7 +646,25 @@ void xoaVatTu(treeVatTu &root, dsNhanVien &ds_nv, string MAVT, int x, int y, boo
     displayField(x + 87, y + 6, input.TENVT, false, 20);
     displayField(x + 87, y + 8, input.DVT, false, 6);
     displayField(x + 87, y + 10, input.soLuongTon > 0 ? to_string(input.soLuongTon) : "", false, 6);
-
+    if (kiemTraVatTuTrongCTHD(ds_nv, MAVT))
+    {
+        drawTableErrors("Khong the xoa vat tu trong hoa don", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        return;
+    }
+    else
+    {
+        if (input.soLuongTon > 0)
+        {
+            drawTableErrors("Khong the xoa vat tu so luong > 0", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            return;
+        }
+    }
     char key;
     while (true)
     {
@@ -698,32 +675,10 @@ void xoaVatTu(treeVatTu &root, dsNhanVien &ds_nv, string MAVT, int x, int y, boo
             isESC = true;
             return;
         case F10:
-            if (kiemTraVatTuTrongCTHD(ds_nv,MAVT))
-            {
-                drawTableErrors("Khong the xoa vat tu trong hoa don", true);
-                Sleep(1500);
-                drawTableErrors("", true);
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                return;
-            }
-            else
-            {
-                if (input.soLuongTon > 0)
-                {
-                    drawTableErrors("Khong the xoa vat tu so luong > 0", true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
-                    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                    return;
-                }
-                else
-                {
-                    root = deleteNode(root, MAVT);
-                    writeFile_dsVatTu(root);
-                    isSaved = true;
-                    return;
-                }
-            }
+            root = deleteNode(root, MAVT);
+            writeFile_dsVatTu(root);
+            isSaved = true;
+            return;
         }
     }
 }

@@ -291,7 +291,6 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &hd, const s
                 goto escButton;
             if (result == "F10")
                 goto saveButton;
-
             tempInput = normalizeString(result, hasError);
             if (hasError)
             {
@@ -304,6 +303,8 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &hd, const s
                 c = std::toupper(c);
             }
             // Kiểm tra vật tư có tồn tại trong kho
+            input.MAVT = tempInput;
+            displayField(x + 94, y + 6, input.MAVT, currentRow == 0, 10);
             found_vt = search(root, tempInput);
             if (found_vt == nullptr)
             {
@@ -316,8 +317,6 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &hd, const s
                 else
                 {
                     drawTableErrors("Nhap so luong de tao vat tu...", false);
-                    // Sleep(1500);
-                    // drawTableErrors("", false);
                     ShowCur(true);
                     numResult = inputNumber(x + 94, y + 8, input.soLuong, 6, "So luong", moveNext, false);
                     if (numResult == -1)
@@ -375,7 +374,6 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &hd, const s
                 DVT = found_vt->data_vt.DVT;
             }
             drawTableErrors("", false);
-            input.MAVT = tempInput;
             break;
         case 1: // Nhập số lượng
             for (int i = x + 94; i < x + 116; i++)
@@ -502,7 +500,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &hd, const s
             }
             else
             {
-                errorMessage = "Thieu thong tin. Chua them chi tiet hoa don";
+                errorMessage = "Thieu thong tin. Chua them CTHD";
                 drawTableErrors(errorMessage, false);
                 Sleep(1500);
                 drawTableErrors("", false);

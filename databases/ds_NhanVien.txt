@@ -122,9 +122,9 @@ NV21|Luong Chi|Vinh|Nam
 +VT012|5|10|50000000
 +VT020|5|10|20000
 \
-NV2|Nguyen Quoc|Vinh|Nam
-\
 NV10|Nguyen Quoc|Vinh|Nam
+\
+NV2|Nguyen Quoc|Vinh|Nam
 \
 NV24|Nguyen Thanh|Vinh|Nam
 \

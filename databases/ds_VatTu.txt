@@ -1,4 +1,3 @@
-VG12|Laptop|Cai|2
 VT001|Xi Mang|Kg|500
 VT002|Gach Men|Vien|1200
 VT003|Sat Tron|Kg|750
@@ -59,8 +58,263 @@ VT057|Tam Chiu Luc|Tam|180
 VT058|Son Trang Tri|Lit|75
 VT059|Bo Xa Dung|Cai|85
 VT060|Nap Cong|Cai|35
-VT1000|Banh Xe|Chiec|20
-VT123|Guong|Cai|10
-VT1234|Banh Xe|Cai|4
-VT123412|Banh Xe|Cai|2
-VT211|Banh|Chiec|200
+VT061|May Bom Nuoc|Cai|25
+VT062|Dong Co Dien|Kg|400
+VT063|Ong Thep|Met|800
+VT064|Van Cong Nghiep|Cai|50
+VT065|Ke Sat|Tam|300
+VT066|May Han|Cai|15
+VT067|Pin Nang Luong|Tam|45
+VT068|Hop Chia Day|Hop|100
+VT069|Gach Lat Tieu Chuan|Vien|450
+VT070|Son Lot|Lit|280
+VT071|Van Dong Noi|Cai|90
+VT072|Day Cap 1 Pha|Cuon|400
+VT073|Be Tam Nuoc|Cai|20
+VT074|Canh Cua Thep|Tam|25
+VT075|Day Noi Dong|Cuon|350
+VT076|Khoan Tay|Cai|12
+VT077|Thep La|Kg|700
+VT078|Tam Go|Tam|50
+VT079|Hop Kim Nhom|Kg|150
+VT080|Keo Da Nang|Chai|120
+VT081|Thung Xop|Cai|30
+VT082|Den Soi|Cai|85
+VT083|May Cat Go|Cai|18
+VT084|Cua Cuon|Met|10
+VT085|Hop Dung Bia|Cai|60
+VT086|Binh Chua Chay|Cai|70
+VT087|Gach Bong|Vien|550
+VT088|Ban Cong|Tam|20
+VT089|Thep Dai|Kg|90
+VT090|Thung Gach Bong|Hop|25
+VT091|Day Dieu Hoa|Cuon|200
+VT092|Be Tai|M3|60
+VT093|Cap Quang|Cuon|120
+VT094|Den Trang Tri|Cai|15
+VT095|May Nen Khi|Cai|10
+VT096|Chao Den|Cai|35
+VT097|Day Cao Ap|Cuon|150
+VT098|May Ban Khoan|Cai|7
+VT099|Son Nuoc Ngoai|Lit|95
+VT100|Canh Cua Go|Tam|35
+VT101|Van Ap Luc|Cai|40
+VT102|Keo Trang Tri|Chai|45
+VT103|Gach Ngoai Troi|Vien|500
+VT104|Hop Noi|Hop|75
+VT105|May Tach Nuoc|Cai|5
+VT106|Bo Cap Dong|Cuon|90
+VT107|Day Cap Khoan|Cuon|250
+VT108|Be Ong Nhua|Met|200
+VT109|Khoan Kho Den|Cai|12
+VT110|Ban Cat Kim Loai|Cai|6
+VT111|Thep Cuon|Kg|550
+VT112|Go Xay Dung|M3|180
+VT113|Day Chuyen Dong|Cuon|350
+VT114|Keo Dinh|Chai|90
+VT115|Den Led Nha Xuong|Cai|120
+VT116|May Nen Khi Cong Ngh|Cai|8
+VT117|Go Vuong|Tam|30
+VT118|Van Hop Kim|Cai|50
+VT119|Cua Go Cong Nghiep|Tam|25
+VT120|Gach Trang Tri|Vien|480
+VT121|Be Loc Nuoc|Cai|15
+VT122|Gioang Ong Nhua|Met|240
+VT123|Thep Hinh|Kg|600
+VT124|Cap Quang Cho Nha|Cuon|400
+VT125|Son Bong Cao Cap|Lit|125
+VT126|Keo Dong Lanh|Chai|70
+VT127|Binh Nuoc Nong|Cai|6
+VT128|Thung Cat|Cai|150
+VT129|Tam Go Trang Tri|Tam|75
+VT130|Keo Boi Son|Chai|120
+VT131|Day Dong Luc|Cuon|310
+VT132|Thep Ong Lon|Met|700
+VT133|Hop Dung Linh Kien|Hop|180
+VT134|May Bom Nuoc Cong Ng|Cai|12
+VT135|Gioang Cao Su Cao Ca|Met|290
+VT136|Cua Luoi Chong Muoi|Tam|60
+VT137|Day Keo Cao Cap|Cuon|250
+VT138|Thung Nhua Lon|Cai|45
+VT139|Son Nuoc Ngoai Cao C|Lit|95
+VT140|Tam Go Chiu Luc|Tam|40
+VT141|Be Tam Nuoc Lon|Cai|20
+VT142|Ong Dong Ap Luc|Kg|350
+VT143|Cap Dien Tu Dong|Cuon|250
+VT144|Thep La Cao Cap|Kg|800
+VT145|Van Banh Xe|Cai|55
+VT146|Binh Giu Nhiet|Cai|30
+VT147|Tam Go Tu Nhien|Tam|70
+VT148|May Hoi Nuoc|Cai|10
+VT149|Keo Dinh Da Nang|Chai|85
+VT150|Hop Chia Cong Xuat|Hop|150
+VT151|Hop Kim Dong|Kg|210
+VT152|Gach Gieng Nuoc|Vien|340
+VT153|Day Noi Cao Cap|Cuon|480
+VT154|Gioang Nuoc Thoat|Met|120
+VT155|Thep Dai Noi|Kg|400
+VT156|Be Xay Xi Mang|M3|300
+VT157|Tam Nhua Kinh|Tam|110
+VT158|Cap Quang Dien Luc|Cuon|200
+VT159|Ong Thep Be Tong|Met|700
+VT160|Son Lanh Da Nang|Lit|135
+VT161|Keo Dan Ong|Chai|75
+VT162|Gach Lat San Vuon|Vien|500
+VT163|Thung Gom|Cai|50
+VT164|Be Thep Xay Dung|M3|180
+VT165|Cap Dien Dung Ngoai |Cuon|350
+VT166|Tam Thach Cao Chong |Tam|220
+VT167|Gach Bong Trang Tri|Vien|600
+VT168|Hop Kim Cuong|Kg|95
+VT169|Binh Nuoc Be Tong|Cai|25
+VT170|Son Mau Trang|Lit|120
+VT171|Day Keo Be Dai|Cuon|420
+VT172|Gach Chiu Nhiet|Vien|800
+VT173|Hop Giu Am|Cai|35
+VT174|Ong Dong Be Tong|Kg|310
+VT175|Cua Chiu Nhiet|Tam|50
+VT176|Van Ong Dong|Cai|70
+VT177|Be Tam Be Nho|Cai|15
+VT178|Keo Son Noi That|Chai|95
+VT179|Day Cap Dong|Cuon|480
+VT180|May Cat Da Nang|Cai|20
+VT181|Go Ep|M3|65
+VT182|Coc Treo Den|Cai|150
+VT183|Binh Duong Xa|Cai|60
+VT184|Hop Nhom Ong Dong|Kg|120
+VT185|Thung Nhua Nhap Khau|Cai|35
+VT186|Keo Da Chieu|Chai|85
+VT187|Go Lat Nen|Tam|75
+VT188|Be Nuoc Tam Lon|Cai|50
+VT189|Son Moi|Lit|300
+VT190|Day Keo Ben|Cuon|500
+VT191|Thep Tam Cao Cap|Kg|450
+VT192|Gach Chiu Luc Lon|Vien|700
+VT193|Be Tam Nuoc Nong|Cai|20
+VT194|Van Ap Luc Lon|Cai|45
+VT195|Ong Thep Dai|Met|900
+VT196|Thung Cao Cap|Cai|50
+VT197|Day Noi Di Dong|Cuon|600
+VT198|May Nen Khi Chinh Ha|Cai|8
+VT199|Tam Chong Nuoc|Tam|100
+VT200|Hop Gom|Cai|40
+VT201|Thung Gach Dai|Hop|120
+VT202|May Nen Thu Cong|Cai|15
+VT203|Cap Cao Cap Ngoai Tr|Cuon|480
+VT204|Gioang Chu T|Met|300
+VT205|Keo Dan Da Dung|Chai|60
+VT206|Binh Giu Nhiet Cao C|Cai|10
+VT207|Hop Kim Ap Luc|Kg|250
+VT208|Son Ben Mau|Lit|125
+VT209|Be Cat Lon|M3|350
+VT210|Van Dau Ap|Cai|90
+VT211|Cua Chong Chay|Tam|30
+VT212|Thung Nhua Ben|Cai|55
+VT213|Cap Quang Cong Nghie|Cuon|400
+VT214|Hop Kim Nho|Kg|135
+VT215|Gach Bong Den|Vien|230
+VT216|Day Keo Xay Dung|Cuon|500
+VT217|Go Chiu Nhiet|Tam|80
+VT218|Thep Khong Ri|Kg|650
+VT219|Van Be Nuoc|Cai|70
+VT220|Son Mau Dac Biet|Lit|140
+VT221|Thung Dung Cap Quang|Cai|65
+VT222|Be Tam Nhua Lon|Cai|25
+VT223|Cap Dien Ap Luc Cao|Cuon|800
+VT224|May Phat Cong Suat L|Cai|10
+VT225|Keo Dan Cong Nghiep|Chai|95
+VT226|Go Trang Tri Noi Tha|Tam|75
+VT227|Van Ong Nuoc Cao Cap|Cai|45
+VT228|Gach Nha Ve Sinh|Vien|600
+VT229|Day Dien Be Cong|Cuon|350
+VT230|Thung Go Nhap Khau|Cai|20
+VT231|Cua Kinh Lon|Tam|25
+VT232|Hop Chiu Luc|Hop|100
+VT233|Son Xay Ngoai Troi|Lit|300
+VT234|May Bom Nuoc Lon|Cai|15
+VT235|Gach Lat Men Bong|Vien|700
+VT236|Keo Dan Kinh|Chai|60
+VT237|Thung Gach Trang Tri|Hop|120
+VT238|Hop Kim Be Lon|Kg|250
+VT239|Day Cap Ben|Cuon|420
+VT240|Thep Chiu Nhiet Lon|Kg|550
+VT241|Gach Ngoai That|Vien|400
+VT242|Son Noi That Cao Cap|Lit|150
+VT243|Be Tong Ap Luc Cao|M3|450
+VT244|Van Dong Chiu Ap Luc|Cai|60
+VT245|Hop Gom Chiu Luc|Cai|50
+VT246|Cap Quang Lon|Cuon|320
+VT247|May Cat Cong Nghiep|Cai|20
+VT248|Day Noi Dien Ngoai T|Cuon|500
+VT249|Go Gia Cong|Tam|40
+VT250|Van Hoa Nuoc|Cai|80
+VT251|Gach San Vuon|Vien|700
+VT252|Be Tam Be Be Tong|Cai|15
+VT253|Cap Thep Chong Ri|Cuon|350
+VT254|Day Dong Dac Biet|Cuon|400
+VT255|Son Phu Be Tong|Lit|95
+VT256|May Nen Dau Lon|Cai|8
+VT257|Gioang Ap Luc Lon|Met|300
+VT258|Hop Kim Nhap Khau|Kg|400
+VT259|Thep Gia Cong|Kg|700
+VT260|Keo Noi Da Nang|Chai|70
+VT261|Be Xay Cat|M3|350
+VT262|Gach Lat Phong Tam|Vien|450
+VT263|Day Cap Trung Ap|Cuon|450
+VT264|Hop Keo Son|Chai|120
+VT265|May Cat Thuy Luc|Cai|12
+VT266|Van Dong Be Lon|Cai|75
+VT267|Be Tam Lon|Cai|50
+VT268|Son Lanh Chiu Luc|Lit|135
+VT269|Keo Dinh Trang Tri|Chai|45
+VT270|Go Chiu Ap Luc|Tam|35
+VT271|Cua Thep Cong Nghiep|Tam|20
+VT272|Gach Nha Cap|Vien|350
+VT273|Be Cong Son Nuoc|M3|150
+VT274|Thung Keo Dac Biet|Hop|65
+VT275|Hop Gom Trang Tri|Cai|85
+VT276|Day Dien Trang Tri|Cuon|400
+VT277|Gioang Cao Su Boi Tr|Met|220
+VT278|May Nen Thuy Luc|Cai|8
+VT279|Be Loc Nuoc Gia Dung|Cai|12
+VT280|Son Lanh Ngoai Troi|Lit|90
+VT281|Hop Kim Lon|Kg|450
+VT282|Day Keo Ap Luc|Cuon|500
+VT283|Gach Bong Chiu Ap|Vien|700
+VT284|Van Ong Nuoc Lon|Cai|80
+VT285|Cua Nhua Chiu Nuoc|Tam|60
+VT286|Thep Ong Cao Ap|Met|800
+VT287|Thung Gom Lon|Cai|35
+VT288|Hop Gom Cao Cap|Cai|45
+VT289|Son Bong Lau Dai|Lit|125
+VT290|May Bom Cong Nghiep|Cai|10
+VT291|Gach Trang Tri Phong|Vien|300
+VT292|Keo Ep Da Nang|Chai|55
+VT293|Day Cap Ap Luc Cao|Cuon|500
+VT294|Hop Kim Nhom|Kg|250
+VT295|Be Tam Nhua Cao Cap|Cai|20
+VT296|Gach Lat Cao Cap|Vien|480
+VT297|Son Bong Mau|Lit|300
+VT298|Van Cong Nghiep|Cai|50
+VT299|Cap Day Ap Luc Lon|Cuon|600
+VT300|Tam Chiu Nhiet|Tam|85
+VT301|May Cat Gio Lon|Cai|7
+VT302|Hop Chiu Nhiet|Hop|120
+VT303|Thep Ong Cao Cap|Met|700
+VT304|Thung Go Be Lon|Cai|15
+VT305|Son Lot Noi That|Lit|80
+VT306|Keo Dan Cong Trinh|Chai|40
+VT307|Day Cap Noi Thanh|Cuon|250
+VT308|Gach Trang Tri Chiu |Vien|550
+VT309|Van Nhom Be Nho|Cai|65
+VT310|Cap Dong Ngoai Troi|Cuon|480
+VT311|Son Moi Noi That|Lit|75
+VT312|Thep La Ngoai Troi|Kg|700
+VT313|Hop Chia Linh Kien|Hop|150
+VT314|May Nen Cong Nghiep|Cai|8
+VT315|Cua Nhua Lon|Tam|40
+VT316|Day Cap Chiu Ap Luc|Cuon|450
+VT317|Gach Bong Chuong|Vien|400
+VT318|Son Cao Cap Noi Dia|Lit|85
+VT319|Tam Chiu Ap Luc|Tam|75
+VT320|Cap Cong Trinh|Cuon|350

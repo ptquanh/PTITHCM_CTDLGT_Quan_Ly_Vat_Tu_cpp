@@ -188,15 +188,13 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
     int pos = searchNhanVien(list, MANV);
     if (pos == -1)
     {
-        cout << "Khong tim thay ma nhan vien " << MANV << endl;
+        drawTableErrors("Khong tim thay ma nhan vien " + MANV, true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
     }
-    if (list.nodes[pos]->firstDSHD != nullptr)
-    {
-        cout << "Khong tim thay ma nhan vien " << MANV << endl;
-        drawTableErrors("",true);
-        return;
-    }
+    
     input.MANV = list.nodes[pos]->MANV;
     input.HO = list.nodes[pos]->HO;
     input.TEN = list.nodes[pos]->TEN;
@@ -206,6 +204,14 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
     displayField(x + 87, y + 6, input.HO, false, 20);
     displayField(x + 87, y + 8, input.TEN, false, 10);
     displayField(x + 87, y + 10, input.PHAI, false, 3);
+    if (list.nodes[pos]->firstDSHD != nullptr)
+    {
+        drawTableErrors("Khong the xoa nhan vien lap hoa don", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        return;
+    }
     char key;
     while (true)
     {

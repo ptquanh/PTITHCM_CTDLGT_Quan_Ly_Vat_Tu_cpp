@@ -1,6 +1,7 @@
 #file
 *.exe
 *tempCodeRunnerFile.cpp
+*tempCodeRunnerFile.h
 #folder
 /.vscode/
 /personal/

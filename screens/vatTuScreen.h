@@ -41,8 +41,8 @@ void drawKeysGuideListVatTu(int x, int y)
     gotoxy(x + 1, y + 26);
     cout << "MENU VT";
     setColorByRequest(LIGHTGRAY, BLACK);
-    // gotoxy(x + 58 + 5 * space + 1, y + 26);
-    // cout << "F10: Luu file";
+    gotoxy(x + 58 + 5 * space + 1, y + 26);
+    cout << "F10: Luu file";
     gotoxy(x + 100, y + 26);
     cout << "ESC: Thoat";
 }

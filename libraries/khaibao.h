@@ -89,7 +89,6 @@ typedef dsChiTietHoaDon *ptr_DSCTHD;
 
 struct nodeHoaDon
 {
-
     int day, month, year;
     string SoHD; // max C20
     string loai; // N or X
@@ -105,7 +104,6 @@ typedef dsHoaDon *ptr_DSHD;
 // ================ mang con tro ===================
 struct nhanVien
 {
-
     string MANV;
     string HO;
     string TEN;
