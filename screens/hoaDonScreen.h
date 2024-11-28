@@ -339,10 +339,6 @@ void nhapMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
         if (result == "ESC")
         {
             isSaved = false;
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -376,10 +372,6 @@ void nhapMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
                         return;
                     case ESC:
                         ShowCur(false);
-                        errorMessage = "Dang thoat chuong trinh...";
-                        drawTableErrors(errorMessage, false);
-                        Sleep(1500);
-                        drawTableErrors("", false);
                         fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                         isSaved = false;
                         return;
@@ -513,10 +505,6 @@ void chonMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
                         return;
                     case ESC:
                         ShowCur(false);
-                        errorMessage = "Dang thoat chuong trinh...";
-                        drawTableErrors(errorMessage, false);
-                        Sleep(1500);
-                        drawTableErrors("", false);
                         fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                         isSaved = false;
                         return;
@@ -539,10 +527,6 @@ void chonMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
             currentPage = pageSearchByTab(x + 4, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, false);
-            Sleep(1500);
-            drawTableErrors("", false);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -561,9 +545,6 @@ void searchNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         clearTablePrint(x);
         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
@@ -621,10 +602,6 @@ void nhapMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, int &currentPage,
         }
         if (result == "ESC")
         {
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, false);
-            Sleep(1500);
-            drawTableErrors("", false);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -741,10 +718,6 @@ void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, int &currentPage,
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, false);
-            Sleep(1500);
-            drawTableErrors("", false);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -767,9 +740,6 @@ void searchVTFromAddCTHD(treeVatTu &root, int x, int y, int currentPage, string 
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         clearTablePrint(x);
         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
@@ -839,10 +809,6 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
             if (isESC)
             {
                 ShowCur(false);
-                errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
                 fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                 return;
             }
@@ -900,10 +866,6 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
             if (isESC)
             {
                 ShowCur(false);
-                errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
                 fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                 return;
             }
@@ -936,9 +898,6 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
             ShowCur(false);
             if (isESC)
             {
-                drawTableErrors("Dang thoat chuong trinh...", true);
-                Sleep(1500);
-                drawTableErrors("", true);
                 clearTablePrint(x);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
@@ -977,10 +936,6 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
                 if (isESC)
                 {
                     ShowCur(false);
-                    errorMessage = "Dang thoat chuong trinh...";
-                    drawTableErrors(errorMessage, false);
-                    Sleep(1500);
-                    drawTableErrors("", false);
                     fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                     return;
                 }
@@ -1079,9 +1034,6 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_
             currentPage = pageSearchByTab(x + 4, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            drawTableErrors("Dang thoat chuong trinh...", false);
-            Sleep(1500);
-            drawTableErrors("", false);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -1192,9 +1144,6 @@ void handleNavigationUpdateChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_
             ShowCur(false);
             if (isESC)
             {
-                drawTableErrors("Dang thoat chuong trinh...", false);
-                Sleep(1500);
-                drawTableErrors("", false);
                 fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                 return;
             }
@@ -1220,9 +1169,6 @@ void handleNavigationUpdateChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_
             break;
         }
         case ESC:
-            drawTableErrors("Dang thoat chuong trinh...", false);
-            Sleep(1500);
-            drawTableErrors("", false);
             fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
             return;
         }
@@ -1333,9 +1279,6 @@ void handleNavigationDeleteChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_
             ShowCur(false);
             if (isESC)
             {
-                drawTableErrors("Dang thoat chuong trinh...", false);
-                Sleep(1500);
-                drawTableErrors("", false);
                 fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                 return;
             }
@@ -1361,9 +1304,6 @@ void handleNavigationDeleteChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_
             break;
         }
         case ESC:
-            drawTableErrors("Dang thoat chuong trinh...", false);
-            Sleep(1500);
-            drawTableErrors("", false);
             fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
             return;
         }
@@ -1388,10 +1328,6 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
             inHoaDon(dsnv, root, currentPage, -1, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
             if (isESC)
             {
-                errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
                 fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                 return;
             }
@@ -1432,10 +1368,6 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
             pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, false);
-            Sleep(1500);
-            drawTableErrors("", false);
             fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
             return;
         }
@@ -1503,9 +1435,6 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
                 ShowCur(false);
                 if (isESC)
                 {
-                    drawTableErrors("Dang thoat chuong trinh...", true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
                     clearTablePrint(x);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                     return;
@@ -1547,10 +1476,6 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
                     if (isESC)
                     {
                         ShowCur(false);
-                        errorMessage = "Dang thoat chuong trinh...";
-                        drawTableErrors(errorMessage, false);
-                        Sleep(1500);
-                        drawTableErrors("", false);
                         fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
                     }
                     if (isSaved)
@@ -1626,9 +1551,6 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
                 }
                 break;
             case ESC:
-                drawTableErrors("Dang thoat chuong trinh...", false);
-                Sleep(1500);
-                drawTableErrors("", false);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }

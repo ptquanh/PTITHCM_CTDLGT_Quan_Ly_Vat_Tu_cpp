@@ -204,9 +204,6 @@ void handleNavigationSearchNhanVien(dsNhanVien &dsnv, int x, int y)
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         clearTablePrint(x);
         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
@@ -250,9 +247,6 @@ void handleNavigationSearchNhanVien(dsNhanVien &dsnv, int x, int y)
                 ShowCur(false);
                 if (isESC)
                 {
-                    drawTableErrors("Dang thoat chuong trinh...", true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
                     clearTablePrint(x);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                     return;
@@ -277,9 +271,6 @@ void handleNavigationSearchNhanVien(dsNhanVien &dsnv, int x, int y)
                 ShowCur(false);
                 if (isESC)
                 {
-                    drawTableErrors("Dang thoat chuong trinh...", true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
                     clearTablePrint(x);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                     return;
@@ -295,9 +286,6 @@ void handleNavigationSearchNhanVien(dsNhanVien &dsnv, int x, int y)
                 }
                 break;
             case ESC:
-                drawTableErrors("Dang thoat chuong trinh...", true);
-                Sleep(1500);
-                drawTableErrors("", true);
                 clearTablePrint(x);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
@@ -329,10 +317,6 @@ void nhapMaNVFromUpdateNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y
         }
         if (result == "ESC")
         {
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -348,10 +332,6 @@ void nhapMaNVFromUpdateNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y
                 ShowCur(false);
                 if (isESC)
                 {
-                    errorMessage = "Dang thoat chuong trinh...";
-                    drawTableErrors(errorMessage, true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                     return;
                 }
@@ -465,10 +445,6 @@ void chonMaNVFromUpdateNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y
             ShowCur(false);
             if (isESC)
             {
-                errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(errorMessage, true);
-                Sleep(1500);
-                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }
@@ -497,10 +473,6 @@ void chonMaNVFromUpdateNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -517,9 +489,6 @@ void searchNVFromUpdateNhanVien(dsNhanVien &dsnv, int x, int y, int currentPage,
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         clearTablePrint(x);
         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
@@ -539,9 +508,6 @@ void searchNVFromUpdateNhanVien(dsNhanVien &dsnv, int x, int y, int currentPage,
         suaNhanVien(dsnv, currentMANV, x, y, isESC, isSaved);
         if (isESC)
         {
-            drawTableErrors("Dang thoat chuong trinh...", true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -625,9 +591,6 @@ void handleNavigationUpdateNhanVien(dsNhanVien &dsnv, int &currentPage, int x, i
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            drawTableErrors("Dang thoat chuong trinh...", true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -652,10 +615,6 @@ void nhapMaNVFromDeleteNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y
         }
         if (result == "ESC")
         {
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -671,10 +630,6 @@ void nhapMaNVFromDeleteNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y
                 ShowCur(false);
                 if (isESC)
                 {
-                    errorMessage = "Dang thoat chuong trinh...";
-                    drawTableErrors(errorMessage, true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                     return;
                 }
@@ -779,10 +734,6 @@ void chonMaNVFromDeleteNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y
             ShowCur(false);
             if (isESC)
             {
-                errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(errorMessage, true);
-                Sleep(1500);
-                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }
@@ -815,10 +766,6 @@ void chonMaNVFromDeleteNhanVien(dsNhanVien &dsnv, int &currentPage, int x, int y
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -836,9 +783,6 @@ void searchNVFromDeleteNhanVien(dsNhanVien &dsnv, int x, int y, int currentPage,
 
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         clearTablePrint(x);
         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
@@ -858,9 +802,6 @@ void searchNVFromDeleteNhanVien(dsNhanVien &dsnv, int x, int y, int currentPage,
         ShowCur(false);
         if (isESC)
         {
-            drawTableErrors("Dang thoat chuong trinh...", true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -950,9 +891,6 @@ void handleNavigationDeleteNhanVien(dsNhanVien &dsnv, int &currentPage, int x, i
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            drawTableErrors("Dang thoat chuong trinh...", true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -994,10 +932,6 @@ void handleNavigationListNhanVien(dsNhanVien dsnv, int x, int y)
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -1057,10 +991,6 @@ void menuNhanVien(dsNhanVien &dsnv, int x, int y)
             writeFile_dsNhanVien(dsnv);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }

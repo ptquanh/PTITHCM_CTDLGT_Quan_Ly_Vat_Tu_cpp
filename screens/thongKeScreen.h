@@ -418,11 +418,6 @@ void handleNavigationThongKeHoaDon(dsNhanVien &dsnv, int x, int y, int day1, int
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
-
             delete[] arrHoaDon;
             delete[] employeeNames;
             delete[] triGiaHoaDon;
@@ -441,9 +436,6 @@ void menuThongKeTop10(dsNhanVien dsnv, treeVatTu root, int x, int y)
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         fillAreaColor(x + 30, y + 3, 50, 13, LIGHTGRAY);
         return;
     }
@@ -472,9 +464,6 @@ void menuThongKeHoaDon(dsNhanVien dsnv, int x, int y)
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         fillAreaColor(x + 30, y + 3, 50, 13, LIGHTGRAY);
         return;
     }
@@ -504,9 +493,6 @@ void menuThongKeDoanhThuNam(dsNhanVien dsnv, int x, int y)
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         fillAreaColor(x + 30, y + 3, 50, 13, LIGHTGRAY);
         return;
     }

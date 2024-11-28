@@ -162,8 +162,8 @@ VT161|Keo Dan Ong|Chai|75
 VT162|Gach Lat San Vuon|Vien|500
 VT163|Thung Gom|Cai|50
 VT164|Be Thep Xay Dung|M3|180
-VT165|Cap Dien Dung Ngoai |Cuon|350
-VT166|Tam Thach Cao Chong |Tam|220
+VT165|Cap Dien Dung Ngoai|Cuon|350
+VT166|Tam Thach Cao Chong|Tam|220
 VT167|Gach Bong Trang Tri|Vien|600
 VT168|Hop Kim Cuong|Kg|95
 VT169|Binh Nuoc Be Tong|Cai|25
@@ -305,7 +305,7 @@ VT304|Thung Go Be Lon|Cai|15
 VT305|Son Lot Noi That|Lit|80
 VT306|Keo Dan Cong Trinh|Chai|40
 VT307|Day Cap Noi Thanh|Cuon|250
-VT308|Gach Trang Tri Chiu |Vien|550
+VT308|Gach Trang Tri Chiu|Vien|550
 VT309|Van Nhom Be Nho|Cai|65
 VT310|Cap Dong Ngoai Troi|Cuon|480
 VT311|Son Moi Noi That|Lit|75

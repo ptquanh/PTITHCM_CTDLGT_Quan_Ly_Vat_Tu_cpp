@@ -355,10 +355,6 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
         escButton:
         {
             ShowCur(false);
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }

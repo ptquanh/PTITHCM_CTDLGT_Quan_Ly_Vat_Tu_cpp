@@ -448,6 +448,20 @@ void quickSortVatTu(treeVatTu arr[], int low, int high)
     }
 }
 
+bool isExistedTenVatTu(treeVatTu root, string tenVT)
+{
+    if (root == nullptr)
+        return false;
+
+    // So sánh tên vật tư (không phân biệt hoa thường)
+    if (strcasecmp(root->data_vt.TENVT.c_str(), tenVT.c_str()) == 0)
+        return true;
+
+    // Đệ quy kiểm tra nhánh trái và phải
+    return isExistedTenVatTu(root->left, tenVT) ||
+           isExistedTenVatTu(root->right, tenVT);
+}
+
 bool isLeapYear(int year)
 {
     if (year % 4 == 0 && year % 100 != 0)

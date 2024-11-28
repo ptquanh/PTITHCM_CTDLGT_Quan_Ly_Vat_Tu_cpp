@@ -95,7 +95,6 @@ int main()
             }
             break;
         }
-        // setupSignalHandler(dsnv, root);
     };
     return 0;
 }

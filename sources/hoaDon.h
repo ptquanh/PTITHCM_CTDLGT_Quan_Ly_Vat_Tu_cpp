@@ -174,10 +174,6 @@ void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int index, ptr_DSHD &new_hd, 
             break;
         escButton:
             ShowCur(false);
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, false);
-            Sleep(1500);
-            drawTableErrors("", false);
             fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
             isESC = true;
             return;

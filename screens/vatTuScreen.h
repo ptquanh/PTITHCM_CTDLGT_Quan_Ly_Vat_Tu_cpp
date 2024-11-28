@@ -225,10 +225,6 @@ void nhapMaVTFromUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
         }
         if (result == "ESC")
         {
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -245,10 +241,6 @@ void nhapMaVTFromUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
                 ShowCur(false);
                 if (isESC)
                 {
-                    errorMessage = "Dang thoat chuong trinh...";
-                    drawTableErrors(errorMessage, true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                     delete[] arr;
                     return;
@@ -373,10 +365,6 @@ void chonMaVTFromUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
             ShowCur(false);
             if (isESC)
             {
-                errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(errorMessage, true);
-                Sleep(1500);
-                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 delete[] arr;
                 return;
@@ -412,10 +400,6 @@ void chonMaVTFromUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y)
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -433,9 +417,6 @@ void handleNavigationSearchVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         clearTablePrint(x);
         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
@@ -478,9 +459,6 @@ void handleNavigationSearchVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y
                 ShowCur(false);
                 if (isESC)
                 {
-                    drawTableErrors("Dang thoat chuong trinh...", true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
                     clearTablePrint(x);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                     return;
@@ -514,9 +492,6 @@ void handleNavigationSearchVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y
                 ShowCur(false);
                 if (isESC)
                 {
-                    drawTableErrors("Dang thoat chuong trinh...", true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
                     clearTablePrint(x);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                     return;
@@ -541,9 +516,6 @@ void handleNavigationSearchVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y
                 }
                 break;
             case ESC:
-                drawTableErrors("Dang thoat chuong trinh...", true);
-                Sleep(1500);
-                drawTableErrors("", true);
                 clearTablePrint(x);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
@@ -568,9 +540,6 @@ void searchVTFromUpdateVatTu(treeVatTu &root, int x, int y, int currentPage, str
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         clearTablePrint(x);
         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
@@ -589,9 +558,6 @@ void searchVTFromUpdateVatTu(treeVatTu &root, int x, int y, int currentPage, str
         suaVatTu(root, currentMAVT, x, y, isESC, isSaved);
         if (isESC)
         {
-            drawTableErrors("Dang thoat chuong trinh...", true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -676,9 +642,6 @@ void handleNavigationUpdateVatTu(treeVatTu &root, int &currentPage, int x, int y
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            drawTableErrors("Dang thoat chuong trinh...", true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -709,10 +672,6 @@ void nhapMaVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int &currentPage
         if (result == "ESC")
         {
             ShowCur(false);
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -730,10 +689,6 @@ void nhapMaVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int &currentPage
                 ShowCur(false);
                 if (isESC)
                 {
-                    errorMessage = "Dang thoat chuong trinh...";
-                    drawTableErrors(errorMessage, true);
-                    Sleep(1500);
-                    drawTableErrors("", true);
                     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                     delete[] arr;
                     return;
@@ -864,10 +819,6 @@ void chonMaVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int &currentPage
             ShowCur(false);
             if (isESC)
             {
-                errorMessage = "Dang thoat chuong trinh...";
-                drawTableErrors(errorMessage, true);
-                Sleep(1500);
-                drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 delete[] arr;
                 return;
@@ -908,10 +859,6 @@ void chonMaVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int &currentPage
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -935,9 +882,6 @@ void searchVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y, in
     ShowCur(false);
     if (isESC)
     {
-        drawTableErrors("Dang thoat chuong trinh...", true);
-        Sleep(1500);
-        drawTableErrors("", true);
         clearTablePrint(x);
         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
@@ -956,9 +900,6 @@ void searchVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y, in
         xoaVatTu(root, dsnv, currentMAVT, x, y, isESC, isSaved);
         if (isESC)
         {
-            drawTableErrors("Dang thoat chuong trinh...", true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -1046,9 +987,6 @@ void handleNavigationDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int &current
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            drawTableErrors("Dang thoat chuong trinh...", true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -1096,10 +1034,6 @@ void handleNavigationListVatTu(treeVatTu root, int x, int y)
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
@@ -1164,10 +1098,6 @@ void menuVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y)
             writeFile_dsVatTu(root);
             break;
         case ESC:
-            errorMessage = "Dang thoat chuong trinh...";
-            drawTableErrors(errorMessage, true);
-            Sleep(1500);
-            drawTableErrors("", true);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
