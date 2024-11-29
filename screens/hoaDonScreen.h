@@ -318,13 +318,13 @@ void drawTablePrintHoaDon(int x, int y, int w, int h)
     cout << "NGAY:         THANG:        NAM:";
 }
 
-void nhapMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, string &currentMANV, int x, int y, bool &isSaved)
+void nhapMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, string &currentMANV, int x, int y, bool &isESC, bool &isSaved)
 {
     nhanVien *nv;
     string errorMessage;
     bool moveNext = false;
     bool isActive = true;
-    bool isESC;
+    isESC = false, isSaved = false;
     x = 5, y = 2;
     drawTableInputNhanVien(x, y);
     displayField(x + 87, y + 4, currentMANV, isActive, 10);
@@ -338,7 +338,7 @@ void nhapMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
         ShowCur(false);
         if (result == "ESC")
         {
-            isSaved = false;
+            isESC = true;
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
@@ -368,12 +368,17 @@ void nhapMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
                         x = 1, y = 1;
                         lapHoaDon(dsnv, root, index, new_hd, x, y, isESC, isSaved);
                         ShowCur(false);
-                        isSaved = true;
-                        return;
+                        if (isESC)
+                        {
+                            fillAreaColor(0, 0, 110, 15, LIGHTGRAY);
+                            return;
+                        }
+                        if (isSaved)
+                            return;
                     case ESC:
                         ShowCur(false);
-                        fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
-                        isSaved = false;
+                        fillAreaColor(x + 69, y, 41, 17, LIGHTGRAY);
+                        isESC = true;
                         return;
                     }
                 }
@@ -399,7 +404,7 @@ void nhapMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
     }
 }
 
-void chonMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, string &currentMANV, int x, int y, bool &isSaved)
+void chonMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, string &currentMANV, int x, int y, bool &isESC, bool &isSaved)
 {
     int n = dsnv.countNV;
     string errorMessage;
@@ -410,7 +415,7 @@ void chonMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
     int currentChoice = -1;
     nhanVien *nv;
     int index;
-    bool isESC;
+    isESC = false, isSaved = false;
     drawTablePrintNhanVien(x + 4, y + 1, 15, 23);
     while (true)
     {
@@ -501,12 +506,17 @@ void chonMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
                         x = 1, y = 1;
                         lapHoaDon(dsnv, root, index, new_hd, x, y, isESC, isSaved);
                         ShowCur(false);
-                        isSaved = true;
-                        return;
+                        if (isESC)
+                        {
+                            fillAreaColor(0, 0, 110, 15, LIGHTGRAY);
+                            return;
+                        }
+                        if (isSaved)
+                            return;
                     case ESC:
                         ShowCur(false);
-                        fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
-                        isSaved = false;
+                        fillAreaColor(x + 73, y, 41, 17, LIGHTGRAY);
+                        isESC = true;
                         return;
                     }
                 }
@@ -533,20 +543,20 @@ void chonMaNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
     }
 }
 
-void searchNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, int x, int y, int currentPage, bool &isSaved)
+void searchNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, int x, int y, int currentPage, bool &isESC, bool &isSaved)
 {
     nhanVien *result;
     x = 5, y = 2;
     drawTableSearchTenNhanVien(x, y);
     drawTablePrintNhanVien(x, y, 15, 23);
-    bool isESC = false;
+    isESC = false, isSaved = false;
     timKiemTenNhanVien(dsnv, x, y, result, isESC);
     x = 1, y = 1;
     ShowCur(false);
     if (isESC)
     {
         clearTablePrint(x);
-        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+        fillAreaColor(x + 73, y, 41, 17, LIGHTGRAY);
         return;
     }
     else
@@ -561,79 +571,17 @@ void searchNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
         setColorByRequest(LIGHTGRAY, BLACK);
         string errorMessage;
         lapHoaDon(dsnv, root, index, new_hd, x, y, isESC, isSaved);
-        // if (isESC)
-        // {
-        //     drawTableErrors("Dang thoat chuong trinh...", true);
-        //     Sleep(1500);
-        //     drawTableErrors("", true);
-        //     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-        //     return;
-        // }
-        // if (isSaved)
-        // {
-        //     drawTableErrors("Sua nhan vien thanh cong", true);
-        //     Sleep(1500);
-        //     drawTableErrors("", true);
-        //     fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-        //     clearTablePrint(x);
-        //     return;
-        // }
-    }
-}
-void nhapMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, int &currentPage, int x, int y)
-{
-    int n = countNodes(root);
-    treeVatTu *arr = new treeVatTu[n];
-    int index = 0;
-    storeInorder(root, arr, &index);
-    quickSortVatTu(arr, 0, n - 1);
-    string errorMessage;
-    bool moveNext = false;
-    bool isActive = true;
-    x += 7;
-    drawTableInputVatTu(x, y);
-    displayField(x + 87, y + 4, currentMAVT, isActive, 10);
-    while (true)
-    {
-        string result = inputString(x + 87, y + 4, currentMAVT, 10, "Ma vat tu", moveNext, false);
-        for (char &c : result)
+        if (isESC)
         {
-            c = std::toupper(c);
-        }
-        if (result == "ESC")
-        {
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-            delete[] arr;
+            fillAreaColor(0, 0, 110, 15, LIGHTGRAY);
             return;
         }
-        else if (result == "F10")
-        {
-            treeVatTu found = search(root, currentMAVT);
-            if (found == nullptr)
-            {
-               errorMessage = "Ma vat tu khong ton tai";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
-            }
-            // else
-            // {
-            //
-            //     currentMAVT = "";
-            //     displayField(x + 87, y + 4, currentMAVT, isActive, 10);
-            //     continue;
-            // }
+        if (isSaved)
             return;
-        }
-        else
-        {
-            currentMAVT = result;
-            displayField(x + 87, y + 4, currentMAVT, isActive, 10);
-        }
     }
 }
 
-void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, int &currentPage, int x, int y)
+void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, ptr_DSHD &new_hd, int &currentPage, int x, int y)
 {
     int n = countNodes(root);
     treeVatTu *arr = new treeVatTu[n];
@@ -647,10 +595,12 @@ void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, int &currentPage,
     char key;
     int currentChoice = -1;
     bool isESC, isSaved = false;
+    ptr_DSCTHD temp = nullptr;
     x = 5, y = 2;
     fillAreaColor(x - 4, y - 2, 80, 25, LIGHTGRAY);
     drawTableUpdateVatTu(x, y);
     drawTablePrintVatTu(x, y, 15, 23);
+    bool isExisted = false;
     while (true)
     {
         inDanhSachVatTu(root, currentPage, selectedRow, x);
@@ -699,6 +649,7 @@ void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, int &currentPage,
         }
         break;
         case ENTER:
+            isExisted = false;
             currentChoice = (currentPage - 1) * ROWS + selectedRow;
             for (int i = x + 87; i < x + 109; i++)
             {
@@ -713,7 +664,23 @@ void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, int &currentPage,
                 cout << " ";
             }
             currentMAVT = arr[currentChoice]->data_vt.MAVT;
-            return;
+            temp = new_hd->data_hd.firstCTHD;
+            while (temp != nullptr)
+            {
+                if (temp->data_cthd.MAVT == currentMAVT)
+                {
+                    isExisted = true;
+                }
+                temp = temp->next;
+            }
+            if (isExisted)
+            {
+                errorMessage = "Ma vat tu da ton tai trong hoa don";
+                drawTableErrors(errorMessage, false);
+                break;
+            }
+            else
+                return;
         case TAB:
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
@@ -724,7 +691,7 @@ void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, int &currentPage,
         }
     }
 }
-void searchVTFromAddCTHD(treeVatTu &root, int x, int y, int currentPage, string &currentMAVT)
+void searchVTFromAddCTHD(treeVatTu &root, int x, int y, ptr_DSHD &new_hd, int currentPage, string &currentMAVT)
 {
     treeVatTu result;
     int n = countNodes(root);
@@ -732,31 +699,93 @@ void searchVTFromAddCTHD(treeVatTu &root, int x, int y, int currentPage, string 
     int index = 0;
     storeInorder(root, arr, &index);
     quickSortVatTu(arr, 0, n - 1);
-    int totalPages = ceil((float)n / ROWS);
     drawTableSearchTenVatTu(x, y);
     drawTablePrintVatTu(x, y, 15, 23);
-    bool isESC = false, isSaved = false;
-    timKiemTenVatTu(root, x, y, result, isESC);
-    ShowCur(false);
-    if (isESC)
+    bool isESC = false, isExisted;
+    do
     {
-        clearTablePrint(x);
-        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-        return;
-    }
-    else
-    {
-        currentMAVT = result->data_vt.MAVT;
-        drawTableErrors("Lay ma vat tu thanh cong", true);
-        Sleep(1500);
-        drawTableErrors("", true);
-        clearTablePrint(x);
-        fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-        drawTableUpdateVatTu(x, y);
+        isExisted = false;
+        timKiemTenVatTu(root, x, y, result, isESC);
         setColorByRequest(LIGHTGRAY, BLACK);
+        clearTablePrint(x);
         inDanhSachVatTu(root, currentPage, -1, x);
-    }
+        if (isESC)
+        {
+            clearTablePrint(x);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+            return;
+        }
+
+        currentMAVT = result->data_vt.MAVT;
+        ptr_DSCTHD temp = new_hd->data_hd.firstCTHD;
+
+        while (temp != nullptr)
+        {
+            if (temp->data_cthd.MAVT == currentMAVT)
+            {
+                isExisted = true;
+                drawTableErrors("Ma vat tu da ton tai trong hoa don", false);
+                break;
+            }
+            temp = temp->next;
+        }
+    } while (isExisted);
+
+    drawTableErrors("Lay ma vat tu thanh cong", true);
+    Sleep(1500);
+    drawTableErrors("", true);
+    clearTablePrint(x);
+    fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+    drawTableUpdateVatTu(x, y);
+    setColorByRequest(LIGHTGRAY, BLACK);
+    inDanhSachVatTu(root, currentPage, -1, x);
 }
+// void searchVTFromAddCTHD(treeVatTu &root, int x, int y, ptr_DSHD &new_hd, int currentPage, string &currentMAVT)
+// {
+//     treeVatTu result;
+//     int n = countNodes(root);
+//     treeVatTu *arr = new treeVatTu[n];
+//     int index = 0;
+//     storeInorder(root, arr, &index);
+//     quickSortVatTu(arr, 0, n - 1);
+//     int totalPages = ceil((float)n / ROWS);
+//     drawTableSearchTenVatTu(x, y);
+//     drawTablePrintVatTu(x, y, 15, 23);
+//     bool isESC = false, isSaved = false, isExisted = false;
+//     timKiemTenVatTu(root, x, y, result, isESC);
+//     ShowCur(false);
+//     if (isESC)
+//     {
+//         clearTablePrint(x);
+//         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+//         return;
+//     }
+//     else
+//     {
+//         currentMAVT = result->data_vt.MAVT;
+//         ptr_DSCTHD temp = new_hd->data_hd.firstCTHD;
+//         while (temp != nullptr)
+//         {
+//             if (temp->data_cthd.MAVT == currentMAVT)
+//             {
+//                 isExisted = true;
+//             }
+//             temp = temp->next;
+//         }
+//         if (isExisted)
+//         {
+//             drawTableErrors("Ma vat tu da ton tai trong hoa don", false);
+//         }
+//         drawTableErrors("Lay ma vat tu thanh cong", true);
+//         Sleep(1500);
+//         drawTableErrors("", true);
+//         clearTablePrint(x);
+//         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+//         drawTableUpdateVatTu(x, y);
+//         setColorByRequest(LIGHTGRAY, BLACK);
+//         inDanhSachVatTu(root, currentPage, -1, x);
+//     }
+// }
 void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, string currentMANV, int x, int y)
 {
     int n = dsnv.countNV;
@@ -764,7 +793,6 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
     int currentPage = 1;
     int selectedRow = 0;
     string errorMessage;
-    // treeVatTu result;
     string currentMAVT;
     bool isEmpty;
     y += 1;
@@ -834,7 +862,7 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
             }
             break;
         case F4:
-            chonMaVTFromAddCTHD(root, currentMAVT, currentPage, x, y);
+            chonMaVTFromAddCTHD(root, currentMAVT, new_hd, currentPage, x, y);
             fillAreaColor(x, y, 115, 25, LIGHTGRAY);
             drawTablePrintChiTietHoaDon(x, y, 15, 23);
             index = searchNhanVien(dsnv, currentMANV);
@@ -893,8 +921,7 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
         case F5:
             fillAreaColor(0, 0, 119, 26, LIGHTGRAY);
             x = 5, y = 2;
-            drawTableSearchTenVatTu(x, y);
-            searchVTFromAddCTHD(root, x, y, currentPage, currentMAVT);
+            searchVTFromAddCTHD(root, x, y, new_hd, currentPage, currentMAVT);
             ShowCur(false);
             if (isESC)
             {
@@ -964,7 +991,7 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
     }
 }
 
-void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, string &currentMANV, int x, int y, bool &isSuccess)
+void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, string &currentMANV, int x, int y, bool &isESC, bool &isSaved)
 {
     string errorMessage;
     int n = dsnv.countNV;
@@ -1004,14 +1031,35 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_
         switch (key)
         {
         case F3:
-            nhapMaNVFromAddHoaDon(dsnv, root, new_hd, currentMANV, x, y, isSuccess);
-            return;
+            nhapMaNVFromAddHoaDon(dsnv, root, new_hd, currentMANV, x, y, isESC, isSaved);
+            if (isESC)
+            {
+                drawTablePrintNhanVien(x + 4, y + 1, 15, 23);
+                clearTablePrint(x + 4);
+            }
+            if (isSaved)
+                return;
+            break;
         case F4:
-            chonMaNVFromAddHoaDon(dsnv, root, new_hd, currentMANV, x, y, isSuccess);
-            return;
+            chonMaNVFromAddHoaDon(dsnv, root, new_hd, currentMANV, x, y, isESC, isSaved);
+            if (isESC)
+            {
+                drawTablePrintNhanVien(x + 4, y + 1, 15, 23);
+                clearTablePrint(x + 4);
+            }
+            if (isSaved)
+                return;
+            break;
         case F5:
-            searchNVFromAddHoaDon(dsnv, root, new_hd, x, y, currentPage, isSuccess);
-            return;
+            searchNVFromAddHoaDon(dsnv, root, new_hd, x, y, currentPage, isESC, isSaved);
+            if (isESC)
+            {
+                drawTablePrintNhanVien(x + 4, y + 1, 15, 23);
+                clearTablePrint(x + 4);
+            }
+            if (isSaved)
+                return;
+            break;
         case LEFT:
             if (currentPage > 1)
             {
@@ -1034,7 +1082,6 @@ void handleNavigationAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_
             currentPage = pageSearchByTab(x + 4, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
     }
@@ -1294,10 +1341,11 @@ void handleNavigationDeleteChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_
                 {
                     selectedRow = min(HDROWS, n - (currentPage - 1) * HDROWS) - 1;
                 }
-                drawTableErrors("Sua chi tiet hoa don thanh cong", false);
+                drawTableErrors("Xoa chi tiet hoa don thanh cong", false);
                 Sleep(1500);
                 drawTableErrors("", false);
                 fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+                fillAreaColor(x + 16, y + 23, 40, 0, LIGHTGRAY);
                 clearTablePrintChiTietHoaDon(x);
                 return;
             }
@@ -1386,15 +1434,15 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
     nhanVien *nv = nullptr;
     treeVatTu result = nullptr;
     int selectedRow = 0;
-    bool isSuccess = false, isEmpty = false, isESC = false, isSaved = false;
+    bool isSaved, isEmpty = false, isESC;
     drawKeysGuideChiTietHoaDon(x, y);
-    handleNavigationAddHoaDon(dsnv, root, new_hd, currentMANV, x, y, isSuccess);
+    handleNavigationAddHoaDon(dsnv, root, new_hd, currentMANV, x, y, isESC, isSaved);
     x = 5, y = 2;
     fillAreaColor(x - 4, y + 25, 105, 2, LIGHTGRAY);
     x = 1, y = 1;
     drawKeysGuideChiTietHoaDon(x, y);
     int index;
-    if (isSuccess && new_hd != nullptr)
+    if (isSaved && new_hd != nullptr)
     {
         while (true)
         {
@@ -1551,11 +1599,8 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
                 }
                 break;
             case ESC:
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
                 return;
             }
         }
     }
-    else
-        cout << "do not succeed";
 }

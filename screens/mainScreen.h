@@ -5,7 +5,12 @@ int menuChinhDong(char menuchinh[YeuCauChinh][100])
 {
     system("cls");
     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    Normal();
+    gotoxy(55, 3);
+    setColorByRequest(LIGHTGRAY, RED);
+    cout << "QUAN LY VAT TU";
+    gotoxy(29, 27);
+    setColorByRequest(LIGHTGRAY, RED);
+    cout << "PHAN TUAN QUOC ANH - N23DCCN003    NGUYEN TOAN PHUC - N23DCCN003";
     int selectedIndex = 1;
     int space = 15;
     int mainX = 10, mainY = 10;
@@ -29,7 +34,7 @@ int menuChinhDong(char menuchinh[YeuCauChinh][100])
             }
             else
             {
-                Normal();
+                setColorByRequest(LIGHTGRAY, BLACK);
             }
             if (i != 0)
             {
@@ -49,7 +54,6 @@ int menuChinhDong(char menuchinh[YeuCauChinh][100])
             selectedIndex = (selectedIndex < YeuCauChinh - 1) ? selectedIndex + 1 : 1;
             break;
         case ENTER:
-            Normal();
             return selectedIndex;
         }
     } while (true);
@@ -58,7 +62,6 @@ int menuChinhDong(char menuchinh[YeuCauChinh][100])
 int menuVatTuDong(char menuvattu[YeuCauVatTu][100])
 {
     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    Normal();
     int selectedIndex = 0;
     int space = 5;
     int mainX = 30, mainY = 15;
@@ -74,7 +77,7 @@ int menuVatTuDong(char menuvattu[YeuCauVatTu][100])
             }
             else
             {
-                Normal();
+                setColorByRequest(LIGHTGRAY, BLACK);
             }
             gotoxy(mainX, mainY);
             cout << " " << menuvattu[i] << " ";
@@ -93,7 +96,6 @@ int menuVatTuDong(char menuvattu[YeuCauVatTu][100])
         case ESC:
             return -1;
         case ENTER:
-            Normal();
             return selectedIndex;
         }
     } while (true);
@@ -102,7 +104,6 @@ int menuVatTuDong(char menuvattu[YeuCauVatTu][100])
 int menuNhanVienDong(char menunhanvien[YeuCauNhanVien][100])
 {
     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    Normal();
     int selectedIndex = 0;
     int space = 5;
     int mainX = 50, mainY = 15;
@@ -118,7 +119,7 @@ int menuNhanVienDong(char menunhanvien[YeuCauNhanVien][100])
             }
             else
             {
-                Normal();
+                setColorByRequest(LIGHTGRAY, BLACK);
             }
             gotoxy(mainX, mainY);
             cout << " " << menunhanvien[i] << " ";
@@ -137,7 +138,6 @@ int menuNhanVienDong(char menunhanvien[YeuCauNhanVien][100])
         case ESC:
             return -1;
         case ENTER:
-            Normal();
             return selectedIndex;
         }
     } while (true);
@@ -146,7 +146,6 @@ int menuNhanVienDong(char menunhanvien[YeuCauNhanVien][100])
 int menuHoaDonDong(char menuhoadon[YeuCauHoaDon][100])
 {
     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    Normal();
     int selectedIndex = 0;
     int space = 5;
     int mainX = 70, mainY = 15;
@@ -162,7 +161,7 @@ int menuHoaDonDong(char menuhoadon[YeuCauHoaDon][100])
             }
             else
             {
-                Normal();
+                setColorByRequest(LIGHTGRAY, BLACK);
             }
             gotoxy(mainX, mainY);
             cout << " " << menuhoadon[i] << " ";
@@ -181,7 +180,6 @@ int menuHoaDonDong(char menuhoadon[YeuCauHoaDon][100])
         case ESC:
             return -1;
         case ENTER:
-            Normal();
             return selectedIndex;
         }
     } while (true);
@@ -190,7 +188,6 @@ int menuHoaDonDong(char menuhoadon[YeuCauHoaDon][100])
 int menuThongKeDong(char menuthongke[YeuCauThongKe][100])
 {
     fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-    Normal();
     int selectedIndex = 0;
     int space = 5;
     int mainX = 80, mainY = 15;
@@ -206,7 +203,7 @@ int menuThongKeDong(char menuthongke[YeuCauThongKe][100])
             }
             else
             {
-                Normal();
+                setColorByRequest(LIGHTGRAY, BLACK);
             }
             gotoxy(mainX, mainY);
             cout << " " << menuthongke[i] << " ";
@@ -225,7 +222,6 @@ int menuThongKeDong(char menuthongke[YeuCauThongKe][100])
         case ESC:
             return -1;
         case ENTER:
-            Normal();
             return selectedIndex;
         }
     } while (true);

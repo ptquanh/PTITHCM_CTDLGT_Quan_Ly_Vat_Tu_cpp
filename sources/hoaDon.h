@@ -538,11 +538,6 @@ void xoaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
         cout << "Khong tim thay chi tiet hoa don voi ma vat tu nay" << endl;
         return;
     }
-    // string errorMessage;
-    // int currentRow = 1; // Bắt đầu từ số lượng (không cho sửa mã vật tư)
-    // bool hasError;
-    // double numResult;
-    // bool moveNext;
     char key;
     treeVatTu vt = search(root, MAVT);
 
