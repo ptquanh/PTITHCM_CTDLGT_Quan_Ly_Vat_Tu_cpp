@@ -24,7 +24,7 @@ void tinhToanDoanhThu(ptr_DSCTHD ct, doanhThuVatTu doanhThu[], int &countVatTu, 
             {
                 if (loai == "X")
                 {
-                    doanhThu[j].doanhThu += ct->data_cthd.soLuong * (float)ct->data_cthd.donGia / 1000 * (1 + (float)ct->data_cthd.VAT / 100);
+                    doanhThu[j].doanhThu += ct->data_cthd.soLuong * (float)ct->data_cthd.donGia / 1000;
                     doanhThu[j].soluong += ct->data_cthd.soLuong;
                 }
                 found = true;
@@ -34,7 +34,7 @@ void tinhToanDoanhThu(ptr_DSCTHD ct, doanhThuVatTu doanhThu[], int &countVatTu, 
         if (!found && loai == "X" && countVatTu < maxVatTu) // nếu chưa tìm thấy
         {
             doanhThu[countVatTu].MAVT = ct->data_cthd.MAVT;
-            doanhThu[countVatTu].doanhThu = ct->data_cthd.soLuong * (float)ct->data_cthd.donGia / 1000 * (1 + (float)ct->data_cthd.VAT / 100);
+            doanhThu[countVatTu].doanhThu = ct->data_cthd.soLuong * (float)ct->data_cthd.donGia / 1000;
             doanhThu[countVatTu].soluong = ct->data_cthd.soLuong;
             countVatTu++;
         }
@@ -243,8 +243,6 @@ void inThongKeHoaDon(nodeHoaDon *arrHoaDon, string *employeeNames, float *triGia
     delete[] indices;
     // In số trang
     int totalPages = ceil((float)totalInvoices / (HDROWS - 1));
-    gotoxy(6, 18);
-    cout << "TAB: Di chuyen den trang can tim";
     gotoxy(97, 18);
     cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
 }
@@ -262,8 +260,6 @@ void inDoanhThuNam(dsNhanVien danhSach, int x, int y, int year)
         {
             if (hoaDon->data_hd.year == year)
             {
-                // float triGiaHoaDon = 0;
-                // triGiaHoaDon = tinhTriGiaHoaDon(hoaDon->data_hd.firstCTHD);
                 if (hoaDon->data_hd.loai == "X")
                 {
                     doanhThuThang[hoaDon->data_hd.month - 1] += hoaDon->data_hd.firstCTHD->data_cthd.soLuong * (float)hoaDon->data_hd.firstCTHD->data_cthd.donGia / 1000 * (1 + (float)hoaDon->data_hd.firstCTHD->data_cthd.VAT / 100);

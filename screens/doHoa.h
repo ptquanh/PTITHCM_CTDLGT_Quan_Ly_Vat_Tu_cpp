@@ -241,7 +241,7 @@ int pageSearchByTab(int x, int currentPage, int totalPages, string &errorMessage
     ShowCurAtXY(x + 27, 26, true);
     cin >> goToPage;
     ShowCur(false);
-    while (goToPage > totalPages)
+    while (goToPage > totalPages || goToPage == 0)
     {
         errorMessage = "Loi trang. Vui long nhap lai";
         drawTableErrors(errorMessage, true);

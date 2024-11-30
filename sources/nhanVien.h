@@ -1,6 +1,66 @@
 #pragma once
 #include "vatTu.h"
 
+void Write_CTHoaDon(ofstream &file, nodeChiTietHoaDon &cthd)
+{
+    file << "+" << cthd.MAVT << "|" << cthd.soLuong << "|" << cthd.VAT << "|" << cthd.donGia;
+}
+
+void Write_HoaDon(ofstream &file, nodeHoaDon &hd)
+{
+    file << "-" << hd.SoHD << "|" << hd.day << "|" << hd.month << "|" << hd.year << "|" << hd.loai << endl;
+
+    // Ghi danh sách chi tiết hóa đơn
+    ptr_DSCTHD current = hd.firstCTHD;
+    while (current != nullptr)
+    {
+        Write_CTHoaDon(file, current->data_cthd);
+        if (current->next != nullptr)
+            file << "\n";
+        current = current->next;
+    }
+    file << endl;
+}
+
+void Write_NhanVien(ofstream &file, nhanVien &nv)
+{
+    file << nv.MANV << "|" << nv.HO << "|" << nv.TEN << "|" << nv.PHAI << endl;
+
+    // Ghi danh sách hóa đơn của nhân viên
+    ptr_DSHD current = nv.firstDSHD;
+    while (current != nullptr)
+    {
+        Write_HoaDon(file, current->data_hd);
+        current = current->next;
+    }
+    file << "\\" << endl;
+}
+
+void writeFile_dsNhanVien(dsNhanVien &dsNV)
+{
+    ofstream fileout;
+    fileout.open(filePath_NV, ios_base::out);
+    int n = dsNV.countNV;
+    if (n == 0)
+    {
+        drawTableErrors("Khong co du lieu nhan vien", true);
+        Sleep(1500);
+        drawTableErrors("", true);
+        return;
+    }
+    if (!fileout.is_open())
+    {
+        cerr << "Khong the mo file ghi" << endl;
+        return;
+    }
+
+    for (int i = 0; i < dsNV.countNV; ++i)
+    {
+        Write_NhanVien(fileout, *dsNV.nodes[i]);
+    }
+    fileout.close();
+}
+
 bool nhanVienEmpty(dsNhanVien &list)
 {
     return list.countNV == 0;
@@ -16,98 +76,6 @@ bool isMANV(dsNhanVien &list, string maso)
     }
     return false;
 }
-
-// bool checkThongTin(string type, string value, nhanVien *&nv, dsNhanVien &list)
-// {
-//     if (type == "MANV")
-//     {
-//         if (value.empty())
-//         {
-//             cout << "Loi: Ma nhan vien khong duoc rong" << endl;
-//             return true;
-//         }
-
-//         // Xóa khoảng trắng
-//         string result;
-//         for (const char c : value)
-//         {
-//             if (c != ' ')
-//             {
-//                 result += c;
-//             }
-//         }
-//         value = result;
-
-//         if (value.length() > 10)
-//         {
-//             cout << "Loi: Ma nhan vien khong duoc qua 10 ky tu" << endl;
-//             return true;
-//         }
-
-//         if (isMANV(list, value))
-//         {
-//             cout << "Loi: Ma nhan vien da ton tai" << endl;
-//             return true;
-//         }
-
-//         nv->MANV = value;
-//     }
-//     else if (type == "HO")
-//     {
-//         if (value.empty())
-//         {
-//             cout << "Loi: Ho nhan vien khong duoc rong" << endl;
-//             return true;
-//         }
-
-//         bool hasError;
-//         value = normalizeString(value, hasError);
-//         if (hasError)
-//         {
-//             return true;
-//         }
-
-//         nv->HO = value;
-//     }
-//     else if (type == "TEN")
-//     {
-//         if (value.empty())
-//         {
-//             cout << "Loi: Ten nhan vien khong duoc rong" << endl;
-//             return true;
-//         }
-
-//         bool hasError;
-//         value = normalizeString(value, hasError);
-//         if (hasError)
-//         {
-//             return true;
-//         }
-
-//         for (char c : value)
-//         {
-//             if (c == ' ')
-//             {
-//                 cout << "Loi: Ten nhan vien khong duoc chua khoang trang" << endl;
-//                 return true;
-//             }
-//         }
-
-//         nv->TEN = value;
-//     }
-//     else if (type == "PHAI")
-//     {
-//         if (value.empty() || (value != "Nam" && value != "Nu"))
-//         {
-//             cout << "Loi: Gioi tinh khong hop le" << endl;
-//             return true;
-//         }
-
-//         nv->PHAI = value;
-//     }
-
-//     return false;
-// }
 
 int searchNhanVien(dsNhanVien &list, string manv)
 {
@@ -194,7 +162,7 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
         return;
     }
-    
+
     input.MANV = list.nodes[pos]->MANV;
     input.HO = list.nodes[pos]->HO;
     input.TEN = list.nodes[pos]->TEN;
@@ -229,6 +197,7 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
             }
             list.countNV--;
             isSaved = true;
+            writeFile_dsNhanVien(list);
             return;
         }
     }
@@ -380,6 +349,7 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
                 Sleep(1500);
                 drawTableErrors("", true);
                 fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
+                writeFile_dsNhanVien(list);
                 return;
             }
             else
@@ -543,6 +513,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
                     list.nodes[pos]->PHAI = input.PHAI;
                 }
                 isSaved = true;
+                writeFile_dsNhanVien(list);
                 return;
             }
         }
@@ -580,87 +551,6 @@ void deleteDanhsachNhanVien(dsNhanVien &dsNV)
         delete dsNV.nodes[i]; // Xóa nhân viên
     }
     dsNV.countNV = 0; // Đặt lại số lượng nhân viên của danh sách
-}
-
-// dsNhanVien *globalDsNVPtr = nullptr; // biến tĩnh
-
-// void signalHandler(int signum)
-// {
-//     if (signum == SIGINT || signum == SIGTERM)
-//     {
-//         system("cls");
-//         cout << "Interrupt signal (" << signum << ") received. Cleaning up resources..." << endl;
-
-//         if (globalDsNVPtr != nullptr)
-//         {
-//             deleteDanhsachNhanVien(*globalDsNVPtr);
-//         }
-
-//         exit(signum);
-//     }
-// }
-
-void Write_CTHoaDon(ofstream &file, nodeChiTietHoaDon &cthd)
-{
-    file << "+" << cthd.MAVT << "|" << cthd.soLuong << "|" << cthd.VAT << "|" << cthd.donGia;
-}
-
-void Write_HoaDon(ofstream &file, nodeHoaDon &hd)
-{
-    file << "-" << hd.SoHD << "|" << hd.day << "|" << hd.month << "|" << hd.year << "|" << hd.loai << endl;
-
-    // Ghi danh sách chi tiết hóa đơn
-    ptr_DSCTHD current = hd.firstCTHD;
-    while (current != nullptr)
-    {
-        Write_CTHoaDon(file, current->data_cthd);
-        if (current->next != nullptr)
-            file << "\n";
-        current = current->next;
-    }
-    file << endl;
-}
-
-void Write_NhanVien(ofstream &file, nhanVien &nv)
-{
-    file << nv.MANV << "|" << nv.HO << "|" << nv.TEN << "|" << nv.PHAI << endl;
-
-    // Ghi danh sách hóa đơn của nhân viên
-    ptr_DSHD current = nv.firstDSHD;
-    while (current != nullptr)
-    {
-        Write_HoaDon(file, current->data_hd);
-        current = current->next;
-    }
-    file << "\\" << endl;
-}
-
-void writeFile_dsNhanVien(dsNhanVien &dsNV)
-{
-    ofstream fileout;
-    fileout.open(filePath_NV, ios_base::out);
-    int n = dsNV.countNV;
-    if (n == 0)
-    {
-        drawTableErrors("Khong co du lieu nhan vien", true);
-        Sleep(1500);
-        drawTableErrors("", true);
-        return;
-    }
-    if (!fileout.is_open())
-    {
-        cerr << "Khong the mo file ghi" << endl;
-        return;
-    }
-
-    for (int i = 0; i < dsNV.countNV; ++i)
-    {
-        Write_NhanVien(fileout, *dsNV.nodes[i]);
-    }
-    fileout.close();
-    drawTableErrors("Luu nhan vien vao file thanh cong", true);
-    Sleep(1500);
-    drawTableErrors("", true);
 }
 
 void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)

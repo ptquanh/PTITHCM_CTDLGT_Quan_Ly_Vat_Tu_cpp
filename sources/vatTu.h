@@ -198,9 +198,6 @@ void writeFile_dsVatTu(treeVatTu root)
     }
     writeNodeToFile(root, fileout);
     fileout.close();
-    drawTableErrors("Luu vat tu vao file thanh cong", true);
-    Sleep(1500);
-    drawTableErrors("", true);
 }
 void readFile_dsVatTu(treeVatTu &root, bool &isOpened)
 {

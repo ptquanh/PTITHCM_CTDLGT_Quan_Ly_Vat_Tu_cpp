@@ -10,7 +10,7 @@ int menuChinhDong(char menuchinh[YeuCauChinh][100])
     cout << "QUAN LY VAT TU";
     gotoxy(29, 27);
     setColorByRequest(LIGHTGRAY, RED);
-    cout << "PHAN TUAN QUOC ANH - N23DCCN003    NGUYEN TOAN PHUC - N23DCCN003";
+    cout << "PHAN TUAN QUOC ANH - N23DCCN003    NGUYEN TOAN PHUC - N23DCCN115";
     int selectedIndex = 1;
     int space = 15;
     int mainX = 10, mainY = 10;
@@ -61,7 +61,6 @@ int menuChinhDong(char menuchinh[YeuCauChinh][100])
 
 int menuVatTuDong(char menuvattu[YeuCauVatTu][100])
 {
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
     int selectedIndex = 0;
     int space = 5;
     int mainX = 30, mainY = 15;
@@ -103,7 +102,6 @@ int menuVatTuDong(char menuvattu[YeuCauVatTu][100])
 
 int menuNhanVienDong(char menunhanvien[YeuCauNhanVien][100])
 {
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
     int selectedIndex = 0;
     int space = 5;
     int mainX = 50, mainY = 15;
@@ -145,7 +143,6 @@ int menuNhanVienDong(char menunhanvien[YeuCauNhanVien][100])
 
 int menuHoaDonDong(char menuhoadon[YeuCauHoaDon][100])
 {
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
     int selectedIndex = 0;
     int space = 5;
     int mainX = 70, mainY = 15;
@@ -187,7 +184,6 @@ int menuHoaDonDong(char menuhoadon[YeuCauHoaDon][100])
 
 int menuThongKeDong(char menuthongke[YeuCauThongKe][100])
 {
-    fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
     int selectedIndex = 0;
     int space = 5;
     int mainX = 80, mainY = 15;

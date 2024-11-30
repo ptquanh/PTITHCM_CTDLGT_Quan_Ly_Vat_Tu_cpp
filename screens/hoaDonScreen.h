@@ -30,6 +30,22 @@ void drawKeysGuideChiTietHoaDon(int x, int y)
     gotoxy(x + 108, y + 27);
     cout << "ESC: Thoat";
 }
+
+void drawKeysGuideListHoaDon(int x, int y)
+{
+    int space = 4;
+    setColorByRequest(LIGHTGRAY, BROWN);
+    drawHCN(x, y + 25, 7, 2);
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x + 99, y + 25, 11, 2);
+    setColorByRequest(BROWN, BLACK);
+    gotoxy(x + 1, y + 26);
+    cout << "XEM HD";
+    setColorByRequest(LIGHTGRAY, BLACK);
+    gotoxy(x + 100, y + 26);
+    cout << "ESC: Thoat";
+}
+
 void drawTableAddVatTuInCTHD(int x, int y)
 {
     setColorByRequest(LIGHTGRAY, DARKGRAY);
@@ -250,6 +266,10 @@ void drawTablePrintChiTietHoaDon(int x, int y, int w, int h)
     cout << tRight;
     gotoxy(x + (w * 4) + 13, y + 10);
     cout << tLeft;
+    gotoxy(x + (w * 4) + 13, y + 22);
+    cout << tLeft;
+    gotoxy(x, y + 22);
+    cout << tRight;
     gotoxy(x + (((w * 4)) - 45), y + 8);
     cout << tDown;
     gotoxy(x + (((w * 4)) - 45), y + h - 1);
@@ -299,6 +319,79 @@ void drawTablePrintChiTietHoaDon(int x, int y, int w, int h)
     cout << "DON GIA";
     gotoxy(x + 65, y + 9);
     cout << "TRI GIA";
+    gotoxy(x + 3, y + h);
+    cout << "TONG TRI GIA:";
+}
+
+void drawTablePrintCTHDInListCTHD(int x, int y, int w, int h)
+{
+    setColorByRequest(LIGHTGRAY, DARKGRAY);
+    drawHCN(x, y, (w * 4) + 23, h + 1);
+    horizontalLine(x + 1, y + 8, ((w * 4) + 23) - 1);
+    horizontalLine(x + 1, y + 10, ((w * 4) + 23) - 1);
+    horizontalLine(x + 1, y + h - 1, ((w * 4) + 23) - 1);
+    // ve vien
+    gotoxy(x, y + 8);
+    cout << tRight;
+    gotoxy(x + (w * 4) + 23, y + 8);
+    cout << tLeft;
+    gotoxy(x, y + 10);
+    cout << tRight;
+    gotoxy(x + (w * 4) + 23, y + 10);
+    cout << tLeft;
+    gotoxy(x + (w * 4) + 23, y + 22);
+    cout << tLeft;
+    gotoxy(x, y + 22);
+    cout << tRight;
+    gotoxy(x + (((w * 4)) - 45), y + 8);
+    cout << tDown;
+    gotoxy(x + (((w * 4)) - 45), y + h - 1);
+    cout << tUp;
+    gotoxy(x + (((w * 4) + 2) - 22), y + 8);
+    cout << tDown;
+    gotoxy(x + (((w * 4) + 2) - 22), y + h - 1);
+    cout << tUp;
+    gotoxy(x + (((w * 4) + 2) - 11), y + 8);
+    cout << tDown;
+    gotoxy(x + (((w * 4) + 2) - 11), y + h - 1);
+    cout << tUp;
+    gotoxy(x + (((w * 4) + 2)), y + 8);
+    cout << tDown;
+    gotoxy(x + (((w * 4) + 2)), y + h - 1);
+    cout << tUp;
+    verticalLine(x + (((w * 4)) - 45), y + 9, h - 10);
+    verticalLine(x + (((w * 4) + 2) - 22), y + 9, h - 10);
+    verticalLine(x + (((w * 4) + 2) - 11), y + 9, h - 10);
+    verticalLine(x + (((w * 4) + 2)), y + 9, h - 10);
+    gotoxy(x + (((w * 4)) - 45), y + 10);
+    cout << cross;
+    gotoxy(x + (((w * 4) + 2) - 22), y + 10);
+    cout << cross;
+    gotoxy(x + (((w * 4) + 2) - 11), y + 10);
+    cout << cross;
+    gotoxy(x + (((w * 4) + 2)), y + 10);
+    cout << cross;
+    setColorByRequest(LIGHTGRAY, RED);
+    gotoxy(x + 23, y - 1);
+    cout << "CAP NHAT CHI TIET HOA DON";
+    gotoxy(x + 3, y + 1);
+    cout << "SO HOA DON:                      LOAI:";
+    gotoxy(x + 3, y + 3);
+    cout << "MA NHAN VIEN       :";
+    gotoxy(x + 3, y + 5);
+    cout << "HO TEN NHAN VIEN   :";
+    gotoxy(x + 3, y + 7);
+    cout << "NGAY:         THANG:        NAM:";
+    gotoxy(x + 3, y + 9);
+    cout << "MA VT";
+    gotoxy(x + 18, y + 9);
+    cout << "TEN VT";
+    gotoxy(x + 43, y + 9);
+    cout << "SL";
+    gotoxy(x + 54, y + 9);
+    cout << "DON GIA";
+    gotoxy(x + 65, y + 9);
+    cout << "TRI GIA (VND)";
     gotoxy(x + 3, y + h);
     cout << "TONG TRI GIA:";
 }
@@ -1366,29 +1459,22 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
     char key;
     bool isESC = false, isSaved = false, isInputting = true;
     string storedSoHD = "";
-    drawTablePrintChiTietHoaDon(x, y, 15, 23);
+    x = 5, y = 2;
+    drawKeysGuideListHoaDon(x, y);
+    x = 1, y = 1;
     drawTableInputSoHD(x, y);
     setColorByRequest(LIGHTGRAY, BLACK);
     while (true)
     {
-        if (isInputting)
+        // if (isInputting)
+        // {
+        inHoaDon(dsnv, root, currentPage, -1, totalPages, x, y, errorMessage, isESC, isInputting);
+        if (isESC)
         {
-            inHoaDon(dsnv, root, currentPage, -1, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
-            if (isESC)
-            {
-                fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
-                return;
-            }
-            if (isSaved)
-            {
-                fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
-                errorMessage = "Xem chi tiet hoa don thanh cong";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
-                fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
-            }
+            fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+            return;
         }
+        // }
         key = getch();
         switch (key)
         {
@@ -1396,9 +1482,38 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
             if (currentPage > 1)
             {
                 currentPage--;
-                clearTablePrintChiTietHoaDon(x);
                 isInputting = false;
-                inHoaDon(dsnv, root, currentPage, -1, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
+                int currentRow = 12;
+                int x = 5;
+                SetBGColor(LIGHTGRAY);
+                for (int currentRow = 12; currentRow <= HDROWS + 11; currentRow++)
+                {
+                    for (int i = x + 3; i < x + 15; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                    for (int i = x + 18; i < x + 38; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                    for (int i = x + 43; i < x + 51; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                    for (int i = x + 54; i < x + 62; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                    for (int i = x + 65; i < x + 83; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                }
             }
             break;
 
@@ -1406,14 +1521,39 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
             if (currentPage < totalPages)
             {
                 currentPage++;
-                clearTablePrintChiTietHoaDon(x);
                 isInputting = false;
-                inHoaDon(dsnv, root, currentPage, -1, totalPages, x, y, errorMessage, isESC, isSaved, isInputting);
+                int currentRow = 12;
+                int x = 5;
+                SetBGColor(LIGHTGRAY);
+                for (int currentRow = 12; currentRow <= HDROWS + 11; currentRow++)
+                {
+                    for (int i = x + 3; i < x + 15; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                    for (int i = x + 18; i < x + 38; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                    for (int i = x + 43; i < x + 51; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                    for (int i = x + 54; i < x + 62; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                    for (int i = x + 65; i < x + 83; i++)
+                    {
+                        gotoxy(i, currentRow);
+                        cout << " ";
+                    }
+                }
             }
-            break;
-
-        case TAB:
-            pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
             fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);

@@ -17,22 +17,22 @@ int main()
     int mainMenu = 0, contentMenu = 0;
     readFile_dsVatTu(root, isVTOpened);
     readFile_dsNhanVien(dsnv, isNVOpened);
-    if (!isVTOpened)
-    {
-        errorMessage = "Khong the mo file ds_VatTu.txt";
-        drawTableErrors(errorMessage, true);
-        return 0;
-    }
-    if (!isNVOpened)
-    {
-        errorMessage = "Khong the mo file ds_NhanVien.txt";
-        drawTableErrors(errorMessage, true);
-        return 0;
-    }
     while (true)
     {
-        mainMenu = menuChinhDong(MenuChinh);
         fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+        if (!isVTOpened)
+        {
+            errorMessage = "Khong the mo file ds_VatTu.txt";
+            drawTableErrors(errorMessage, true);
+            return 0;
+        }
+        if (!isNVOpened)
+        {
+            errorMessage = "Khong the mo file ds_NhanVien.txt";
+            drawTableErrors(errorMessage, true);
+            return 0;
+        }
+        mainMenu = menuChinhDong(MenuChinh);
         switch (mainMenu)
         {
         case 1:

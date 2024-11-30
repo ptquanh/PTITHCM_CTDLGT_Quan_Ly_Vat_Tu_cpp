@@ -8,6 +8,7 @@ void drawTablePrintChiTietHoaDon(int x, int y, int w, int h);
 void drawTableAddVatTuInCTHD(int x, int y);
 void drawTablePrintHoaDon(int x, int y, int w, int h);
 void drawTableUpdateHoaDon(int x, int y);
+void drawTablePrintCTHDInListCTHD(int x, int y, int w, int h);
 //======================HOA DON===================================
 ptr_DSHD searchHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD &found_hd)
 {
@@ -841,7 +842,7 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
     delete[] arrVT;
 }
 
-void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRow, int &totalPages, int x, int y, string &errorMessage, bool &isESC, bool &isSaved, bool &isInputting)
+void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRow, int &totalPages, int x, int y, string &errorMessage, bool &isESC, bool &isInputting)
 {
     static string so_hd = "";
     string tempInput;
@@ -853,7 +854,7 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
         displayField(x + 95, y + 4, so_hd, true, 10);
         while (isInputting)
         {
-            result = inputString(x + 95, y + 4, so_hd, 10, "So hoa don", moveNext, false);
+            result = inputString(x + 95, y + 4, so_hd, 20, "So hoa don", moveNext, false);
             ShowCur(false);
             if (result == "ESC")
             {
@@ -881,7 +882,11 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
             drawTableErrors("", false);
             break;
         }
+        fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+        x = 5;
+        drawTablePrintCTHDInListCTHD(x, y, 15, 23);
     }
+    x = 5;
     nhanVien *nv = nullptr;
     ptr_DSHD found_hd = nullptr;
     for (int i = 0; i < ds_nv.countNV; ++i)
@@ -916,7 +921,7 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
         return;
     }
     setColorByRequest(LIGHTGRAY, BLACK);
-    float triGiaHD = tinhTriGiaHoaDon(found_hd->data_hd.firstCTHD);
+    float triGiaHD = tinhTriGiaHoaDon(found_hd->data_hd.firstCTHD) / 1000;
     gotoxy(x + 15, y + 1);
     cout << found_hd->data_hd.SoHD;
     gotoxy(x + 42, y + 1);
@@ -959,7 +964,7 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
             arrCTHD[i].soLuong = current_cthd->data_cthd.soLuong;
             arrCTHD[i].donGia = (float)current_cthd->data_cthd.donGia / 1000;
             arrCTHD[i].VAT = current_cthd->data_cthd.VAT;
-            arrCTHD[i].triGia += arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + (float)arrCTHD[i].VAT / 100);
+            arrCTHD[i].triGia = arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + (float)arrCTHD[i].VAT / 100);
         }
         current_cthd = current_cthd->next;
     }
@@ -986,23 +991,21 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
         gotoxy(x + 54, currentRow);
         cout << arrCTHD[i].donGia;
         gotoxy(x + 65, currentRow);
-        cout << arrCTHD[i].triGia;
+        string triGia = formatMoney(arrCTHD[i].triGia);
+        cout << triGia;
         currentRow++;
     }
     gotoxy(x + 18, y + 23);
-    string triGia = formatMoney(triGiaHD);
-    cout << triGia << " VND";
+    string tongTriGia = formatMoney(triGiaHD);
+    cout << tongTriGia << " VND";
     totalPages = ceil((float)n / HDROWS);
-    gotoxy(6, 26);
-    cout << "TAB: Di chuyen den trang can tim";
-    gotoxy(52, 26);
+    gotoxy(74, 26);
     cout << "<- Trang " << pageNumber << "/" << totalPages << " ->";
     delete[] arrCTHD;
     delete[] arrVT;
     if (isInputting)
     {
         isInputting = false;
-        isSaved = true;
         return;
     }
 }

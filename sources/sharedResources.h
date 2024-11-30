@@ -546,10 +546,10 @@ string formatMoney(int amount)
     }
     else
     {
-        int billions = amount / 1000000000;
-        int millions = (amount / 1000000) % 1000;
-        int thousands = (amount / 1000) % 1000;
-        int hundreds = amount % 1000;
+        long long billions = amount / 1000000000;
+        long long millions = (amount / 1000000) % 1000;
+        long long thousands = (amount / 1000) % 1000;
+        long long hundreds = amount % 1000;
 
         if (billions > 0)
         {

@@ -414,9 +414,6 @@ void handleNavigationThongKeHoaDon(dsNhanVien &dsnv, int x, int y, int day1, int
                 clearTablePrintThongKe(x);
             }
             break;
-        case TAB:
-            currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
-            break;
         case ESC:
             delete[] arrHoaDon;
             delete[] employeeNames;

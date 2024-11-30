@@ -33,16 +33,13 @@ void drawKeysGuideListVatTu(int x, int y)
 {
     int space = 4;
     setColorByRequest(LIGHTGRAY, BROWN);
-    drawHCN(x, y + 25, 8, 2);
+    drawHCN(x, y + 25, 7, 2);
     setColorByRequest(LIGHTGRAY, DARKGRAY);
-    drawHCN(x + 58 + 5 * space, y + 25, 14, 2);
     drawHCN(x + 99, y + 25, 11, 2);
     setColorByRequest(BROWN, BLACK);
     gotoxy(x + 1, y + 26);
-    cout << "MENU VT";
+    cout << "XEM VT";
     setColorByRequest(LIGHTGRAY, BLACK);
-    gotoxy(x + 58 + 5 * space + 1, y + 26);
-    cout << "F10: Luu file";
     gotoxy(x + 100, y + 26);
     cout << "ESC: Thoat";
 }
@@ -1034,7 +1031,6 @@ void handleNavigationListVatTu(treeVatTu root, int x, int y)
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
-            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
             return;
         }
@@ -1096,6 +1092,10 @@ void menuVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y)
             break;
         case F10:
             writeFile_dsVatTu(root);
+            drawTableErrors("Ghi vat tu vao file thanh cong", true);
+            Sleep(1500);
+            drawTableErrors("", true);
+            fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             break;
         case ESC:
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
