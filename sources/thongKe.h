@@ -262,7 +262,7 @@ void inDoanhThuNam(dsNhanVien danhSach, int x, int y, int year)
             {
                 if (hoaDon->data_hd.loai == "X")
                 {
-                    doanhThuThang[hoaDon->data_hd.month - 1] += hoaDon->data_hd.firstCTHD->data_cthd.soLuong * (float)hoaDon->data_hd.firstCTHD->data_cthd.donGia / 1000 * (1 + (float)hoaDon->data_hd.firstCTHD->data_cthd.VAT / 100);
+                    doanhThuThang[hoaDon->data_hd.month - 1] += hoaDon->data_hd.firstCTHD->data_cthd.soLuong * (float)hoaDon->data_hd.firstCTHD->data_cthd.donGia / 1000;
                 }
             }
             hoaDon = hoaDon->next;

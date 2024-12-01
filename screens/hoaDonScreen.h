@@ -674,7 +674,7 @@ void searchNVFromAddHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, 
     }
 }
 
-void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, ptr_DSHD &new_hd, int &currentPage, int x, int y)
+void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, ptr_DSHD &new_hd, int &currentPage, int x, int y, bool &isESC, bool &isSaved)
 {
     int n = countNodes(root);
     treeVatTu *arr = new treeVatTu[n];
@@ -687,7 +687,7 @@ void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, ptr_DSHD &new_hd,
     int selectedRow = 0;
     char key;
     int currentChoice = -1;
-    bool isESC, isSaved = false;
+    isESC = false, isSaved = false;
     ptr_DSCTHD temp = nullptr;
     x = 5, y = 2;
     fillAreaColor(x - 4, y - 2, 80, 25, LIGHTGRAY);
@@ -773,18 +773,22 @@ void chonMaVTFromAddCTHD(treeVatTu &root, string &currentMAVT, ptr_DSHD &new_hd,
                 break;
             }
             else
+            {
+                isSaved = true;
                 return;
+            }
         case TAB:
             currentPage = pageSearchByTab(x, currentPage, totalPages, errorMessage);
             break;
         case ESC:
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             delete[] arr;
+            isESC = true;
             return;
         }
     }
 }
-void searchVTFromAddCTHD(treeVatTu &root, int x, int y, ptr_DSHD &new_hd, int currentPage, string &currentMAVT)
+void searchVTFromAddCTHD(treeVatTu &root, int x, int y, ptr_DSHD &new_hd, int currentPage, string &currentMAVT, bool &isESC, bool &isSaved)
 {
     treeVatTu result;
     int n = countNodes(root);
@@ -794,21 +798,21 @@ void searchVTFromAddCTHD(treeVatTu &root, int x, int y, ptr_DSHD &new_hd, int cu
     quickSortVatTu(arr, 0, n - 1);
     drawTableSearchTenVatTu(x, y);
     drawTablePrintVatTu(x, y, 15, 23);
-    bool isESC = false, isExisted;
+    bool isExisted;
+    isESC = false;
     do
     {
         isExisted = false;
-        timKiemTenVatTu(root, x, y, result, isESC);
         setColorByRequest(LIGHTGRAY, BLACK);
         clearTablePrint(x);
         inDanhSachVatTu(root, currentPage, -1, x);
+        timKiemTenVatTu(root, new_hd, x, y, result, isESC);
         if (isESC)
         {
             clearTablePrint(x);
             fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
             return;
         }
-
         currentMAVT = result->data_vt.MAVT;
         ptr_DSCTHD temp = new_hd->data_hd.firstCTHD;
 
@@ -823,7 +827,7 @@ void searchVTFromAddCTHD(treeVatTu &root, int x, int y, ptr_DSHD &new_hd, int cu
             temp = temp->next;
         }
     } while (isExisted);
-
+    isSaved = true;
     drawTableErrors("Lay ma vat tu thanh cong", true);
     Sleep(1500);
     drawTableErrors("", true);
@@ -833,52 +837,7 @@ void searchVTFromAddCTHD(treeVatTu &root, int x, int y, ptr_DSHD &new_hd, int cu
     setColorByRequest(LIGHTGRAY, BLACK);
     inDanhSachVatTu(root, currentPage, -1, x);
 }
-// void searchVTFromAddCTHD(treeVatTu &root, int x, int y, ptr_DSHD &new_hd, int currentPage, string &currentMAVT)
-// {
-//     treeVatTu result;
-//     int n = countNodes(root);
-//     treeVatTu *arr = new treeVatTu[n];
-//     int index = 0;
-//     storeInorder(root, arr, &index);
-//     quickSortVatTu(arr, 0, n - 1);
-//     int totalPages = ceil((float)n / ROWS);
-//     drawTableSearchTenVatTu(x, y);
-//     drawTablePrintVatTu(x, y, 15, 23);
-//     bool isESC = false, isSaved = false, isExisted = false;
-//     timKiemTenVatTu(root, x, y, result, isESC);
-//     ShowCur(false);
-//     if (isESC)
-//     {
-//         clearTablePrint(x);
-//         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-//         return;
-//     }
-//     else
-//     {
-//         currentMAVT = result->data_vt.MAVT;
-//         ptr_DSCTHD temp = new_hd->data_hd.firstCTHD;
-//         while (temp != nullptr)
-//         {
-//             if (temp->data_cthd.MAVT == currentMAVT)
-//             {
-//                 isExisted = true;
-//             }
-//             temp = temp->next;
-//         }
-//         if (isExisted)
-//         {
-//             drawTableErrors("Ma vat tu da ton tai trong hoa don", false);
-//         }
-//         drawTableErrors("Lay ma vat tu thanh cong", true);
-//         Sleep(1500);
-//         drawTableErrors("", true);
-//         clearTablePrint(x);
-//         fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-//         drawTableUpdateVatTu(x, y);
-//         setColorByRequest(LIGHTGRAY, BLACK);
-//         inDanhSachVatTu(root, currentPage, -1, x);
-//     }
-// }
+
 void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSHD &new_hd, string currentMANV, int x, int y)
 {
     int n = dsnv.countNV;
@@ -955,7 +914,7 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
             }
             break;
         case F4:
-            chonMaVTFromAddCTHD(root, currentMAVT, new_hd, currentPage, x, y);
+            chonMaVTFromAddCTHD(root, currentMAVT, new_hd, currentPage, x, y, isESC, isSaved);
             fillAreaColor(x, y, 115, 25, LIGHTGRAY);
             drawTablePrintChiTietHoaDon(x, y, 15, 23);
             index = searchNhanVien(dsnv, currentMANV);
@@ -978,75 +937,81 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
             drawTableUpdateChiTietHoaDon(x, y);
             setColorByRequest(LIGHTGRAY, BLACK);
             inChiTietHoaDon(dsnv, root, new_hd, currentPage, -1, totalPages, x, y, errorMessage, isEmpty);
-            nhapChiTietHoaDon(dsnv, root, new_hd, currentMAVT, x, y, isESC, isSaved);
-            y += 1;
-            fillAreaColor(x, y + 25, 102, 2, LIGHTGRAY);
-            y -= 1;
-            drawKeysGuideChiTietHoaDon(x, y);
-            ShowCur(false);
-            if (isESC)
-            {
-                ShowCur(false);
-                fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
-                return;
-            }
             if (isSaved)
             {
-                n = dsnv.countNV;
-                totalPages = ceil((float)n / HDROWS);
-                if (currentPage > totalPages)
+                nhapChiTietHoaDon(dsnv, root, new_hd, currentMAVT, x, y, isESC, isSaved);
+                y += 1;
+                fillAreaColor(x, y + 25, 102, 2, LIGHTGRAY);
+                y -= 1;
+                drawKeysGuideChiTietHoaDon(x, y);
+                ShowCur(false);
+                if (isESC)
                 {
-                    currentPage = totalPages;
+                    ShowCur(false);
+                    fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+                    return;
                 }
-                if (selectedRow >= min(HDROWS, n - (currentPage - 1) * HDROWS))
+                if (isSaved)
                 {
-                    selectedRow = min(HDROWS, n - (currentPage - 1) * HDROWS) - 1;
+                    n = dsnv.countNV;
+                    totalPages = ceil((float)n / HDROWS);
+                    if (currentPage > totalPages)
+                    {
+                        currentPage = totalPages;
+                    }
+                    if (selectedRow >= min(HDROWS, n - (currentPage - 1) * HDROWS))
+                    {
+                        selectedRow = min(HDROWS, n - (currentPage - 1) * HDROWS) - 1;
+                    }
+                    errorMessage = "Them chi tiet hoa don thanh cong";
+                    drawTableErrors(errorMessage, false);
+                    Sleep(1500);
+                    drawTableErrors("", false);
+                    fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+                    clearTablePrintChiTietHoaDon(x);
+                    return;
                 }
-                errorMessage = "Them chi tiet hoa don thanh cong";
-                drawTableErrors(errorMessage, false);
-                Sleep(1500);
-                drawTableErrors("", false);
+            }
+            else
+            {
                 fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
-                clearTablePrintChiTietHoaDon(x);
+                y += 1;
+                fillAreaColor(x, y + 25, 102, 2, LIGHTGRAY);
+                y -= 1;
+                drawKeysGuideChiTietHoaDon(x, y);
                 return;
             }
             break;
         case F5:
             fillAreaColor(0, 0, 119, 26, LIGHTGRAY);
             x = 5, y = 2;
-            searchVTFromAddCTHD(root, x, y, new_hd, currentPage, currentMAVT);
+            searchVTFromAddCTHD(root, x, y, new_hd, currentPage, currentMAVT, isESC, isSaved);
             ShowCur(false);
-            if (isESC)
+            x = 1, y = 1;
+            fillAreaColor(x, y, 115, 25, LIGHTGRAY);
+            drawTablePrintChiTietHoaDon(x, y, 15, 23);
+            index = searchNhanVien(dsnv, currentMANV);
+            setColorByRequest(LIGHTGRAY, BLACK);
+            gotoxy(x + 24, y + 3);
+            cout << dsnv.nodes[index]->MANV;
+            gotoxy(x + 24, y + 5);
+            cout << dsnv.nodes[index]->HO << " " << dsnv.nodes[index]->TEN;
+            setColorByRequest(LIGHTGRAY, BLACK);
+            gotoxy(x + 15, y + 1);
+            cout << new_hd->data_hd.SoHD;
+            gotoxy(x + 42, y + 1);
+            cout << (new_hd->data_hd.loai == "N" ? "Nhap" : "Xuat");
+            gotoxy(x + 9, y + 7);
+            cout << new_hd->data_hd.day;
+            gotoxy(x + 24, y + 7);
+            cout << new_hd->data_hd.month;
+            gotoxy(x + 36, y + 7);
+            cout << new_hd->data_hd.year;
+            drawTableUpdateChiTietHoaDon(x, y);
+            setColorByRequest(LIGHTGRAY, BLACK);
+            inChiTietHoaDon(dsnv, root, new_hd, currentPage, -1, totalPages, x, y, errorMessage, isEmpty);
+            if (isSaved)
             {
-                clearTablePrint(x);
-                fillAreaColor(x + 69, y, 41, 16, LIGHTGRAY);
-                return;
-            }
-            else
-            {
-                x = 1, y = 1;
-                fillAreaColor(x, y, 115, 25, LIGHTGRAY);
-                drawTablePrintChiTietHoaDon(x, y, 15, 23);
-                index = searchNhanVien(dsnv, currentMANV);
-                setColorByRequest(LIGHTGRAY, BLACK);
-                gotoxy(x + 24, y + 3);
-                cout << dsnv.nodes[index]->MANV;
-                gotoxy(x + 24, y + 5);
-                cout << dsnv.nodes[index]->HO << " " << dsnv.nodes[index]->TEN;
-                setColorByRequest(LIGHTGRAY, BLACK);
-                gotoxy(x + 15, y + 1);
-                cout << new_hd->data_hd.SoHD;
-                gotoxy(x + 42, y + 1);
-                cout << (new_hd->data_hd.loai == "N" ? "Nhap" : "Xuat");
-                gotoxy(x + 9, y + 7);
-                cout << new_hd->data_hd.day;
-                gotoxy(x + 24, y + 7);
-                cout << new_hd->data_hd.month;
-                gotoxy(x + 36, y + 7);
-                cout << new_hd->data_hd.year;
-                drawTableUpdateChiTietHoaDon(x, y);
-                setColorByRequest(LIGHTGRAY, BLACK);
-                inChiTietHoaDon(dsnv, root, new_hd, currentPage, -1, totalPages, x, y, errorMessage, isEmpty);
                 nhapChiTietHoaDon(dsnv, root, new_hd, currentMAVT, x, y, isESC, isSaved);
                 y += 1;
                 fillAreaColor(x, y + 25, 102, 2, LIGHTGRAY);
@@ -1079,7 +1044,18 @@ void handleNavigationAddChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_DSH
                     return;
                 }
             }
+            else
+            {
+                fillAreaColor(x + 76, y, 41, 17, LIGHTGRAY);
+                y += 1;
+                fillAreaColor(x, y + 25, 102, 2, LIGHTGRAY);
+                y -= 1;
+                drawKeysGuideChiTietHoaDon(x, y);
+                return;
+            }
             break;
+        case ESC:
+            return;
         }
     }
 }
@@ -1619,7 +1595,10 @@ void menuChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, int x, int y)
                 x = 5, y = 2;
                 drawTableSearchTenVatTu(x, y);
                 drawTablePrintVatTu(x, y, 15, 23);
-                timKiemTenVatTu(root, x, y, result, isESC);
+                clearTablePrint(x);
+                setColorByRequest(LIGHTGRAY, BLACK);
+                inDanhSachVatTu(root, currentPage, -1, x);
+                timKiemTenVatTu(root, new_hd, x, y, result, isESC);
                 ShowCur(false);
                 if (isESC)
                 {

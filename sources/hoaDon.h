@@ -10,7 +10,7 @@ void drawTablePrintHoaDon(int x, int y, int w, int h);
 void drawTableUpdateHoaDon(int x, int y);
 void drawTablePrintCTHDInListCTHD(int x, int y, int w, int h);
 //======================HOA DON===================================
-ptr_DSHD searchHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD &found_hd)
+ptr_DSHD searchHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD found_hd)
 {
     for (int i = 0; i < ds_nv.countNV; ++i)
     {
@@ -30,6 +30,7 @@ ptr_DSHD searchHoaDon(dsNhanVien &ds_nv, string soHD, ptr_DSHD &found_hd)
     }
     return nullptr; // Trả về nullptr nếu không tìm thấy hóa đơn
 }
+
 void lapHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int index, ptr_DSHD &new_hd, int x, int y, bool &isESC, bool &isSaved)
 {
     fillAreaColor(x + 4, y, 62, 25, LIGHTGRAY);
@@ -512,6 +513,7 @@ void nhapChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &hd, const s
         {
             currentRow = (currentRow > 0) ? currentRow - 1 : 0;
         }
+        drawTableErrors("", false);
     }
 }
 
@@ -542,11 +544,11 @@ void xoaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
     char key;
     treeVatTu vt = search(root, MAVT);
 
-    displayField(x + 94, y + 4, vt->data_vt.TENVT, false, 10);
+    displayField(x + 94, y + 4, vt->data_vt.TENVT, false, 20);
     displayField(x + 94, y + 6, current->data_cthd.MAVT, false, 10);
-    displayField(x + 94, y + 8, to_string(current->data_cthd.soLuong), false, 10);
+    displayField(x + 94, y + 8, to_string(current->data_cthd.soLuong), false, 6);
     displayField(x + 94, y + 10, to_string(current->data_cthd.VAT), false, 3);
-    displayField(x + 94, y + 12, to_string(current->data_cthd.donGia), false, 10);
+    displayField(x + 94, y + 12, to_string(current->data_cthd.donGia), false, 9);
     while (true)
     {
         key = getch();
@@ -622,16 +624,16 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
 
     while (true)
     {
-        displayField(x + 94, y + 4, result->data_vt.TENVT, false, 10);
+        displayField(x + 94, y + 4, result->data_vt.TENVT, false, 20);
         displayField(x + 94, y + 6, input.MAVT, false, 10);
-        displayField(x + 94, y + 8, input.soLuong > 0 ? to_string(input.soLuong) : "", currentRow == 1, 10);
+        displayField(x + 94, y + 8, input.soLuong > 0 ? to_string(input.soLuong) : "", currentRow == 1, 6);
         displayField(x + 94, y + 10, input.VAT > 0 ? to_string(input.VAT) : "", currentRow == 2, 3);
-        displayField(x + 94, y + 12, input.donGia > 0 ? to_string(input.donGia) : "", currentRow == 3, 10);
+        displayField(x + 94, y + 12, input.donGia > 0 ? to_string(input.donGia) : "", currentRow == 3, 9);
 
         switch (currentRow)
         {
         case 1: // Sửa số lượng
-            numResult = inputNumber(x + 94, y + 8, input.soLuong, 10, "So luong", moveNext, false);
+            numResult = inputNumber(x + 94, y + 8, input.soLuong, 6, "So luong", moveNext, false);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -10)
@@ -681,7 +683,7 @@ void suaChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, nhanVien *nv, ptr_DSHD
             break;
 
         case 3: // Sửa đơn giá
-            numResult = inputNumber(x + 94, y + 12, input.donGia, 10, "Don gia", moveNext, false);
+            numResult = inputNumber(x + 94, y + 12, input.donGia, 9, "Don gia", moveNext, false);
             if (numResult == -1)
                 goto escButton;
             if (numResult == -10)

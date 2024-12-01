@@ -65,6 +65,7 @@ bool nhanVienEmpty(dsNhanVien &list)
 {
     return list.countNV == 0;
 }
+
 bool isMANV(dsNhanVien &list, string maso)
 {
     for (int i = 0; i < list.countNV; i++)
@@ -170,7 +171,7 @@ void xoaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
 
     displayField(x + 87, y + 4, input.MANV, false, 10);
     displayField(x + 87, y + 6, input.HO, false, 20);
-    displayField(x + 87, y + 8, input.TEN, false, 10);
+    displayField(x + 87, y + 8, input.TEN, false, 6);
     displayField(x + 87, y + 10, input.PHAI, false, 3);
     if (list.nodes[pos]->firstDSHD != nullptr)
     {
@@ -230,7 +231,7 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
         // Hiển thị tất cả các trường
         displayField(x + 87, y + 4, input.MANV, currentRow == 0, 10);
         displayField(x + 87, y + 6, input.HO, currentRow == 1, 20);
-        displayField(x + 87, y + 8, input.TEN, currentRow == 2, 10);
+        displayField(x + 87, y + 8, input.TEN, currentRow == 2, 6);
         displayField(x + 87, y + 10, input.PHAI, currentRow == 3, 3);
 
         switch (currentRow)
@@ -285,7 +286,7 @@ void nhapNhanVien(dsNhanVien &list, int x, int y)
         }
         case 2:
         {
-            result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext, true);
+            result = inputString(x + 87, y + 8, input.TEN, 6, "Ten nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F10")
@@ -412,7 +413,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
     {
         displayField(x + 87, y + 4, input.MANV, false, 10);
         displayField(x + 87, y + 6, input.HO, currentRow == 1, 20);
-        displayField(x + 87, y + 8, input.TEN, currentRow == 2, 10);
+        displayField(x + 87, y + 8, input.TEN, currentRow == 2, 6);
         displayField(x + 87, y + 10, input.PHAI, currentRow == 3, 3);
 
         switch (currentRow)
@@ -438,7 +439,7 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
         }
         case 2:
         {
-            result = inputString(x + 87, y + 8, input.TEN, 10, "Ten nhan vien", moveNext, true);
+            result = inputString(x + 87, y + 8, input.TEN, 6, "Ten nhan vien", moveNext, true);
             if (result == "ESC")
                 goto escButton;
             if (result == "F10")
@@ -529,29 +530,29 @@ void suaNhanVien(dsNhanVien &list, string MANV, int x, int y, bool &isESC, bool 
     }
 }
 
-void deleteDanhsachNhanVien(dsNhanVien &dsNV)
-{
-    if (nhanVienEmpty(dsNV) == true)
-        return;
-    for (int i = 0; i < dsNV.countNV; ++i)
-    {
-        // Xóa đi danh sách hóa đơn của nhân viên đó
-        while (dsNV.nodes[i]->firstDSHD != nullptr)
-        {
-            while (dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD)
-            {
-                ptr_DSCTHD temp = dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD;
-                dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD = dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD->next;
-                delete temp;
-            }
-            ptr_DSHD temp = dsNV.nodes[i]->firstDSHD;
-            dsNV.nodes[i]->firstDSHD = dsNV.nodes[i]->firstDSHD->next;
-            delete temp;
-        }
-        delete dsNV.nodes[i]; // Xóa nhân viên
-    }
-    dsNV.countNV = 0; // Đặt lại số lượng nhân viên của danh sách
-}
+// void deleteDanhsachNhanVien(dsNhanVien &dsNV)
+// {
+//     if (nhanVienEmpty(dsNV) == true)
+//         return;
+//     for (int i = 0; i < dsNV.countNV; ++i)
+//     {
+//         // Xóa đi danh sách hóa đơn của nhân viên đó
+//         while (dsNV.nodes[i]->firstDSHD != nullptr)
+//         {
+//             while (dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD)
+//             {
+//                 ptr_DSCTHD temp = dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD;
+//                 dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD = dsNV.nodes[i]->firstDSHD->data_hd.firstCTHD->next;
+//                 delete temp;
+//             }
+//             ptr_DSHD temp = dsNV.nodes[i]->firstDSHD;
+//             dsNV.nodes[i]->firstDSHD = dsNV.nodes[i]->firstDSHD->next;
+//             delete temp;
+//         }
+//         delete dsNV.nodes[i]; // Xóa nhân viên
+//     }
+//     dsNV.countNV = 0; // Đặt lại số lượng nhân viên của danh sách
+// }
 
 void readFile_dsNhanVien(dsNhanVien &dsNV, bool &isOpened)
 {

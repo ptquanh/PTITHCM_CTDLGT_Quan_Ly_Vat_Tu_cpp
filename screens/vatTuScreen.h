@@ -410,7 +410,7 @@ void handleNavigationSearchVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y
     drawTableSearchTenVatTu(x, y);
     drawTablePrintVatTu(x, y, 15, 23);
     bool isESC = false, isSaved = false;
-    timKiemTenVatTu(root, x, y, result, isESC);
+    timKiemTenVatTu(root, nullptr, x, y, result, isESC);
     ShowCur(false);
     if (isESC)
     {
@@ -533,7 +533,7 @@ void searchVTFromUpdateVatTu(treeVatTu &root, int x, int y, int currentPage, str
     drawTableSearchTenVatTu(x, y);
     drawTablePrintVatTu(x, y, 15, 23);
     bool isESC = false, isSaved = false;
-    timKiemTenVatTu(root, x, y, result, isESC);
+    timKiemTenVatTu(root, nullptr, x, y, result, isESC);
     ShowCur(false);
     if (isESC)
     {
@@ -875,7 +875,7 @@ void searchVTFromDeleteVatTu(treeVatTu &root, dsNhanVien &dsnv, int x, int y, in
     drawTableSearchTenVatTu(x, y);
     drawTablePrintVatTu(x, y, 15, 23);
     bool isESC = false, isSaved = false;
-    timKiemTenVatTu(root, x, y, result, isESC);
+    timKiemTenVatTu(root, nullptr, x, y, result, isESC);
     ShowCur(false);
     if (isESC)
     {

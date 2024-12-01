@@ -829,7 +829,7 @@ void displaySearchResults(treeVatTu *results, int n, int pageNumber, int selecte
     setColorByRequest(LIGHTGRAY, BLACK);
 }
 
-void timKiemTenVatTu(treeVatTu root, int x, int y, treeVatTu &selectedResult, bool &isESC)
+void timKiemTenVatTu(treeVatTu root, ptr_DSHD hd, int x, int y, treeVatTu &selectedResult, bool &isESC)
 {
     static string searchHistory[10];
     static int historyCount = 0;
@@ -981,8 +981,38 @@ void timKiemTenVatTu(treeVatTu root, int x, int y, treeVatTu &selectedResult, bo
                 int actualIndex = (currentPage - 1) * ROWS + selectedRow;
                 if (actualIndex < resultCount)
                 {
-                    selectedResult = results[actualIndex];
-                    return;
+                    if (hd != nullptr)
+                    {
+                        bool isExisted = false;
+                        ptr_DSCTHD temp = hd->data_hd.firstCTHD;
+                        while (temp != nullptr)
+                        {
+                            if (temp->data_cthd.MAVT == results[actualIndex]->data_vt.MAVT)
+                            {
+                                isExisted = true;
+                            }
+                            temp = temp->next;
+                        }
+                        if (isExisted)
+                        {
+                            drawTableErrors("Ma vat tu da ton tai trong hoa don", true);
+                            isViewingResults = false;
+                            selectedRow = -1;
+                            clearTablePrint(x);
+                            displaySearchResults(results, resultCount, currentPage, selectedRow, x, currentInput);
+                            continue;
+                        }
+                        else
+                        {
+                            selectedResult = results[actualIndex];
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        selectedResult = results[actualIndex];
+                        return;
+                    }
                 }
             }
             else if (!currentInput.empty())
