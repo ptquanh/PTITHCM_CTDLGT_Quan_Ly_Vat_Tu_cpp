@@ -72,7 +72,6 @@ typedef dsVatTu *treeVatTu;
 // ============= danh sach lien ket don ===============
 struct nodeChiTietHoaDon
 {
-    float triGia;
     int soLuong;
     int donGia;
     int VAT;
@@ -114,21 +113,4 @@ struct dsNhanVien
 {
     nhanVien *nodes[MaxNhanVien];
     int countNV = 0;
-};
-// ================== khac ======================
-time_t to_time_t(int day, int month, int year)
-{
-    struct tm t = {0};
-    t.tm_mday = day;
-    t.tm_mon = month - 1;    // Tháng được lưu trong mảng với index từ 0 đến 11
-    t.tm_year = year - 1900; // Năm được tính từ 1900
-    return mktime(&t);
-}
-
-struct doanhThuVatTu
-{
-    float doanhThu;
-    int soluong;
-    string MAVT;
-    string TENVT;
 };

@@ -108,7 +108,7 @@ void inTop10DTVT(dsNhanVien &dsnv, treeVatTu root, int x, int y, int day1, int m
             gotoxy(x + 61, y + 6 + i);
             cout << node->data_vt.DVT;
             gotoxy(x + 72, y + 6 + i);
-            string doanhThuVT = formatMoney(doanhThu[i].doanhThu);
+            string doanhThuVT = formatMoney(doanhThu[i].doanhThu*1000);
             cout << doanhThuVT;
         }
     }

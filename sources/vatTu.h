@@ -293,11 +293,11 @@ void suaVatTu(treeVatTu &root, string MAVT, int x, int y, bool &isESC, bool &isS
                 drawTableErrors(errorMessage, true);
                 continue;
             }
-            if (isExistedTenVatTu(root, tempInput))
-            {
-                drawTableErrors("Ten vat tu da ton tai", true);
-                continue;
-            }
+            // if (isExistedTenVatTu(root, tempInput))
+            // {
+            //     drawTableErrors("Ten vat tu da ton tai", true);
+            //     continue;
+            // }
             drawTableErrors("", true);
             input.TENVT = tempInput;
             formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
@@ -419,11 +419,11 @@ void nhapVatTu(treeVatTu &root, int x, int y, string mavt, int soLuong, bool isS
                     drawTableErrors("Ten vat tu chua ky tu khong hop le", isSmallScreen);
                     continue;
                 }
-                if (isExistedTenVatTu(root, tempInput))
-                {
-                    drawTableErrors("Ten vat tu da ton tai", isSmallScreen);
-                    continue;
-                }
+                // if (isExistedTenVatTu(root, tempInput))
+                // {
+                //     drawTableErrors("Ten vat tu da ton tai", isSmallScreen);
+                //     continue;
+                // }
                 drawTableErrors("", isSmallScreen);
                 input.TENVT = tempInput;
                 formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);
@@ -529,11 +529,11 @@ void nhapVatTu(treeVatTu &root, int x, int y, string mavt, int soLuong, bool isS
                     drawTableErrors("Ten vat tu chua ky tu khong hop le", isSmallScreen);
                     continue;
                 }
-                if (isExistedTenVatTu(root, tempInput))
-                {
-                    drawTableErrors("Ten vat tu da ton tai", isSmallScreen);
-                    continue;
-                }
+                // if (isExistedTenVatTu(root, tempInput))
+                // {
+                //     drawTableErrors("Ten vat tu da ton tai", isSmallScreen);
+                //     continue;
+                // }
                 drawTableErrors("", isSmallScreen);
                 input.TENVT = tempInput;
                 formatInputVT(input.MAVT, input.TENVT, input.DVT, input.soLuongTon);

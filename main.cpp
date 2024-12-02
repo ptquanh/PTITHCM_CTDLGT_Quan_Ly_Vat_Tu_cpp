@@ -10,7 +10,6 @@ int main()
     SetConsoleTitleCustom("Chuong trinh quan ly vat tu");
     dsNhanVien dsnv;
     treeVatTu root = nullptr;
-    string errorMessage;
     bool isVTOpened = true, isNVOpened = true;
     int smallX = 5, smallY = 2;
     int bigX = 1, bigY = 1;
@@ -22,14 +21,12 @@ int main()
         fillConsoleWithColor(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
         if (!isVTOpened)
         {
-            errorMessage = "Khong the mo file ds_VatTu.txt";
-            drawTableErrors(errorMessage, true);
+            drawTableErrors("Khong the mo file ds_VatTu.txt", true);
             return 0;
         }
         if (!isNVOpened)
         {
-            errorMessage = "Khong the mo file ds_NhanVien.txt";
-            drawTableErrors(errorMessage, true);
+            drawTableErrors("Khong the mo file ds_NhanVien.txt", true);
             return 0;
         }
         mainMenu = menuChinhDong(MenuChinh);

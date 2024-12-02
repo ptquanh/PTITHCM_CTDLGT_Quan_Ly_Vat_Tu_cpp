@@ -782,6 +782,7 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
     nodeChiTietHoaDon *arrCTHD = new nodeChiTietHoaDon[n];
     nodeVatTu *arrVT = new nodeVatTu[n];
     ptr_DSCTHD current_cthd = found_hd->data_hd.firstCTHD;
+    float arrTriGia[n];
     if (current_cthd == nullptr)
     {
         isEmpty = true;
@@ -789,7 +790,7 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
     }
     for (int i = 0; i < n && current_cthd != nullptr; i++)
     {
-        arrCTHD[i].triGia = 0;
+        arrTriGia[n] = 0;
         arrCTHD[i].MAVT = current_cthd->data_cthd.MAVT;
 
         treeVatTu node = search(root, current_cthd->data_cthd.MAVT);
@@ -804,13 +805,13 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
             arrCTHD[i].soLuong = current_cthd->data_cthd.soLuong;
             arrCTHD[i].donGia = (float)current_cthd->data_cthd.donGia / 1000;
             arrCTHD[i].VAT = current_cthd->data_cthd.VAT;
-            arrCTHD[i].triGia = arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + (float)(arrCTHD[i].VAT) / 100);
+            arrTriGia[i] = arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + (float)(arrCTHD[i].VAT) / 100);
         }
         current_cthd = current_cthd->next;
     }
     int startIndex = (pageNumber - 1) * HDROWS;
     int endIndex = min(startIndex + HDROWS, n);
-    int currentRow = 12;
+    int currentRow = 13;
     for (int i = startIndex; i < endIndex; i++)
     {
         gotoxy(x + 3, currentRow);
@@ -831,7 +832,7 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
         gotoxy(x + 54, currentRow);
         cout << arrCTHD[i].donGia;
         gotoxy(x + 65, currentRow);
-        cout << arrCTHD[i].triGia;
+        cout << arrTriGia[i];
         currentRow++;
     }
     gotoxy(x + 18, y + 23);
@@ -948,9 +949,10 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
     nodeChiTietHoaDon *arrCTHD = new nodeChiTietHoaDon[n];
     nodeVatTu *arrVT = new nodeVatTu[n];
     ptr_DSCTHD current_cthd = found_hd->data_hd.firstCTHD;
+    float arrTriGia[n];
     for (int i = 0; i < n && current_cthd != nullptr; i++)
     {
-        arrCTHD[i].triGia = 0;
+        arrTriGia[i] = 0;
         arrCTHD[i].MAVT = current_cthd->data_cthd.MAVT;
 
         treeVatTu node = search(root, current_cthd->data_cthd.MAVT);
@@ -966,13 +968,13 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
             arrCTHD[i].soLuong = current_cthd->data_cthd.soLuong;
             arrCTHD[i].donGia = (float)current_cthd->data_cthd.donGia / 1000;
             arrCTHD[i].VAT = current_cthd->data_cthd.VAT;
-            arrCTHD[i].triGia = arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + (float)arrCTHD[i].VAT / 100);
+            arrTriGia[i] = arrCTHD[i].soLuong * arrCTHD[i].donGia * (1 + (float)arrCTHD[i].VAT / 100);
         }
         current_cthd = current_cthd->next;
     }
     int startIndex = (pageNumber - 1) * HDROWS;
     int endIndex = min(startIndex + HDROWS, n);
-    int currentRow = 12;
+    int currentRow = 13;
     for (int i = startIndex; i < endIndex; i++)
     {
         gotoxy(x + 3, currentRow);
@@ -993,7 +995,7 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
         gotoxy(x + 54, currentRow);
         cout << arrCTHD[i].donGia;
         gotoxy(x + 65, currentRow);
-        string triGia = formatMoney(arrCTHD[i].triGia);
+        string triGia = formatMoney(arrTriGia[i]);
         cout << triGia;
         currentRow++;
     }

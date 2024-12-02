@@ -88,7 +88,7 @@ void drawTableAddVatTuInCTHD(int x, int y)
 void clearTablePrintChiTietHoaDon(int x)
 {
     SetBGColor(LIGHTGRAY);
-    for (int currentRow = 12; currentRow <= HDROWS + 11; currentRow++)
+    for (int currentRow = 13; currentRow <= HDROWS + 12; currentRow++)
     {
         for (int i = x + 3; i < x + 15; i++)
         {
@@ -255,16 +255,16 @@ void drawTablePrintChiTietHoaDon(int x, int y, int w, int h)
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x, y, (w * 4) + 13, h + 1);
     horizontalLine(x + 1, y + 8, ((w * 4) + 13) - 1);
-    horizontalLine(x + 1, y + 10, ((w * 4) + 13) - 1);
+    horizontalLine(x + 1, y + 11, ((w * 4) + 13) - 1);
     horizontalLine(x + 1, y + h - 1, ((w * 4) + 13) - 1);
     // ve vien
     gotoxy(x, y + 8);
     cout << tRight;
     gotoxy(x + (w * 4) + 13, y + 8);
     cout << tLeft;
-    gotoxy(x, y + 10);
+    gotoxy(x, y + 11);
     cout << tRight;
-    gotoxy(x + (w * 4) + 13, y + 10);
+    gotoxy(x + (w * 4) + 13, y + 11);
     cout << tLeft;
     gotoxy(x + (w * 4) + 13, y + 22);
     cout << tLeft;
@@ -290,13 +290,13 @@ void drawTablePrintChiTietHoaDon(int x, int y, int w, int h)
     verticalLine(x + (((w * 4) + 2) - 22), y + 9, h - 10);
     verticalLine(x + (((w * 4) + 2) - 11), y + 9, h - 10);
     verticalLine(x + (((w * 4) + 2)), y + 9, h - 10);
-    gotoxy(x + (((w * 4)) - 45), y + 10);
+    gotoxy(x + (((w * 4)) - 45), y + 11);
     cout << cross;
-    gotoxy(x + (((w * 4) + 2) - 22), y + 10);
+    gotoxy(x + (((w * 4) + 2) - 22), y + 11);
     cout << cross;
-    gotoxy(x + (((w * 4) + 2) - 11), y + 10);
+    gotoxy(x + (((w * 4) + 2) - 11), y + 11);
     cout << cross;
-    gotoxy(x + (((w * 4) + 2)), y + 10);
+    gotoxy(x + (((w * 4) + 2)), y + 11);
     cout << cross;
     setColorByRequest(LIGHTGRAY, RED);
     gotoxy(x + 23, y - 1);
@@ -317,8 +317,12 @@ void drawTablePrintChiTietHoaDon(int x, int y, int w, int h)
     cout << "SL";
     gotoxy(x + 54, y + 9);
     cout << "DON GIA";
+    gotoxy(x + 54, y + 10);
+    cout << "(nghin)";
     gotoxy(x + 65, y + 9);
     cout << "TRI GIA";
+    gotoxy(x + 65, y + 10);
+    cout << "(nghin)";
     gotoxy(x + 3, y + h);
     cout << "TONG TRI GIA:";
 }
@@ -328,16 +332,16 @@ void drawTablePrintCTHDInListCTHD(int x, int y, int w, int h)
     setColorByRequest(LIGHTGRAY, DARKGRAY);
     drawHCN(x, y, (w * 4) + 23, h + 1);
     horizontalLine(x + 1, y + 8, ((w * 4) + 23) - 1);
-    horizontalLine(x + 1, y + 10, ((w * 4) + 23) - 1);
+    horizontalLine(x + 1, y + 11, ((w * 4) + 23) - 1);
     horizontalLine(x + 1, y + h - 1, ((w * 4) + 23) - 1);
     // ve vien
     gotoxy(x, y + 8);
     cout << tRight;
     gotoxy(x + (w * 4) + 23, y + 8);
     cout << tLeft;
-    gotoxy(x, y + 10);
+    gotoxy(x, y + 11);
     cout << tRight;
-    gotoxy(x + (w * 4) + 23, y + 10);
+    gotoxy(x + (w * 4) + 23, y + 11);
     cout << tLeft;
     gotoxy(x + (w * 4) + 23, y + 22);
     cout << tLeft;
@@ -363,13 +367,13 @@ void drawTablePrintCTHDInListCTHD(int x, int y, int w, int h)
     verticalLine(x + (((w * 4) + 2) - 22), y + 9, h - 10);
     verticalLine(x + (((w * 4) + 2) - 11), y + 9, h - 10);
     verticalLine(x + (((w * 4) + 2)), y + 9, h - 10);
-    gotoxy(x + (((w * 4)) - 45), y + 10);
+    gotoxy(x + (((w * 4)) - 45), y + 11);
     cout << cross;
-    gotoxy(x + (((w * 4) + 2) - 22), y + 10);
+    gotoxy(x + (((w * 4) + 2) - 22), y + 11);
     cout << cross;
-    gotoxy(x + (((w * 4) + 2) - 11), y + 10);
+    gotoxy(x + (((w * 4) + 2) - 11), y + 11);
     cout << cross;
-    gotoxy(x + (((w * 4) + 2)), y + 10);
+    gotoxy(x + (((w * 4) + 2)), y + 11);
     cout << cross;
     setColorByRequest(LIGHTGRAY, RED);
     gotoxy(x + 23, y - 1);
@@ -390,6 +394,8 @@ void drawTablePrintCTHDInListCTHD(int x, int y, int w, int h)
     cout << "SL";
     gotoxy(x + 54, y + 9);
     cout << "DON GIA";
+    gotoxy(x + 54, y + 10);
+    cout << "(nghin)";
     gotoxy(x + 65, y + 9);
     cout << "TRI GIA (VND)";
     gotoxy(x + 3, y + h);
@@ -1254,6 +1260,8 @@ void handleNavigationUpdateChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_
                 arrCTHD[i].MAVT = current_cthd->data_cthd.MAVT;
                 current_cthd = current_cthd->next;
             }
+            setColorByRequest(LIGHTGRAY, BLACK);
+            inChiTietHoaDon(dsnv, root, new_hd, currentPage, -1, totalPages, x, y, errorMessage, isEmpty);
             setColorByRequest(BLACK, WHITE);
             currentMAVT = arrCTHD[currentChoice].MAVT;
             suaChiTietHoaDon(dsnv, root, nv, new_hd, currentMAVT, x, y, isESC, isSaved);
@@ -1389,6 +1397,8 @@ void handleNavigationDeleteChiTietHoaDon(dsNhanVien &dsnv, treeVatTu &root, ptr_
                 arrCTHD[i].MAVT = current_cthd->data_cthd.MAVT;
                 current_cthd = current_cthd->next;
             }
+            setColorByRequest(LIGHTGRAY, BLACK);
+            inChiTietHoaDon(dsnv, root, new_hd, currentPage, -1, totalPages, x, y, errorMessage, isEmpty);
             setColorByRequest(BLACK, WHITE);
             currentMAVT = arrCTHD[currentChoice].MAVT;
             xoaChiTietHoaDon(dsnv, root, nv, new_hd, currentMAVT, x, y, isESC, isSaved);
@@ -1462,7 +1472,7 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
                 int currentRow = 12;
                 int x = 5;
                 SetBGColor(LIGHTGRAY);
-                for (int currentRow = 12; currentRow <= HDROWS + 11; currentRow++)
+                for (int currentRow = 13; currentRow <= HDROWS + 12; currentRow++)
                 {
                     for (int i = x + 3; i < x + 15; i++)
                     {
@@ -1501,7 +1511,7 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
                 int currentRow = 12;
                 int x = 5;
                 SetBGColor(LIGHTGRAY);
-                for (int currentRow = 12; currentRow <= HDROWS + 11; currentRow++)
+                for (int currentRow = 13; currentRow <= HDROWS + 12; currentRow++)
                 {
                     for (int i = x + 3; i < x + 15; i++)
                     {

@@ -1,5 +1,22 @@
 #pragma once
 #include "../screens/doHoa.h"
+
+time_t to_time_t(int day, int month, int year)
+{
+    struct tm t = {0};
+    t.tm_mday = day;
+    t.tm_mon = month - 1;    // Tháng được lưu trong mảng với index từ 0 đến 11
+    t.tm_year = year - 1900; // Năm được tính từ 1900
+    return mktime(&t);
+}
+
+struct doanhThuVatTu
+{
+    float doanhThu;
+    int soluong;
+    string MAVT;
+};
+
 bool isValidChar(char c)
 {
     // Chấp nhận chữ cái (A-Z, a-z)
@@ -448,19 +465,19 @@ void quickSortVatTu(treeVatTu arr[], int low, int high)
     }
 }
 
-bool isExistedTenVatTu(treeVatTu root, string tenVT)
-{
-    if (root == nullptr)
-        return false;
+// bool isExistedTenVatTu(treeVatTu root, string tenVT)
+// {
+//     if (root == nullptr)
+//         return false;
 
-    // So sánh tên vật tư (không phân biệt hoa thường)
-    if (strcasecmp(root->data_vt.TENVT.c_str(), tenVT.c_str()) == 0)
-        return true;
+//     // So sánh tên vật tư (không phân biệt hoa thường)
+//     if (strcasecmp(root->data_vt.TENVT.c_str(), tenVT.c_str()) == 0)
+//         return true;
 
-    // Đệ quy kiểm tra nhánh trái và phải
-    return isExistedTenVatTu(root->left, tenVT) ||
-           isExistedTenVatTu(root->right, tenVT);
-}
+//     // Đệ quy kiểm tra nhánh trái và phải
+//     return isExistedTenVatTu(root->left, tenVT) ||
+//            isExistedTenVatTu(root->right, tenVT);
+// }
 
 bool isLeapYear(int year)
 {

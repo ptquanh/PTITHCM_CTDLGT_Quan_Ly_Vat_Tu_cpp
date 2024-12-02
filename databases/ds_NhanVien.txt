@@ -1,6 +1,10 @@
 NV211|Le Quang|Anh|Nam
 -HDR|30|11|2024|N
 +VT110|1|1|1
+-HD01|2|12|2024|X
++VT019|1|10|100000
+-HD02|2|12|2024|X
++VT019|1|10|100000
 \
 NV7|Phan Tuan Quoc|Anh|Nam
 -HD1|12|12|2024|X
@@ -95,6 +99,8 @@ NV1|Du Hoang|Phi|Nam
 \
 NV13|Le Hoang|Phi|Nam
 \
+NV100|Nguyen Toan|Phuc|Nam
+\
 NV14|Nguyen Quoc|Toan|Nam
 \
 NV22|Nguyen Viet|Toan|Nam
@@ -124,9 +130,9 @@ NV21|Luong Chi|Vinh|Nam
 +VT012|5|10|50000000
 +VT020|5|10|20000
 \
-NV10|Nguyen Quoc|Vinh|Nam
-\
 NV2|Nguyen Quoc|Vinh|Nam
+\
+NV10|Nguyen Quoc|Vinh|Nam
 \
 NV24|Nguyen Thanh|Vinh|Nam
 \
