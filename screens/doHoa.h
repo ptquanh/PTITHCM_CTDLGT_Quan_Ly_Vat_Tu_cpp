@@ -2,7 +2,7 @@
 #include "../libraries/khaibao.h"
 #include "../libraries/mylib.h"
 #define ROWS 20
-#define HDROWS 10
+#define HDROWS 11
 //==========khai bao=========
 const int BLACK = 0;
 const int BLUE = 1;

@@ -88,7 +88,7 @@ void drawTableAddVatTuInCTHD(int x, int y)
 void clearTablePrintChiTietHoaDon(int x)
 {
     SetBGColor(LIGHTGRAY);
-    for (int currentRow = 13; currentRow <= HDROWS + 12; currentRow++)
+    for (int currentRow = 13; currentRow <= HDROWS + 11; currentRow++)
     {
         for (int i = x + 3; i < x + 15; i++)
         {
@@ -1472,7 +1472,7 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
                 int currentRow = 12;
                 int x = 5;
                 SetBGColor(LIGHTGRAY);
-                for (int currentRow = 13; currentRow <= HDROWS + 12; currentRow++)
+                for (int currentRow = 13; currentRow <= HDROWS + 11; currentRow++)
                 {
                     for (int i = x + 3; i < x + 15; i++)
                     {
@@ -1511,7 +1511,7 @@ void handleNavigationListChiTietHoaDon(dsNhanVien dsnv, treeVatTu root, int x, i
                 int currentRow = 12;
                 int x = 5;
                 SetBGColor(LIGHTGRAY);
-                for (int currentRow = 13; currentRow <= HDROWS + 12; currentRow++)
+                for (int currentRow = 13; currentRow <= HDROWS + 11; currentRow++)
                 {
                     for (int i = x + 3; i < x + 15; i++)
                     {

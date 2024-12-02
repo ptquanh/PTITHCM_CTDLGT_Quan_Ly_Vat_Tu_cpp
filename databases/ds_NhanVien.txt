@@ -31,8 +31,8 @@ NV12|Hoang Thien|Bao|Nam
 +VT005|2|1|1000000
 +VT006|5|10|50000000
 +VT007|2|1|1000000
-\
-NV20|Ly Van|Bien|Nam
+-HD1002|2|12|2024|X
++VT1001|1|10|200000
 \
 NV18|Nguyen Hoang Nam|Chau|Nam
 \
@@ -103,6 +103,8 @@ NV100|Nguyen Toan|Phuc|Nam
 \
 NV14|Nguyen Quoc|Toan|Nam
 \
+NV1002|Nguyen Van|Toan|Nam
+\
 NV22|Nguyen Viet|Toan|Nam
 \
 NV11|Dang Kieu|Trang|Nu
@@ -130,9 +132,9 @@ NV21|Luong Chi|Vinh|Nam
 +VT012|5|10|50000000
 +VT020|5|10|20000
 \
-NV2|Nguyen Quoc|Vinh|Nam
-\
 NV10|Nguyen Quoc|Vinh|Nam
+\
+NV2|Nguyen Quoc|Vinh|Nam
 \
 NV24|Nguyen Thanh|Vinh|Nam
 \

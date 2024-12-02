@@ -98,6 +98,8 @@ VT097|Day Cao Ap|Cuon|150
 VT098|May Ban Khoan|Cai|7
 VT099|Son Nuoc Ngoai|Lit|95
 VT100|Canh Cua Go|Tam|35
+VT1000|Sach|Quyen|2
+VT1001|Banh Xe|Chiec|1
 VT101|Van Ap Luc|Cai|40
 VT102|Keo Trang Tri|Chai|45
 VT103|Gach Ngoai Troi|Vien|500

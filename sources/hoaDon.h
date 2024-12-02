@@ -810,7 +810,7 @@ void inChiTietHoaDon(dsNhanVien &ds_nv, treeVatTu &root, ptr_DSHD &found_hd, int
         current_cthd = current_cthd->next;
     }
     int startIndex = (pageNumber - 1) * HDROWS;
-    int endIndex = min(startIndex + HDROWS, n);
+    int endIndex = min(startIndex + HDROWS - 1, n);
     int currentRow = 13;
     for (int i = startIndex; i < endIndex; i++)
     {
@@ -973,7 +973,7 @@ void inHoaDon(dsNhanVien &ds_nv, treeVatTu &root, int pageNumber, int selectedRo
         current_cthd = current_cthd->next;
     }
     int startIndex = (pageNumber - 1) * HDROWS;
-    int endIndex = min(startIndex + HDROWS, n);
+    int endIndex = min(startIndex + HDROWS - 1, n);
     int currentRow = 13;
     for (int i = startIndex; i < endIndex; i++)
     {
